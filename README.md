@@ -8,7 +8,6 @@ This project uses [Node.js](https://nodejs.org/en/download/) in order to run the
 
 ## Run Electron GUI
 
-
 ```
 cd electron-gui
 npm install -d
