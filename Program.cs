@@ -32,7 +32,7 @@ namespace SpeechToText
                             SampleRateHertz = 16000,
                             LanguageCode = "en",
                         },
-                        InterimResults = true,
+                        InterimResults = false,
                     }
                 });
             // Print responses as they arrive.
@@ -46,10 +46,7 @@ namespace SpeechToText
                     {
                         foreach (SpeechRecognitionAlternative alternative in result.Alternatives)
                         {
-                            if (result.IsFinal == true)
-                            {
-                                Console.WriteLine(alternative.Transcript);
-                            }
+                            Console.WriteLine(alternative.Transcript);
                         }
                     }
                 }
