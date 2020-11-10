@@ -46,6 +46,7 @@ namespace SpeechToText
                     {
                         foreach (SpeechRecognitionAlternative alternative in result.Alternatives)
                         {
+                            // Actually console write.
                             Console.WriteLine(alternative.Transcript);
                         }
                     }
