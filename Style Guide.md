@@ -48,7 +48,7 @@ Void addInts()
 ```
 
 ## Notice:
-*	bracket below function header
+*	Bracket below function header
 *	Inline comments mark logical steps within the function
 *	Naming conventions:
 *	Primitive variable: camelCase
