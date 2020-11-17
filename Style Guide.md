@@ -1,3 +1,4 @@
+# C++/C#
 ## File Header:
 ```
 /**************************************************************
@@ -34,7 +35,7 @@ Postcondition:
 **************************************************************/
 ```
  
-## General formatting (C++ syntax):
+## Layout:
 ```
 Void addInts()
 {
@@ -47,11 +48,19 @@ Void addInts()
 }
 ```
 
-## Notice:
-*	Bracket below function header
-*	Inline comments mark logical steps within the function
-*	Naming conventions:
-*	Primitive variable: camelCase
-*	Function: verbNoun
-*	Object, Class, Struct: PascalCase
+## Primitive Variables
+```
+int smallNumber = 0;
+```
 
+## Functions
+```
+int verbNoun()
+```
+
+## Classes/Structures/Objects
+```
+class PascalCase
+Struct PascalCase
+String PascalCase
+```
