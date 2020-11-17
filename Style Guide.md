@@ -1,4 +1,4 @@
-# C++/C#
+# C++/C# Syntax
 ## File Header:
 ```
 /**************************************************************
@@ -35,7 +35,7 @@ Postcondition:
 **************************************************************/
 ```
  
-## Layout:
+## General Layout:
 ```
 Void addInts()
 {
@@ -62,5 +62,5 @@ int verbNoun()
 ```
 class PascalCase
 Struct PascalCase
-String PascalCase
+Object PascalCase
 ```
