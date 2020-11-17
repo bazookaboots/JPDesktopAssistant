@@ -11,10 +11,5 @@ Leveraging Google assistant API, Electron, and others, to develop an AI assistan
 ## Current Version
 Unreleased
 
-## Branches
-* Main (Main project branch)
-* SpeechDemo (Demonstration of speech API)
-* ElectronDemo (Demonstration of G-Electron API)
-
 ## Notes
 This project is in the early stages of development.
