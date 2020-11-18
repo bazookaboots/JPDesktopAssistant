@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ElectronCgi.DotNet;
 using Google.Cloud.Speech.V1;
 
 namespace SpeechToText
@@ -12,12 +13,25 @@ namespace SpeechToText
     {
         static async Task Main(string[] args)
         {
-            while (true)
+            var connection = new ConnectionBuilder()
+                    .WithLogging()
+                    .Build();
+
+            // expects a request named "greeting" with a string argument and returns a string
+            connection.On("greeting", (string name) =>
             {
-                object res = await StreamingMicRecognizeAsync(10);
-                Console.WriteLine(res);
-            }
-            
+                return $"Hello {name}!";
+            });
+
+            // wait for incoming requests
+            connection.Listen();
+
+            //while (true)
+            //{
+            //    object res = await StreamingMicRecognizeAsync(10);
+            //    Console.WriteLine(res);
+            //}
+
         }
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)

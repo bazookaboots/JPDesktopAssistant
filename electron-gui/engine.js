@@ -1,28 +1,13 @@
-const { ConnectionBuilder } = require('electron-cgi');
+const spawn = require('child_process').spawn;
 
-const connection = new ConnectionBuilder()
-        .connectTo('dotnet', 'run', '--project', 'DotNetConsoleProjectWithElectronCgiDotNetNugetPackage')
-        .build();
+function spawnEngine() {
+    console.log('spawn function called');
+    const subprocess = spawn('D:\Projects\JPDesktopAssistant\speech-engine-cs\bin\Debug\SpeechToText.exe', {
+        detached: true,
+        stdio: ['ignore', 'ignore', 'ignore']
+    } );
 
-connection.onDisconnect = () => {
-    console.log('Lost connection to the .Net process');
-};
+    console.log(subprocess.connected);
 
-connection.send('greeting', 'John', (error, theGreeting) => {
-    if (error) {
-        console.log(error); //serialized exception from the .NET handler
-        return;
-    }
-
-    console.log(theGreeting); // will print "Hello John!"
-});
-
-//alternatively use async/await, in an async function:
-try{
-    const greeting = await connection.send('greeting', 'John');
-    console.log(greeting);
-}catch (err) {
-    console.log(err); //err is the serialized exception thrown in the .NET handler for the greeting request
+    subprocess.unref();
 }
-
-connection.close();
