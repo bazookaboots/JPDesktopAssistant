@@ -12,11 +12,17 @@ namespace SpeechToText
     {
         static async Task Main(string[] args)
         {
-            await StreamingMicRecognizeAsync(10);
+            while (true)
+            {
+                object res = await StreamingMicRecognizeAsync(10);
+                Console.WriteLine(res);
+            }
+            
         }
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)
         {
+            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Path.GetFullPath("../../GoogleKey.json"));
             var speech = SpeechClient.Create();
             var streamingCall = speech.StreamingRecognize();
             // Write the initial request with the config.
