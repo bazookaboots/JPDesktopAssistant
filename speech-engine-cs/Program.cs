@@ -13,25 +13,12 @@ namespace SpeechToText
     {
         static async Task Main(string[] args)
         {
-            var connection = new ConnectionBuilder()
-                    .WithLogging()
-                    .Build();
-
-            // expects a request named "greeting" with a string argument and returns a string
-            connection.On("greeting", (string name) =>
+            Console.WriteLine("hello");
+            while (true)
             {
-                return $"Hello {name}!";
-            });
-
-            // wait for incoming requests
-            connection.Listen();
-
-            //while (true)
-            //{
-            //    object res = await StreamingMicRecognizeAsync(10);
-            //    Console.WriteLine(res);
-            //}
-
+                object res = await StreamingMicRecognizeAsync(10);
+                Console.WriteLine(res);
+            }
         }
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)
