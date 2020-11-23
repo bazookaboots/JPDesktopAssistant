@@ -78,10 +78,10 @@
       <HintPath>packages\Grpc.Auth.2.27.0\lib\net45\Grpc.Auth.dll</HintPath>
     </Reference>
     <Reference Include="Grpc.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d754f35622e28bad, processorArchitecture=MSIL">
-      <HintPath>packages\Grpc.Core.2.27.0\lib\net45\Grpc.Core.dll</HintPath>
+      <HintPath>packages\Grpc.Core.2.34.0-pre1\lib\net45\Grpc.Core.dll</HintPath>
     </Reference>
     <Reference Include="Grpc.Core.Api, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d754f35622e28bad, processorArchitecture=MSIL">
-      <HintPath>packages\Grpc.Core.Api.2.27.0\lib\net45\Grpc.Core.Api.dll</HintPath>
+      <HintPath>packages\Grpc.Core.Api.2.34.0-pre1\lib\net45\Grpc.Core.Api.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.Hosting.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNetCore.Hosting.Abstractions.2.0.0\lib\netstandard2.0\Microsoft.AspNetCore.Hosting.Abstractions.dll</HintPath>
@@ -185,11 +185,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="packages\Grpc.Core.2.27.0\build\net45\Grpc.Core.targets" Condition="Exists('packages\Grpc.Core.2.27.0\build\net45\Grpc.Core.targets')" />
+  <Import Project="packages\Grpc.Core.2.34.0-pre1\build\net45\Grpc.Core.targets" Condition="Exists('packages\Grpc.Core.2.34.0-pre1\build\net45\Grpc.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\Grpc.Core.2.27.0\build\net45\Grpc.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Grpc.Core.2.27.0\build\net45\Grpc.Core.targets'))" />
+    <Error Condition="!Exists('packages\Grpc.Core.2.34.0-pre1\build\net45\Grpc.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Grpc.Core.2.34.0-pre1\build\net45\Grpc.Core.targets'))" />
   </Target>
 </Project>
