@@ -15,7 +15,7 @@ namespace SpeechToText
         static async Task Main(string[] args)
         {
             // Send API output to STDout.
-            object res = await StreamingMicRecognizeAsync(300);
+            object res = await StreamingMicRecognizeAsync(60);
             Console.WriteLine(res);
         }
 
