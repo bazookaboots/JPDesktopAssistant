@@ -13,6 +13,7 @@ namespace SpeechToText
     {
         static async Task Main(string[] args)
         {
+            Console.WriteLine("hello");
             await StreamingMicRecognizeAsync(10);
         }
 
