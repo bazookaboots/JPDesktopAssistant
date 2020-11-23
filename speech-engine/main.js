@@ -19,7 +19,7 @@ const request = {
     sampleRateHertz: sampleRateHertz,
     languageCode: languageCode,
   },
-  interimResults: true, // If you want interim results, set this to true
+  interimResults: false, // If you want interim results, set this to true
 };
 
 // Create a recognize stream

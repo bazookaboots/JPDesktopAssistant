@@ -11,15 +11,21 @@ namespace SpeechToText
 {
     class Program
     {
+        // Very top of the asyncronous call chain. Program begins here.
         static async Task Main(string[] args)
         {
-            await StreamingMicRecognizeAsync(10);
+            // Send API output to STDout.
+            object res = await StreamingMicRecognizeAsync(300);
+            Console.WriteLine(res);
         }
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)
         {
+            // Verifies API credentials.
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Path.GetFullPath("../../GoogleKey.json"));
+            // Speech client.
             var speech = SpeechClient.Create();
+            // Call to API.
             var streamingCall = speech.StreamingRecognize();
             // Write the initial request with the config.
             await streamingCall.WriteAsync(
@@ -33,10 +39,13 @@ namespace SpeechToText
                             RecognitionConfig.Types.AudioEncoding.Linear16,
                             SampleRateHertz = 16000,
                             LanguageCode = "en",
+                            MaxAlternatives = 1,
+                            EnableAutomaticPunctuation = true,
                         },
                         InterimResults = false,
                     }
                 });
+
             // Print responses as they arrive.
             Task printResponses = Task.Run(async () =>
             {
@@ -50,10 +59,12 @@ namespace SpeechToText
                         {
                             // Actually console write.
                             Console.WriteLine(alternative.Transcript);
+
                         }
                     }
                 }
             });
+
             // Read from the microphone and stream to API.
             object writeLock = new object();
             bool writeMore = true;
@@ -78,9 +89,11 @@ namespace SpeechToText
                             }).Wait();
                     }
                 };
+
             waveIn.StartRecording();
             Console.WriteLine("Speak now.");
             await Task.Delay(TimeSpan.FromSeconds(seconds));
+           
             // Stop recording and shut down.
             waveIn.StopRecording();
             lock (writeLock)
