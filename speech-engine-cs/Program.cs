@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using ElectronCgi.DotNet;
@@ -15,12 +16,14 @@ namespace SpeechToText
         static async Task Main(string[] args)
         {
             // Send API output to STDout.
-            object res = await StreamingMicRecognizeAsync(60);
-            Console.WriteLine(res);
+            Console.WriteLine("Attempting request.");
+            List<string> results = (List<string>) await StreamingMicRecognizeAsync(60);
+            Console.WriteLine("Request complete.");
         }
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)
         {
+            List<string> transcripts = new List<string>();
             // Verifies API credentials.
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Path.GetFullPath("../../GoogleKey.json"));
             // Speech client.
@@ -41,10 +44,11 @@ namespace SpeechToText
                             LanguageCode = "en",
                             MaxAlternatives = 1,
                             EnableAutomaticPunctuation = true,
+                            ProfanityFilter = true,
                         },
                         InterimResults = false,
                     }
-                });
+                }); ;
 
             // Print responses as they arrive.
             Task printResponses = Task.Run(async () =>
@@ -59,7 +63,7 @@ namespace SpeechToText
                         {
                             // Actually console write.
                             Console.WriteLine(alternative.Transcript);
-
+                            transcripts.Add(alternative.Transcript);
                         }
                     }
                 }
@@ -103,7 +107,7 @@ namespace SpeechToText
 
             await streamingCall.WriteCompleteAsync();
             await printResponses;
-            return 0;
+            return transcripts;
         }
     }
 }
