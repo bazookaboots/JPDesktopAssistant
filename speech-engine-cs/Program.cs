@@ -16,9 +16,9 @@ namespace SpeechToText
         static async Task Main(string[] args)
         {
             // Send API output to STDout.
-            Console.WriteLine("Attempting request.");
+            Console.WriteLine("0:" + "Attempting request.");
             List<string> results = (List<string>) await StreamingMicRecognizeAsync(60);
-            Console.WriteLine("Request complete.");
+            Console.WriteLine("0:" + "Request complete.");
         }
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)
@@ -62,7 +62,7 @@ namespace SpeechToText
                         foreach (SpeechRecognitionAlternative alternative in result.Alternatives)
                         {
                             // Actually console write.
-                            Console.WriteLine(alternative.Transcript);
+                            Console.WriteLine("1:" + alternative.Transcript);
                             transcripts.Add(alternative.Transcript);
                         }
                     }
@@ -95,7 +95,7 @@ namespace SpeechToText
                 };
 
             waveIn.StartRecording();
-            Console.WriteLine("Speak now.");
+            Console.WriteLine("0:" + "Speak now.");
             await Task.Delay(TimeSpan.FromSeconds(seconds));
            
             // Stop recording and shut down.
