@@ -1,10 +1,6 @@
 const spawn = require('child_process').spawn;
 
 
-function listenToEngine(child){
-    
-}
-
 function spawnEngine() {
     console.log('spawn function called');
     const subprocess = spawn('SpeechToText.exe', {
