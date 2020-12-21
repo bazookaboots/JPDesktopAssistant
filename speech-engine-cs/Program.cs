@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -17,7 +18,36 @@ namespace SpeechToText
         {
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>) await StreamingMicRecognizeAsync(60);
+            List<string> results = (List<string>) await StreamingMicRecognizeAsync(5);
+            // string command = "";
+
+            // Break the results of the request into chunks.
+            string[] chunks = results[0].Split(' ', '.');
+            for (int i = 0; i < chunks.Length; i++)
+            {
+                chunks[i] = chunks[i].ToLower();
+            }
+
+            // Parse through the chunks to recognize command. 
+            if (chunks.Contains("open") || chunks.Contains("start") || chunks.Contains("launch"))
+            {
+                Console.WriteLine("Here");
+                switch (chunks[1])
+                {
+                    case "outlook":
+                        //command = "StartOutlook";
+                        System.Diagnostics.Process.Start(@"C:\Users\baygo\Documents\GitHub\JPDesktopAssistant\speech-engine-cs\Scripts\StartOutlook.bat");
+                        break;
+
+                    case "canvas":
+                        System.Diagnostics.Process.Start(@"C:\Users\baygo\Documents\GitHub\JPDesktopAssistant\speech-engine-cs\Scripts\StartCanvas.bat");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
             Console.WriteLine("0:" + "Request complete.");
         }
 
@@ -61,7 +91,7 @@ namespace SpeechToText
                     {
                         foreach (SpeechRecognitionAlternative alternative in result.Alternatives)
                         {
-                            // Actually console write.
+                            // Actual console write.
                             Console.WriteLine("1:" + alternative.Transcript);
                             transcripts.Add(alternative.Transcript);
                         }
