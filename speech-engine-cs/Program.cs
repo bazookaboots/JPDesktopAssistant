@@ -19,7 +19,6 @@ namespace SpeechToText
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
             List<string> results = (List<string>) await StreamingMicRecognizeAsync(5);
-            // string command = "";
 
             // Break the results of the request into chunks.
             string[] chunks = results[0].Split(' ', '.');
@@ -35,7 +34,6 @@ namespace SpeechToText
                 switch (chunks[1])
                 {
                     case "outlook":
-                        //command = "StartOutlook";
                         System.Diagnostics.Process.Start(@"C:\Users\baygo\Documents\GitHub\JPDesktopAssistant\speech-engine-cs\Scripts\StartOutlook.bat");
                         break;
 
