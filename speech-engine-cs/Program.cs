@@ -25,7 +25,7 @@ namespace SpeechToText
         {
             List<string> transcripts = new List<string>();
             // Verifies API credentials.
-            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Path.GetFullPath("../../GoogleKey.json"));
+            //System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Path.GetFullPath("../../GoogleKey.json"));
             // Speech client.
             var speech = SpeechClient.Create();
             // Call to API.
@@ -44,7 +44,7 @@ namespace SpeechToText
                             LanguageCode = "en",
                             MaxAlternatives = 1,
                             EnableAutomaticPunctuation = true,
-                            ProfanityFilter = true,
+                            ProfanityFilter = false,
                         },
                         InterimResults = false,
                     }
