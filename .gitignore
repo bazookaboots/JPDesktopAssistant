@@ -1,2 +1,4 @@
 electron-gui/node_modules
 electron-gui/node_modules/*
+speech-engine-njs/node_modules
+speech-engine-njs/node_modules/*
