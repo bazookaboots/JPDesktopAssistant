@@ -49,6 +49,10 @@ namespace SpeechToText
                         System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartOverwatch.bat");
                         break;
 
+                    case "word":
+                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartWord.bat");
+                        break;
+
                     default:
                         break;
                 }
