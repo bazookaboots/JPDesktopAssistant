@@ -1,0 +1,1 @@
+start C:"\Program Files (x86)\Battle.net\Battle.net.exe" --processStart Battle.net.exe 	--exec="launch Pro"

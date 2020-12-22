@@ -34,11 +34,19 @@ namespace SpeechToText
                 switch (chunks[1])
                 {
                     case "outlook":
-                        System.Diagnostics.Process.Start(@"C:\Users\baygo\Documents\GitHub\JPDesktopAssistant\speech-engine-cs\Scripts\StartOutlook.bat");
+                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartOutlook.bat");
                         break;
 
                     case "canvas":
-                        System.Diagnostics.Process.Start(@"C:\Users\baygo\Documents\GitHub\JPDesktopAssistant\speech-engine-cs\Scripts\StartCanvas.bat");
+                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartCanvas.bat");
+                        break;
+
+                    case "discord":
+                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartDiscord.bat");
+                        break;
+
+                    case "overwatch":
+                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartOverwatch.bat");
                         break;
 
                     default:
