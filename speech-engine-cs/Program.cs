@@ -19,7 +19,7 @@ namespace SpeechToText
         static async Task Main(string[] args)
         {
             // Set "GoogleKey.json" to API environment variable
-            //System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
+            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
 
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
