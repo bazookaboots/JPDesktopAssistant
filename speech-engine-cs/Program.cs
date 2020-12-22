@@ -16,6 +16,9 @@ namespace SpeechToText
         // Very top of the asyncronous call chain. Program begins here.
         static async Task Main(string[] args)
         {
+            // Set "GoogleKey.json" to API environment variable
+            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
+
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
             List<string> results = (List<string>) await StreamingMicRecognizeAsync(5);
