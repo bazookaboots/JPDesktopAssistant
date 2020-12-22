@@ -42,6 +42,8 @@ namespace SpeechToText
                 switch (chunks[1])
                 {
                     case "outlook":
+                        // Must change to the path of the scripts on YOUR machine to work.
+                        // I'm working on a fix.
                         System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartOutlook.bat");
                         break;
 
