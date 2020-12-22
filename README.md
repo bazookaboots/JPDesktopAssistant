@@ -11,7 +11,7 @@ Leveraging Google assistant API, Electron, and others, to develop an AI assistan
 
 ## Setting Up
 This project requires NodeJS and access to our Google Cloud project.
-NodeJS can be installed here (Be sure to install npm):
+NodeJS can be installed here (Be sure to install npm): https://nodejs.org/en/download/
 
 In order to access our Google cloud project, we must provide "GoogleKey.json"
 
