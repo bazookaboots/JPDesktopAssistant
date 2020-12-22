@@ -30,6 +30,14 @@ namespace SpeechToText
             // Parse through the chunks to recognize command. 
             if (chunks.Contains("open") || chunks.Contains("start") || chunks.Contains("launch"))
             {
+                // Okay, this needs a lot of work. Let me explain. 
+                // It literally just switches on whatever the second word is.
+                // "Open outlook", "Open canvas"
+                // It then executes the script saved in the file folder inside of the project folder. 
+                // Problem: Paths are different and need to be changed to the path on your machine to those scripts
+                // Working on a fix, everything else works as it should otherwise
+                // Just don't tell it to open anything until this is fixed
+
                 Console.WriteLine("Here");
                 switch (chunks[1])
                 {
