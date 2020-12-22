@@ -1,0 +1,19 @@
+body {
+  background-color: #232325;
+  color: rgb(211, 211, 211);
+  white-space: pre-wrap;
+}
+
+button {
+  background-color: #232325;
+  width: 168px;
+  height: 168px;
+  color: rgb(211, 211, 211);
+  border: 7px solid #59bcdb;
+  border-radius: 50%;
+}
+
+.myDiv {
+  background-color: #232325;
+  text-align: center;
+}

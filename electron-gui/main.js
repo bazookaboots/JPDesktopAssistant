@@ -5,6 +5,7 @@ function createWindow () {
     width: 330,
     height: 470,
     frame: false,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
       devTools: false
