@@ -12,5 +12,9 @@ Leveraging Google assistant API, Electron, and others, to develop an AI assistan
 ## Resources
 Jira: https://jira.cset.oit.edu:8443/projects/TE/summary
 
+Public Documentation: https://github.com/bazookaboots/JPDesktopAssistant/tree/main/Documentation
+
+Private Documentation: https://drive.google.com/drive/folders/1TpBs4434u19jEdh19AtvYw9HUC6DRnAn
+
 ## Current Version
 Unreleased
