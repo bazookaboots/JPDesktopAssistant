@@ -1,1 +1,0 @@
-start "" "C:\Users\Morgan Anderson\AppData\Local\Discord\app-0.0.309\Discord.exe" 
