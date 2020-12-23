@@ -1,10 +1,23 @@
 body {
   background-color: #232325;
-  color: rgb(211, 211, 211);
-  white-space: pre-wrap;
 }
 
-button {
+.block {
+  display: inline-block;
+  width: 100%;
+}
+
+.mainContainer {
+  /*background-color: #232325;*/
+  text-align: center;
+}
+
+.topNavbar {
+  -webkit-app-region: drag;
+}
+
+.toggleEngine {
+  display: inline-block;
   background-color: #232325;
   width: 168px;
   height: 168px;
@@ -13,7 +26,18 @@ button {
   border-radius: 50%;
 }
 
-.myDiv {
-  background-color: #232325;
-  text-align: center;
+button:focus {
+  outline: none !important;
+}
+
+.settingsBtn {
+  float: left;
+  height: 24px;
+  width: 24px;
+}
+
+.closeBtn {
+  float: right;
+  height: 24px;
+  width: 24px;
 }
