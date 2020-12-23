@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using ElectronCgi.DotNet;
 using Google.Cloud.Speech.V1;
+using Microsoft.DotNet;
 
 namespace SpeechToText
 {
     class Program
     {
+       
         // Very top of the asyncronous call chain. Program begins here.
         static async Task Main(string[] args)
         {
@@ -21,7 +23,7 @@ namespace SpeechToText
 
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>) await StreamingMicRecognizeAsync(5);
+            List<string> results = (List<string>) await StreamingMicRecognizeAsync(10);
 
             // Break the results of the request into chunks.
             string[] chunks = results[0].Split(' ', '.');
@@ -33,37 +35,40 @@ namespace SpeechToText
             // Parse through the chunks to recognize command. 
             if (chunks.Contains("open") || chunks.Contains("start") || chunks.Contains("launch"))
             {
-                // Okay, this needs a lot of work. Let me explain. 
-                // It literally just switches on whatever the second word is.
-                // "Open outlook", "Open canvas"
-                // It then executes the script saved in the file folder inside of the project folder. 
-                // Problem: Paths are different and need to be changed to the path on your machine to those scripts
-                // Working on a fix, everything else works as it should otherwise
-                // Just don't tell it to open anything until this is fixed
-
+                // PAL currently can open outlook, word, and chrome with the commands "open/start/launch outlook/chrome/word"
+                // More to come.
+                Process command = new Process();
                 Console.WriteLine("Here");
                 switch (chunks[1])
                 {
                     case "outlook":
                         // Must change to the path of the scripts on YOUR machine to work.
                         // I'm working on a fix.
-                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartOutlook.bat");
+                        command.StartInfo.FileName = "Outlook";
+                        command.Start();
                         break;
 
                     case "canvas":
-                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartCanvas.bat");
+
                         break;
 
-                    case "discord":
-                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartDiscord.bat");
-                        break;
+                    //case "discord":
+                        //command.StartInfo.FileName = "Discord.exe";
+                        //command.Start();
+                        //break;
 
-                    case "overwatch":
-                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartOverwatch.bat");
-                        break;
+                    //case "overwatch":
+                        
+                        //break;
 
                     case "word":
-                        System.Diagnostics.Process.Start(@"C:\Users\Morgan Anderson\Family\Personal\Morgan\Education\Work\OregonTech\Classes\Junior Project\JPDesktopAssistant\speech-engine-cs\Scripts\StartWord.bat");
+                        command.StartInfo.FileName = "WINWORD.exe";
+                        command.Start();
+                        break;
+
+                    case "chrome":
+                        command.StartInfo.FileName = "Chrome";
+                        command.Start();
                         break;
 
                     default:
@@ -78,7 +83,6 @@ namespace SpeechToText
         {
             List<string> transcripts = new List<string>();
             // Verifies API credentials.
-            //System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Path.GetFullPath("../../GoogleKey.json"));
             // Speech client.
             var speech = SpeechClient.Create();
             // Call to API.

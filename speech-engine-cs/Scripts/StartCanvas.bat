@@ -1,1 +1,0 @@
-start chrome "https://oit.instructure.com/"
