@@ -8,13 +8,14 @@ function createWindow () {
     resizable: false,
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
       //devTools: false
     }
   })
   win.setMenuBarVisibility(false)
 
-  win.loadFile('index.html')
-  win.webContents.openDevTools()
+  win.loadFile('src\\index.html')
+  win.webContents.openDevTools({ mode: 'detach' })
 }
 
 function closeWindow() {

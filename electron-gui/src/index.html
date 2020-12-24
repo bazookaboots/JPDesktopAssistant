@@ -6,16 +6,17 @@
     <title>Output</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <script src="engine.js"></script>
+    <script src="index.js"></script>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body>
+<body onload="init()" style="height: 470px; margin: 0px;">
     <div class="mainContainer">
         <div class="topNavbar block">
             <div class="settingsBtn" onclick="openSettings()">
                 <img src="./assets/icons/settings_24px_outlined.svg">
             </div>
-            <div class="closeBtn" onclick="closeWindow()">
+            <div id="close-btn" class="closeBtn">
                 <img src="./assets/icons/close_24px_outlined.svg">
             </div>
         </div>
@@ -25,8 +26,15 @@
             </button>
         </div>
         <div class="textArea block">
-            <p id="text">Output goes here</p>
+            <p style="color: lightgrey" id="text">nothing heard</p>
         </div>
+        <div class="inputBar block">
+            <div class="audioBtn">
+                <img style="margin-top: 2px;" src="assets/icons/mic_24px_outlined.svg">
+            </div>
+            <div class="textBtn"></div>
+        </div>
+
     </div>
 </body>
 
