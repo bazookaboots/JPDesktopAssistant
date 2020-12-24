@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SQLite;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using ElectronCgi.DotNet;
 using Google.Cloud.Speech.V1;
 using Microsoft.DotNet;
+
 
 namespace SpeechToText
 {
@@ -35,6 +37,39 @@ namespace SpeechToText
             // Parse through the chunks to recognize command. 
             if (chunks.Contains("open") || chunks.Contains("start") || chunks.Contains("launch"))
             {
+
+                //Open connection
+                SQLiteConnection conn;
+                conn = new SqliteConnection("Data Source= C:/Users/Morgan Anderson/Desktop/Project/JPDesktopAssistant/speech-engine-cs/Database.db; ");
+
+                //Check
+                try
+                {
+                    conn.Open();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("0:" + ex.Message);
+                }
+
+                //Create reader
+                SqliteDataReader sqlite_datareader;
+                //Create command
+                SqliteCommand sqlite_cmd;
+                //Set command to new command
+                sqlite_cmd = conn.CreateCommand();
+                //Set command text to string
+                sqlite_cmd.CommandText = "SELECT command FROM SampleTable where key = " + chunks[1]; ;
+                //Set value to returned query
+                sqlite_datareader = sqlite_cmd.ExecuteReader();
+                //Store
+                string read = sqlite_datareader.GetString(0);
+                //Test returned text
+                Console.WriteLine("0:" + "Returned: " + read);
+
+                conn.Close();
+
+
                 // PAL currently can open outlook, word, and chrome with the commands "open/start/launch outlook/chrome/word"
                 // More to come.
                 Process command = new Process();
