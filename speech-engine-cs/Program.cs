@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ElectronCgi.DotNet;
 using Google.Cloud.Speech.V1;
-using Microsoft.DotNet;
 
 
 namespace SpeechToText
@@ -40,7 +39,7 @@ namespace SpeechToText
 
                 //Open connection
                 SQLiteConnection conn;
-                conn = new SqliteConnection("Data Source= C:/Users/Morgan Anderson/Desktop/Project/JPDesktopAssistant/speech-engine-cs/Database.db; ");
+                conn = new SQLiteConnection("Data Source=..\\..\\Database.db; Version = 3; New = True; Compress = True;");
 
                 //Check
                 try
@@ -53,62 +52,40 @@ namespace SpeechToText
                 }
 
                 //Create reader
-                SqliteDataReader sqlite_datareader;
+                SQLiteDataReader sqlite_datareader;
                 //Create command
-                SqliteCommand sqlite_cmd;
+                SQLiteCommand sqlite_cmd;
                 //Set command to new command
                 sqlite_cmd = conn.CreateCommand();
                 //Set command text to string
-                sqlite_cmd.CommandText = "SELECT command FROM SampleTable where key = " + chunks[1]; ;
+                sqlite_cmd.CommandText = "SELECT command,args FROM commands WHERE key = '" + chunks[1].ToUpper() + "'";
                 //Set value to returned query
                 sqlite_datareader = sqlite_cmd.ExecuteReader();
-                //Store
-                string read = sqlite_datareader.GetString(0);
-                //Test returned text
-                Console.WriteLine("0:" + "Returned: " + read);
+                
+                //Retrieve command
+                sqlite_datareader.Read();
+                string command = sqlite_datareader.GetString(0);
+                Console.WriteLine("0:" + command);
 
-                conn.Close();
-
-
-                // PAL currently can open outlook, word, and chrome with the commands "open/start/launch outlook/chrome/word"
-                // More to come.
-                Process command = new Process();
-                Console.WriteLine("Here");
-                switch (chunks[1])
+                //Retrieve args
+                string cargs;
+                try
                 {
-                    case "outlook":
-                        // Must change to the path of the scripts on YOUR machine to work.
-                        // I'm working on a fix.
-                        command.StartInfo.FileName = "Outlook";
-                        command.Start();
-                        break;
-
-                    case "canvas":
-
-                        break;
-
-                    //case "discord":
-                        //command.StartInfo.FileName = "Discord.exe";
-                        //command.Start();
-                        //break;
-
-                    //case "overwatch":
-                        
-                        //break;
-
-                    case "word":
-                        command.StartInfo.FileName = "WINWORD.exe";
-                        command.Start();
-                        break;
-
-                    case "chrome":
-                        command.StartInfo.FileName = "Chrome";
-                        command.Start();
-                        break;
-
-                    default:
-                        break;
+                    cargs = sqlite_datareader.GetString(1);
                 }
+                catch (Exception except)
+                {
+                    cargs = "";
+                }
+                Console.WriteLine("0:" + cargs);
+
+                //Run command
+                Process pcommand = new Process();
+                Console.WriteLine("Here");
+                pcommand.StartInfo.FileName = command;
+                pcommand.StartInfo.Arguments = cargs;
+                pcommand.Start();
+                conn.Close();
             }
 
             Console.WriteLine("0:" + "Request complete.");
