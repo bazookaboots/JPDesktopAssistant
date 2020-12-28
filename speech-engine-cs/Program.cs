@@ -24,70 +24,10 @@ namespace SpeechToText
 
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>) await StreamingMicRecognizeAsync(10);
+            List<string> results = (List<string>) await StreamingMicRecognizeAsync(5);
 
-            // Break the results of the request into chunks.
-            string[] chunks = results[0].Split(' ', '.');
-            for (int i = 0; i < chunks.Length; i++)
-            {
-                chunks[i] = chunks[i].ToLower();
-            }
-
-            // Parse through the chunks to recognize command. 
-            if (chunks.Contains("open") || chunks.Contains("start") || chunks.Contains("launch"))
-            {
-
-                //Open connection
-                SQLiteConnection conn;
-                conn = new SQLiteConnection("Data Source=..\\..\\Database.db; Version = 3; New = True; Compress = True;");
-
-                //Check
-                try
-                {
-                    conn.Open();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("0:" + ex.Message);
-                }
-
-                //Create reader
-                SQLiteDataReader sqlite_datareader;
-                //Create command
-                SQLiteCommand sqlite_cmd;
-                //Set command to new command
-                sqlite_cmd = conn.CreateCommand();
-                //Set command text to string
-                sqlite_cmd.CommandText = "SELECT command,args FROM commands WHERE key = '" + chunks[1].ToUpper() + "'";
-                //Set value to returned query
-                sqlite_datareader = sqlite_cmd.ExecuteReader();
-                
-                //Retrieve command
-                sqlite_datareader.Read();
-                string command = sqlite_datareader.GetString(0);
-                Console.WriteLine("0:" + command);
-
-                //Retrieve args
-                string cargs;
-                try
-                {
-                    cargs = sqlite_datareader.GetString(1);
-                }
-                catch (Exception except)
-                {
-                    cargs = "";
-                }
-                Console.WriteLine("0:" + cargs);
-
-                //Run command
-                Process pcommand = new Process();
-                Console.WriteLine("Here");
-                pcommand.StartInfo.FileName = command;
-                pcommand.StartInfo.Arguments = cargs;
-                pcommand.Start();
-                conn.Close();
-            }
-
+            // "Hey Pal"
+            // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
             Console.WriteLine("0:" + "Request complete.");
         }
 
