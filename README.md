@@ -24,6 +24,15 @@ This will launch the electron component, which wraps around the actual voice rec
 
 You can also build and run the C# component in visual studio community entirely seperate from the GUI.
 
+## Branching
+The main branch will contain a copy of the working code.
+
+Each team member will have their own branch to work on different features.
+
+Each time the team meets, we will discuss merging features into main.
+
+Nobody is to merge with main until the group has discussed.
+
 ## Resources
 Jira: https://jira.cset.oit.edu:8443/projects/TE/summary
 
