@@ -24,7 +24,7 @@ namespace SpeechToText
 
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>) await StreamingMicRecognizeAsync(5);
+            List<string> results = (List<string>) await StreamingMicRecognizeAsync(10);
 
             // "Hey Pal"
             // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
