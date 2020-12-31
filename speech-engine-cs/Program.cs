@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ElectronCgi.DotNet;
 using Google.Cloud.Speech.V1;
-
+using System.Collections;
 
 namespace SpeechToText
 {
@@ -24,7 +24,7 @@ namespace SpeechToText
 
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>) await StreamingMicRecognizeAsync(10);
+            List<string> results = (List<string>) await StreamingMicRecognizeAsync(100);
 
             // "Hey Pal"
             // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
@@ -72,6 +72,8 @@ namespace SpeechToText
                         {
                             // Actual console write.
                             Console.WriteLine("1:" + alternative.Transcript);
+                            //send parsers for processing
+                            Parse(alternative.Transcript);
                             transcripts.Add(alternative.Transcript);
                         }
                     }
@@ -117,6 +119,25 @@ namespace SpeechToText
             await streamingCall.WriteCompleteAsync();
             await printResponses;
             return transcripts;
+
+            //idk if this is ideal, but it performed as expected, tasks are weird
+            void Parse(string Transcript)
+            {
+                // Strip all punctuation from the transcript
+                string tempp = Transcript.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c);
+                // Split the string into indvidual words
+                string[] temp = tempp.Split(' ');
+                //push the transcript onto a queue
+                foreach (String word in temp)
+                {
+                    Queue readText = new Queue();
+                    readText.Enqueue(word);
+                    Console.WriteLine(word);
+                }
+
+                //now attempt to find commands in said queue
+            }
         }
     }
 }
+
