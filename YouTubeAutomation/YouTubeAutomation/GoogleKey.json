@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cloud-speech-demo-293819",
+  "private_key_id": "6e8fa79f330c8dc37457e11ae5746dddc3498149",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCoPQDMvj3QZ6no\nIgzs0e0HorxZQqDXGK27HBxF8pCHUQbJn3VEkCaLlgjwEmXD1s480S6k5GmqwapH\nFOiiG1/uktnz81vqmdA8uFDZGtO3975x3NqZOdhhynRCRhZREEGI59SqN3vFfnbr\n9YjkNlPqMTDYtYULjPJIRf0XeMTwwQ7AVcfMq+wGMqvzhWsaM7R/4LpLOAE6cJG+\nrGDiLB6uL5YBSgEoFDB+9tqZxnZ9fwcPGOnotTYnaGh7v0jynv23tx+Z6kDUH1Cd\nFSidZZhjVmAkegcVhG2r83nrdNnVSwC+u4aFbRxcC4HzPREj7dko0Esu6XkiLBQp\nBxAGlJ1rAgMBAAECggEAO9nv9ebcMM8gSAANHxcTvzqqzQqCE+Oosr8uY8gGmM0/\nn+0FmA28WL5YkafJ4mEB3+r/MBQ+b0wUmtMaa8lXWJWPylTSZ2SvC1r7EDGWDoWp\nj/JlJkvI6glPUOCEQfSJi/4Fz0SL2NfD0O/58k5NjixP11jEazaKXyHfB0Gkto00\nB6zzllCk7iYmbfAuYPUh8WGLU+plu9F/HnpbzBa5gPX1j4/dqEuZtl8y2tSjgCE0\nonpD5/O6o7xcyo1gh9XEKsWXp+6BBcgaCYSB5z9rtVI+gPxv/zezQV5D8QFD35/h\n1n858iwOzVPsi5mraor1hKs6JLrkosr/vK0XRFTYKQKBgQDd2eXrswZzJkmDorI+\nm1OsNowrAuHTZ0wX93hjA/7wJixk0HU73kp1CZtNgt0elOQEuEFe0rV476ltTz5K\nouEE3NPpEji6Exjk61fqMF/RRM29Ksl3DlxndbCd2XwIS0NtVP63Wuf71yrfZ6r9\ntag+5tx6snAY1KVhDWu+dt/4xQKBgQDCInnhtUOgTmnFgVbMmvINPmkpVrOZ5isb\nu/car4Q5orX8U7iX6rhI7P9OISlU3qOLEPzqSqcAt9E/BUJiXAO3pkjlBPPCMmdd\nls9mdjs1De6yuq0BWI4I5rzmSieVer9/ZzjvFKtvzULR6xsQGflP/hwDspr7a+l4\nbEpA45TAbwKBgQCKz4ILHjMU7Ynl8XCxt6J9CIxfhSgjjGiSPmd3HNLxFBGG6t/P\nm+DepiokL5OHRQX+5gMQ/6pIhzxthr2lGZDN6BY3qQ0RcE2NPqv9flMVr4VDrXft\nJHEw0vS1b5Up413HFP1jYF/ytci/jC/zGyywXubpZqi5AKSRu0IFJIAzOQKBgQC+\neS8Wik+gwG68zssIEtp8rghl++BZlmAjZQfskdrs5b0ipk4OF8jaHFXeJWE1GQBj\nGLbddYNni/Lsn09jzB4FmUwaEALOPb/3LlmtkUFEK7hQeiH2mRk6mJEsbgNqgTXU\nXcWZpbETD9SIu+EgqitYFd0Mr7eqCVXXxoAQLHqtVwKBgFP67ZwcwJf1ojFEuM2G\nqPw91rycgC9BzNltxRbdPm+LiyeOgZopelQnUsqzbcDIrUf4NwLVvyzU2Mx0vGG3\ni9IKcXRL0Y+Boya/xPGiPLN7ocN6pmxSk48rUTjAFfKwNseAtrkHZdOxZ2xGJmP4\n6csq8Osi0SmTqAqE56JtYdK9\n-----END PRIVATE KEY-----\n",
+  "client_email": "team-bailey@cloud-speech-demo-293819.iam.gserviceaccount.com",
+  "client_id": "103406293251969670707",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/team-bailey%40cloud-speech-demo-293819.iam.gserviceaccount.com"
+}
