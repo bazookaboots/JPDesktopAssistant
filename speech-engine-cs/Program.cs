@@ -15,12 +15,12 @@ namespace SpeechToText
 {
     class Program
     {
-       
         // Very top of the asyncronous call chain. Program begins here.
         static async Task Main(string[] args)
         {
             // Set "GoogleKey.json" to API environment variable
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
+
 
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
@@ -33,6 +33,10 @@ namespace SpeechToText
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)
         {
+            //Initialize Keywords table
+            Hashtable keywords = new Hashtable();
+            InitTables();
+
             List<string> transcripts = new List<string>();
             // Verifies API credentials.
             // Speech client.
@@ -120,6 +124,11 @@ namespace SpeechToText
             await printResponses;
             return transcripts;
 
+            void InitTables()
+            {
+                keywords.Add("Open", "open");
+            }
+
             //idk if this is ideal, but it performed as expected, tasks are weird
             void Parse(string Transcript)
             {
@@ -128,14 +137,21 @@ namespace SpeechToText
                 // Split the string into indvidual words
                 string[] temp = tempp.Split(' ');
                 //push the transcript onto a queue
+                Queue readText = new Queue();
                 foreach (String word in temp)
                 {
-                    Queue readText = new Queue();
                     readText.Enqueue(word);
                     Console.WriteLine(word);
                 }
 
                 //now attempt to find commands in said queue
+                foreach (String word in readText)
+                {
+                    if (keywords.ContainsKey(word))
+                    {
+                        Console.WriteLine("You said Open!");
+                    }
+                }
             }
         }
     }
