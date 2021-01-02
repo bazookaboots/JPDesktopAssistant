@@ -24,7 +24,7 @@ namespace YouTubeAutomation
 
             try
             {
-                new Search().Run().Wait();
+                new Search().Run("outshined by soundgarden").Wait();
             }
             catch (AggregateException ex)
             {
@@ -38,7 +38,7 @@ namespace YouTubeAutomation
             Console.ReadKey();
         }
 
-        private async Task Run()
+        private async Task Run(string command)
         {
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
@@ -48,9 +48,9 @@ namespace YouTubeAutomation
 
             var searchListRequest = youtubeService.Search.List("snippet");
             Console.WriteLine("Search for a video by keyword: ");
-            searchListRequest.Q = Console.ReadLine(); // Replace with your search term.
+            searchListRequest.Q = command; // Replace with your search term.
             
-            searchListRequest.MaxResults = 10;
+            searchListRequest.MaxResults = 5;
 
             // Call the search.list method to retrieve results matching the specified query term.
             var searchListResponse = await searchListRequest.ExecuteAsync();
@@ -67,6 +67,8 @@ namespace YouTubeAutomation
                 {
                     case "youtube#video":
                         videos.Add(String.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.VideoId));
+                        string url = "www.youtube.com/watch?v=" + searchResult.Id.VideoId.ToString();
+                        System.Diagnostics.Process.Start(url);
                         break;
 
                     case "youtube#channel":
