@@ -76,7 +76,7 @@ namespace SpeechToText
                         {
                             // Actual console write.
                             Console.WriteLine("1:" + alternative.Transcript);
-                            //send parsers for processing
+                            //send to parser for processing
                             Parse(alternative.Transcript);
                             transcripts.Add(alternative.Transcript);
                         }
@@ -124,16 +124,25 @@ namespace SpeechToText
             await printResponses;
             return transcripts;
 
-            void InitTables()
-            {
-                keywords.Add("Open", "open");
-            }
 
             //idk if this is ideal, but it performed as expected, tasks are weird
+
+            //keys and data are added programatically, in the fututre this could read a database or text file.
+            void InitTables()
+            {
+                //all keys are lowercase!
+                keywords.Add("open", "opening");
+                keywords.Add("play", "playing");
+                keywords.Add("launch", "launching");
+                keywords.Add("stream", "streaming");
+                keywords.Add("call", "calling");
+                keywords.Add("search", "searching for");
+            }
+
             void Parse(string Transcript)
             {
-                // Strip all punctuation from the transcript
-                string tempp = Transcript.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c);
+                // Strip all punctuation from the transcript and ensure everything is lowercase
+                string tempp = Transcript.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c).ToLower();
                 // Split the string into indvidual words
                 string[] temp = tempp.Split(' ');
                 //push the transcript onto a queue
@@ -149,7 +158,10 @@ namespace SpeechToText
                 {
                     if (keywords.ContainsKey(word))
                     {
-                        Console.WriteLine("You said Open!");
+                        Console.WriteLine(keywords[word]);
+                        readText.Dequeue();
+                        Console.WriteLine(readText.Peek());
+                        
                     }
                 }
             }
