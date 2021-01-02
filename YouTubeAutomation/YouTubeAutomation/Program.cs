@@ -50,7 +50,7 @@ namespace YouTubeAutomation
             Console.WriteLine("Search for a video by keyword: ");
             searchListRequest.Q = command; // Replace with your search term.
             
-            searchListRequest.MaxResults = 5;
+            searchListRequest.MaxResults = 1;
 
             // Call the search.list method to retrieve results matching the specified query term.
             var searchListResponse = await searchListRequest.ExecuteAsync();
