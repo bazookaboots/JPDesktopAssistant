@@ -13,9 +13,31 @@
 <body onload="init()" style="height: 470px; margin: 0px;">
     <div class="mainContainer">
         <div class="topNavbar block">
-            <div class="settingsBtn" onclick="openSettings()">
-                <img src="./assets/icons/settings_24px_outlined.svg">
+            <div id="menu-btn" class="menuBtnOpen">
+                <img src="./assets/icons/menu_24px_outlined.svg">
             </div>
+            <nav id="menu" class="menu">
+                <ul class="active">
+                    <li>
+                        <div class="menuItem">
+                            <img src="./assets/icons/person_outline_24px_outlined.svg">
+                            <p>User</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="menuItem">
+                            <img src="./assets/icons/settings_24px_outlined.svg">
+                            <p>Settings</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="menuItem">
+                            <p>Logout</p>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+
             <div id="close-btn" class="closeBtn">
                 <img src="./assets/icons/close_24px_outlined.svg">
             </div>
@@ -26,7 +48,7 @@
             </button>
         </div>
         <div class="textArea block">
-            <p style="color: lightgrey" id="text">nothing heard</p>
+            <p id="text">nothing heard</p>
         </div>
         <div class="inputBar block">
             <div class="audioBtn">

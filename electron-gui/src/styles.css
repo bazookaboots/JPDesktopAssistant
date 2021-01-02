@@ -2,6 +2,11 @@ body {
   background-color: #232325;
 }
 
+p{
+  color:lightgray;
+  margin: 0px;
+}
+
 button:focus {
   outline: none !important;
 }
@@ -43,11 +48,59 @@ button:focus {
   border-radius: 50%;
 }
 
-.settingsBtn {  
+.menuBtnClosed {  
   -webkit-app-region: no-drag;
   float: left;
   height: 24px;
   width: 24px;
+  
+  border-radius: 5px 5px 5px 5px;
+}
+.menuBtnClosed:hover {  
+  background-color:#303030;
+}
+
+.menuBtnOpen {  
+  -webkit-app-region: no-drag;
+  float: left;
+  height: 24px;
+  width: 24px;  
+  border-radius: 5px 5px 0px 0px;  
+  background-color:#303030;
+}
+
+.menu {
+  display: block;
+  position:absolute;
+  top:32px;
+  left:8px;
+  width:auto;
+  z-index: 1;
+}
+
+.menu ul {
+  width:auto;
+  padding: 0px;
+  margin: 0px;
+  box-shadow:0px 1px 1px rgba(0,0,0,0.15);
+  border-radius: 0px 5px 5px 5px;
+  background:#303030;
+}
+
+.menu li {
+  float:none;
+  display:block;
+  text-align: left;
+  padding: 5px 10px;
+}
+.menu li:hover {
+  background-color: #6e6e6e;
+}
+
+.menuItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .closeBtn {

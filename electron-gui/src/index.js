@@ -23,4 +23,25 @@ function init() {
         var window = BrowserWindow.getFocusedWindow();
         window.close();
     })
+
+    // Menu button
+    document.getElementById("menu-btn").addEventListener("click", (e) => {
+        console.log("menu-btn pressed");
+        toggleMenu();
+    })
+
+}
+
+function toggleMenu() {
+    
+    if(document.getElementById("menu").style.display == "none")
+    {
+        document.getElementById("menu").style.display = "block";
+        document.getElementById("menu-btn").className = "menuBtnOpen";  
+    }
+    else{
+        document.getElementById("menu").style.display = "none";
+        document.getElementById("menu-btn").className = "menuBtnClosed";  
+    }
+    
 }
