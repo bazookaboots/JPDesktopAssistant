@@ -30,7 +30,15 @@ function init() {
         toggleMenu();
     })
 
+    // Sign In btn
+    document.getElementById("signin-btn").addEventListener("click", (e) => {
+        console.log("signin-btn pressed");
+        document.getElementById("signin-form").style.display = "flex";
+        toggleMenu();
+    })
+
 }
+
 
 function toggleMenu() {
     
