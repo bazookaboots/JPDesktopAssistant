@@ -30,18 +30,28 @@ function init() {
         toggleMenu();
     })
 
-    // Sign In btn
-    document.getElementById("signin-btn").addEventListener("click", (e) => {
-        console.log("signin-btn pressed");
-        document.getElementById("signin-form").style.display = "flex";
+    // log In btn
+    document.getElementById("login-btn").addEventListener("click", (e) => {
+        console.log("login-btn pressed");
+        toggleLoginPage();
         toggleMenu();
     })
 
+    // Clicking outside the Log in form
+    document.getElementById("login-form").addEventListener("click", (e) => {
+        console.log("exit login area clicked");
+        toggleLoginPage();
+    
+    })
+    document.getElementById("login-container").addEventListener("click", (e) => {
+        console.log("login area clicked");
+        e.stopPropagation();    
+    })
 }
 
 
 function toggleMenu() {
-    
+    console.log("toggleMenu() Called")
     if(document.getElementById("menu").style.display == "none")
     {
         document.getElementById("menu").style.display = "block";
@@ -52,4 +62,15 @@ function toggleMenu() {
         document.getElementById("menu-btn").className = "menuBtnClosed";  
     }
     
+}
+
+function toggleLoginPage() {
+    console.log("toggleLoginPage() Called")
+    if(document.getElementById("login-form").style.display == "none")
+    {
+        document.getElementById("login-form").style.display = "flex"; 
+    }
+    else{
+        document.getElementById("login-form").style.display = "none";
+    }
 }

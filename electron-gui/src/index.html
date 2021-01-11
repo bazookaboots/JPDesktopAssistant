@@ -16,7 +16,7 @@
             <div id="menu-btn" class="menuBtnClosed">
                 <img src="./assets/icons/menu_24px_outlined.svg">
             </div>
-            <nav id="menu" class="menu">
+            <nav id="menu" class="menu" style="display: none;">
                 <ul class="active">
                     <li>
                         <div class="menuItem">
@@ -31,8 +31,8 @@
                         </div>
                     </li>
                     <li>
-                        <div id="signin-btn" class="menuItem">
-                            <p style="color: greenyellow;">Sign In</p>
+                        <div id="login-btn" class="menuItem">
+                            <p style="color: greenyellow;">Log In</p>
                         </div>
                     </li>
                 </ul>
@@ -58,12 +58,12 @@
         </div>
 
     </div>
-    <div id="signin-form" class="signinPage">
-        <div class="signinContainer card">
-        <label for="username"><b>Username</b></label>
+    <div id="login-form" class="loginPage" style="display: none;">
+        <div id="login-container" class="loginContainer card">
+        <label for="username"><b><p>Username</p></b></label>
         <input class="textInput" type="text" placeholder="Enter Username" name="username" required>
 
-        <label for="password"><b>Password</b></label>
+        <label for="password"><b><p>Password</p></b></label>
         <input class="textInput" type="password" placeholder="Enter Password" name="password" required>
 
         <button class="formBtn" type="submit">Login</button>
