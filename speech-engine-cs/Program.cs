@@ -9,22 +9,23 @@ using System.Text;
 using System.Threading.Tasks;
 using ElectronCgi.DotNet;
 using Google.Cloud.Speech.V1;
-
+using System.Collections;
+using System.Speech.Synthesis;
 
 namespace SpeechToText
 {
     class Program
     {
-       
         // Very top of the asyncronous call chain. Program begins here.
         static async Task Main(string[] args)
         {
             // Set "GoogleKey.json" to API environment variable
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
 
+
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>) await StreamingMicRecognizeAsync(10);
+            List<string> results = (List<string>) await StreamingMicRecognizeAsync(100);
 
             // "Hey Pal"
             // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
@@ -33,6 +34,11 @@ namespace SpeechToText
 
         static async Task<object> StreamingMicRecognizeAsync(int seconds)
         {
+            //Initialize Keywords table
+            Hashtable keywords = new Hashtable();
+            Hashtable validArgs = new Hashtable();
+            InitTables();
+
             List<string> transcripts = new List<string>();
             // Verifies API credentials.
             // Speech client.
@@ -72,6 +78,8 @@ namespace SpeechToText
                         {
                             // Actual console write.
                             Console.WriteLine("1:" + alternative.Transcript);
+                            //send to parser for processing
+                            Parse(alternative.Transcript);
                             transcripts.Add(alternative.Transcript);
                         }
                     }
@@ -117,6 +125,57 @@ namespace SpeechToText
             await streamingCall.WriteCompleteAsync();
             await printResponses;
             return transcripts;
+
+
+            //idk if this is ideal, but it performed as expecte d, tasks are weird
+
+            //keys and data are added here, in the fututre this could read a database or text file.
+            void InitTables()
+            {
+                //all keys are lowercase!
+                keywords.Add("open", "opening");
+                keywords.Add("play", "playing");
+                keywords.Add("launch", "launching");
+                keywords.Add("stream", "streaming");
+                keywords.Add("call", "calling");
+                keywords.Add("search", "searching for");
+
+                validArgs.Add("youtube","youtube");
+            }
+
+            void Parse(string Transcript)
+            {
+                var synthesizer = new SpeechSynthesizer();
+                synthesizer.SetOutputToDefaultAudioDevice();
+
+                // Strip all punctuation from the transcript and ensure everything is lowercase
+                string tempp = Transcript.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c).ToLower();
+                // Split the string into indvidual words
+                string[] temp = tempp.Split(' ');
+                //push the transcript onto a queue
+                Queue readText = new Queue();
+                foreach (String word in temp)
+                {
+                    readText.Enqueue(word);
+                    Console.WriteLine(word);
+                }
+
+                //now attempt to find commands in said queue
+                foreach (String word in readText)
+                {
+                    if (keywords.ContainsKey(word))
+                    {
+                        Console.WriteLine(keywords[word]);
+                        //readText.Dequeue();
+                        if (validArgs.ContainsKey(readText.Peek()))
+                        {
+                            //synthesizer.Speak(keywords[word] + " " + validArgs[readText.Peek()]);
+                        }
+
+                    }
+                }
+            }
         }
     }
 }
+
