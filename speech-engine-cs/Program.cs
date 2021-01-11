@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ElectronCgi.DotNet;
 using Google.Cloud.Speech.V1;
 using System.Collections;
+using System.Speech.Synthesis;
 
 namespace SpeechToText
 {
@@ -35,6 +36,7 @@ namespace SpeechToText
         {
             //Initialize Keywords table
             Hashtable keywords = new Hashtable();
+            Hashtable validArgs = new Hashtable();
             InitTables();
 
             List<string> transcripts = new List<string>();
@@ -125,9 +127,9 @@ namespace SpeechToText
             return transcripts;
 
 
-            //idk if this is ideal, but it performed as expected, tasks are weird
+            //idk if this is ideal, but it performed as expecte d, tasks are weird
 
-            //keys and data are added programatically, in the fututre this could read a database or text file.
+            //keys and data are added here, in the fututre this could read a database or text file.
             void InitTables()
             {
                 //all keys are lowercase!
@@ -137,10 +139,15 @@ namespace SpeechToText
                 keywords.Add("stream", "streaming");
                 keywords.Add("call", "calling");
                 keywords.Add("search", "searching for");
+
+                validArgs.Add("youtube","youtube");
             }
 
             void Parse(string Transcript)
             {
+                var synthesizer = new SpeechSynthesizer();
+                synthesizer.SetOutputToDefaultAudioDevice();
+
                 // Strip all punctuation from the transcript and ensure everything is lowercase
                 string tempp = Transcript.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c).ToLower();
                 // Split the string into indvidual words
@@ -159,9 +166,12 @@ namespace SpeechToText
                     if (keywords.ContainsKey(word))
                     {
                         Console.WriteLine(keywords[word]);
-                        readText.Dequeue();
-                        Console.WriteLine(readText.Peek());
-                        
+                        //readText.Dequeue();
+                        if (validArgs.ContainsKey(readText.Peek()))
+                        {
+                            //synthesizer.Speak(keywords[word] + " " + validArgs[readText.Peek()]);
+                        }
+
                     }
                 }
             }
