@@ -17,7 +17,7 @@ namespace PAL.Core
     class SpeechListener
     {
         // Very top of the asyncronous call chain. Program begins here.
-        public async Task Start(string[] args)
+        public async Task<object> Start(int seconds)
         {
             // Set "GoogleKey.json" to API environment variable
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
@@ -25,14 +25,15 @@ namespace PAL.Core
 
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>)await StreamingMicRecognizeAsync(100);
+            List<string> results = (List<string>)await StreamingMicRecognizeAsync(seconds);
 
             // "Hey Pal"
             // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
             Console.WriteLine("0:" + "Request complete.");
+            return results;
         }
 
-        async Task<object> StreamingMicRecognizeAsync(int seconds)
+        public async Task<object> StreamingMicRecognizeAsync(int seconds)
         {
             //Initialize Keywords table
             Hashtable keywords = new Hashtable();
