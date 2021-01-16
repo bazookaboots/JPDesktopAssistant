@@ -15,7 +15,6 @@ namespace PAL.Core
             //Listener waiting for stuff from speech listener
             SpeechListener PAL = new SpeechListener();
             List<string> results = (List<string>)await PAL.Start(10);
-            Console.WriteLine(results.First()); 
         }
     }
 }
