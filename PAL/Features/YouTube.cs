@@ -47,18 +47,6 @@ namespace PAL.Features
 
                 search = Console.ReadLine();
 
-                /*try
-                {
-                    new Search().RunYouTubeSearch(search).Wait();
-                }
-                catch (AggregateException ex)
-                {
-                    foreach (var e in ex.InnerExceptions)
-                    {
-                        Console.WriteLine("Error: " + e.Message);
-                    }
-                }*/
-
                 Console.WriteLine("Press any key to search again or press E to exit.");
                 string exit = Console.ReadLine();
                 if (exit == "e")
@@ -85,9 +73,6 @@ namespace PAL.Features
             // Call the search.list method to retrieve results matching the specified query term.
             var searchListResponse = await searchListRequest.ExecuteAsync();
 
-            //List<string> videos = new List<string>();
-            //List<string> channels = new List<string>();
-            //List<string> playlists = new List<string>();
 
             // Add each result to the appropriate list, and then display the lists of
             // matching videos, channels, and playlists.
@@ -96,25 +81,18 @@ namespace PAL.Features
                 switch (searchResult.Id.Kind)
                 {
                     case "youtube#video":
-                        //videos.Add(String.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.VideoId));
                         //ExecuteCommand.PlayVideo(searchResult.Id.VideoId);
                         break;
 
                     case "youtube#channel":
-                        //channels.Add(String.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.ChannelId));
                         //ExecuteCommand.OpenChannel(searchResult.Id.ChannelId);
                         break;
 
                     case "youtube#playlist":
-                        //playlists.Add(String.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.PlaylistId));
                         //ExecuteCommand.OpenPlaylist(searchResult.Id.PlaylistId);
                         break;
                 }
             }
-
-            //Console.WriteLine(String.Format("Videos:\n{0}\n", string.Join("\n", videos)));
-            //Console.WriteLine(String.Format("Channels:\n{0}\n", string.Join("\n", channels)));
-            //Console.WriteLine(String.Format("Playlists:\n{0}\n", string.Join("\n", playlists)));
         }
     }
 }
