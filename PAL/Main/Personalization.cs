@@ -5,6 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Configuration;
+
+/**************************************************************
+Personal Notes:
+* GUI
+
+* Main
+* Personalization
+* Tokenizer
+* Parser
+* Executer       
+**************************************************************/
 
 namespace PAL.Core
 {
@@ -25,77 +37,53 @@ namespace PAL.Core
     
         Postcondition: After the function has ran, it will return a int.
         0 = Completed sucessfully.
-        1 = Invalid password.
-        2 = Email already exists.
+        1 = Email already exists.
+        2 = Invalid password.
         -1 = Unknown issue.
         **************************************************************/
         public int CreateNewUser(string username, string email, string password)
         {
-            int valid = -1;
             try
             {
-                using (SqlConnection new_account_check = new SqlConnection(connectionString))
+                using (SqlConnection newAccountSQLConnection = new SqlConnection(connectionString))
                 {
-                    new_account_check.Open();
-                    if (new_account_check.State == System.Data.ConnectionState.Open)
-                    {
-                        using (SqlCommand new_account_check_command = new_account_check.CreateCommand())
-                        {
-                            //Query command to see if the email exists already.
-                            var new_account_check_string = "SELECT * FROM morgananderson2.users WHERE email = @email";
-                            new_account_check_command.CommandText = new_account_check_string;
-                            new_account_check_command.Parameters.AddWithValue("email", email);
+                    newAccountSQLConnection.Open();
 
-                            //Start reading.
-                            using (SqlDataReader reader = new_account_check_command.ExecuteReader())
+                    using (SqlCommand newAccountSQLCommand = newAccountSQLConnection.CreateCommand())
+                    {
+                        var newAccountTestCommand = "SELECT * FROM morgananderson2.users WHERE email = @emailcheck";
+                        newAccountSQLCommand.CommandText = newAccountTestCommand;
+                        newAccountSQLCommand.Parameters.AddWithValue("emailcheck", email);
+
+                        using (SqlDataReader newAccountSQLReader = newAccountSQLCommand.ExecuteReader())
+                        {
+                            if (newAccountSQLReader.Read())
                             {
-                                //If the password is too short, require the user to try again.
-                                if (password.Length < 8)
-                                {
-                                    valid = 1;
-                                    Console.WriteLine("Error: Password must be at least 8 characters long.");
-                                }
-                                //If the email already exists, require the user to try again.
-                                else if (reader.Read())
-                                {
-                                    valid = 2;
-                                    Console.WriteLine("Error: That email already exists.");
-                                }
-                                //If all credentials are valid, create a new user in the database.
-                                else
-                                {
-                                    valid = 0;
-                                    new_account_check.Close();
-                                    using (SqlConnection new_account = new SqlConnection(connectionString))
-                                    {
-                                        new_account.Open();
-                                        if (new_account.State == System.Data.ConnectionState.Open)
-                                        {
-                                            using (SqlCommand new_account_command = new_account.CreateCommand())
-                                            {
-                                                var new_account_string = "INSERT INTO morgananderson2.users VALUES(@username, @email, @password, @logged_in)";
-                                                new_account_command.CommandText = new_account_string;
-                                                new_account_command.Parameters.AddWithValue("username", username);
-                                                new_account_command.Parameters.AddWithValue("email", email);
-                                                new_account_command.Parameters.AddWithValue("password", password);
-                                                new_account_command.Parameters.AddWithValue("logged_in", 1);
-                                                new_account_command.ExecuteNonQuery();
-                                            }
-                                        }
-                                    }
-                                }
+                                return 1;
+                            }
+                            if (password.Length > 8)
+                            {
+                                return 2;
                             }
                         }
+
+                        var newAccountInsertCommand = "INSERT INTO morgananderson2.users VALUES(@username, @email, @password, @logged_in)";
+                        newAccountSQLCommand.CommandText = newAccountInsertCommand;
+                        newAccountSQLCommand.Parameters.AddWithValue("username", username);
+                        newAccountSQLCommand.Parameters.AddWithValue("email", email);
+                        newAccountSQLCommand.Parameters.AddWithValue("password", BCrypt.Net.BCrypt.HashPassword(password));
+                        newAccountSQLCommand.Parameters.AddWithValue("logged_in", 1);
+                        newAccountSQLCommand.ExecuteNonQuery();
                     }
                 }
             }
             catch (Exception eSql)
             {
-                valid = -1;
                 Console.WriteLine("Exception: " + eSql.Message);
+                return -1;
             }
 
-            return valid;
+            return 0;
         }
 
         /**************************************************************
@@ -111,75 +99,56 @@ namespace PAL.Core
     
         Postcondition: After the function has ran, it will return a int.
         0 = Completed sucessfully.
-        1 = Invalid username or password.
-        2 = User is already logged in somewhere else.
+        1 = Invalid email.
+        2 = Invalid password.
+        3 = User is already logged in somewhere else.
         -1 = Unknown issue.
         **************************************************************/
         public int Login(string email, string password)
         {
-            int valid = -1;
             try
             {
-                using (SqlConnection login_check = new SqlConnection(connectionString))
+                using (SqlConnection loginSQLConnection = new SqlConnection(connectionString))
                 {
-                    login_check.Open();
-                    if (login_check.State == System.Data.ConnectionState.Open)
+                    loginSQLConnection.Open();
+
+                    using (SqlCommand loginSQLCommand = loginSQLConnection.CreateCommand())
                     {
-                        using (SqlCommand login_check_command = login_check.CreateCommand())
+                        var loginTestCommand = "SELECT * FROM morgananderson2.users WHERE email = @emailcheck";
+                        loginSQLCommand.CommandText = loginTestCommand;
+                        loginSQLCommand.Parameters.AddWithValue("emailcheck", email);
+                        loginSQLCommand.Parameters.AddWithValue("password", BCrypt.Net.BCrypt.HashPassword(password));
+
+                        using (SqlDataReader loginSQLReader = loginSQLCommand.ExecuteReader())
                         {
-                            //Query command to see if the credentials are correct.
-                            var login_check_string = "SELECT * FROM morgananderson2.users WHERE email = @email and password = @password";
-                            login_check_command.CommandText = login_check_string;
-                            login_check_command.Parameters.AddWithValue("email", email);
-                            login_check_command.Parameters.AddWithValue("password", password);
-
-                            //Start reading.
-                            using (SqlDataReader reader = login_check_command.ExecuteReader())
+                            if (!loginSQLReader.Read())
                             {
-                                //If credentials are invalid.
-                                if (!reader.Read())
-                                {
-                                    valid = 1;
-                                    Console.WriteLine("Error: The provided credentials are invalid.");
-                                }
-                                //If the user is already logged in.
-                                else if (reader.GetInt32(3) != 0)
-                                {
-                                    valid = 2;
-                                }
-                                //If all credentials are valid, retrieve user info.
-                                else
-                                {
-                                    valid = 0;
-                                    login_check.Close();
-                                    using (SqlConnection login = new SqlConnection(connectionString))
-                                    {
-                                        login.Open();
-                                        if (login.State == System.Data.ConnectionState.Open)
-                                        {
-                                            using (SqlCommand login_command = login.CreateCommand())
-                                            {
-                                                var login_string = "UPDATE morgananderson2.users SET logged_in = 1 WHERE email = @email";
-                                                login_command.CommandText = login_string;
-                                                login_command.Parameters.AddWithValue("email", email);
-                                                login_command.ExecuteNonQuery();
-                                            }
-                                        }
-                                    }
-
-                                    //Retrieve user data (future).
-                                }
+                                return 1;
+                            }
+                            if (!BCrypt.Net.BCrypt.Verify(password, loginSQLReader.GetString(2)))
+                            {
+                                return 2;
+                            }
+                            if (loginSQLReader.GetInt32(3) != 0)
+                            {
+                                return 3;
                             }
                         }
+
+                        var loginSuccessCommand = "UPDATE morgananderson2.users SET logged_in = 1 WHERE email = @email";
+                        loginSQLCommand.CommandText = loginSuccessCommand;
+                        loginSQLCommand.Parameters.AddWithValue("email", email);
+                        loginSQLCommand.ExecuteNonQuery();
                     }
                 }
             }
             catch (Exception eSql)
             {
                 Console.WriteLine("Exception: " + eSql.Message);
+                return -1;
             }
 
-            return valid;
+            return 0;
         }
 
         /**************************************************************
@@ -215,6 +184,65 @@ namespace PAL.Core
             {
                 Console.WriteLine("Exception: " + eSql.Message);
             }
+        }
+
+        public void PushConfig(string email)
+        {
+            try
+            {
+                using (SqlConnection pushConfigSQLConnection = new SqlConnection(connectionString))
+                {
+                    pushConfigSQLConnection.Open();
+
+                    using (SqlCommand pushConfigSQLCommand = pushConfigSQLConnection.CreateCommand())
+                    {
+                       //Config otion sync here.
+                        var pushConfigCommand= "UPDATE morgananderson2.users SET testoption1 = @testoption1 WHERE email = @email";
+                        pushConfigSQLCommand.CommandText = pushConfigCommand;
+                        pushConfigSQLCommand.Parameters.AddWithValue("email", email);
+                        pushConfigSQLCommand.Parameters.AddWithValue("testoption1", "testing");
+                        pushConfigSQLCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception eSql)
+            {
+                Console.WriteLine("Exception: " + eSql.Message);
+            }
+        }
+
+        public void PullConfig(string email)
+        {
+            try
+            {
+                using (SqlConnection pullConfigSQLConnection = new SqlConnection(connectionString))
+                {
+                    pullConfigSQLConnection.Open();
+
+                    using (SqlCommand pullConfigSQLCommand = pullConfigSQLConnection.CreateCommand())
+                    {
+                        var pullConfigCommand = "SELECT * FROM morgananderson2.users WHERE email = @email";
+                        pullConfigSQLCommand.CommandText = pullConfigCommand;
+                        pullConfigSQLCommand.Parameters.AddWithValue("email", email);
+
+                        using (SqlDataReader pullConfigSQLReader = pullConfigSQLCommand.ExecuteReader())
+                        {
+                            pullConfigSQLReader.Read();
+                            string example = pullConfigSQLReader.GetString(4);
+                        }
+                    }
+                }
+            }
+            catch (Exception eSql)
+            {
+                Console.WriteLine("Exception: " + eSql.Message);
+            }
+        }
+
+        public void UpdateConfig(string key, string value, string email)
+        {
+            //Set option in config.
+            PushConfig(email);
         }
     }
 }
