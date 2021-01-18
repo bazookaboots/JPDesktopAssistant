@@ -19,6 +19,10 @@ namespace PAL.Core
             //account.Logout("testemail@test.com");
             //############################//
 
+            Account account = new Account();
+            account.PushConfig("testemail@test.com");
+            account.UpdateConfig("testoption1", "passedon", "test");
+
             //Listener waiting for stuff from speech listener
             SpeechListener PAL = new SpeechListener();
             List<string> results = (List<string>)await PAL.Start(10);

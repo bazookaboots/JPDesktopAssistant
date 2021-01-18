@@ -6,17 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Configuration;
-
-/**************************************************************
-Personal Notes:
-* GUI
-
-* Main
-* Personalization
-* Tokenizer
-* Parser
-* Executer       
-**************************************************************/
+using System.Xml;
 
 namespace PAL.Core
 {
@@ -74,6 +64,8 @@ namespace PAL.Core
                         newAccountSQLCommand.Parameters.AddWithValue("password", BCrypt.Net.BCrypt.HashPassword(password));
                         newAccountSQLCommand.Parameters.AddWithValue("logged_in", 1);
                         newAccountSQLCommand.ExecuteNonQuery();
+
+                        PushConfig(email);
                     }
                 }
             }
@@ -139,6 +131,8 @@ namespace PAL.Core
                         loginSQLCommand.CommandText = loginSuccessCommand;
                         loginSQLCommand.Parameters.AddWithValue("email", email);
                         loginSQLCommand.ExecuteNonQuery();
+
+                        PullConfig(email);
                     }
                 }
             }
@@ -176,6 +170,8 @@ namespace PAL.Core
                             logout_command.CommandText = logout_string;
                             logout_command.Parameters.AddWithValue("email", email);
                             logout_command.ExecuteNonQuery();
+
+                            PushConfig(email);
                         }
                     }
                 }
@@ -186,6 +182,16 @@ namespace PAL.Core
             }
         }
 
+        /**************************************************************
+        Function: PushConfig
+
+        Purpose: This function will update all the configuration settings
+        in the online database for the user.
+
+        Precondition: Requires the email account of the user.
+    
+        Postcondition: None.
+        **************************************************************/
         public void PushConfig(string email)
         {
             try
@@ -196,12 +202,19 @@ namespace PAL.Core
 
                     using (SqlCommand pushConfigSQLCommand = pushConfigSQLConnection.CreateCommand())
                     {
-                       //Config otion sync here.
-                        var pushConfigCommand= "UPDATE morgananderson2.users SET testoption1 = @testoption1 WHERE email = @email";
-                        pushConfigSQLCommand.CommandText = pushConfigCommand;
-                        pushConfigSQLCommand.Parameters.AddWithValue("email", email);
-                        pushConfigSQLCommand.Parameters.AddWithValue("testoption1", "testing");
-                        pushConfigSQLCommand.ExecuteNonQuery();
+                        XmlDocument xmlDoc = new XmlDocument();
+                        xmlDoc.Load("../../config.xml");
+                        XmlNodeList configNodes = xmlDoc.SelectNodes("//configuration/*");
+                        foreach (XmlNode configNode in configNodes)
+                        {
+                            var pushConfigCommand = "UPDATE morgananderson2.users SET @option = @value WHERE email = @email";
+                            pushConfigSQLCommand.CommandText = pushConfigCommand;
+                            pushConfigSQLCommand.Parameters.Clear();
+                            pushConfigSQLCommand.Parameters.AddWithValue("email", email);
+                            pushConfigSQLCommand.Parameters.AddWithValue("option", configNode.Name);
+                            pushConfigSQLCommand.Parameters.AddWithValue("value", configNode.Attributes["value"].Value);
+                            pushConfigSQLCommand.ExecuteNonQuery();
+                        }
                     }
                 }
             }
@@ -211,6 +224,16 @@ namespace PAL.Core
             }
         }
 
+        /**************************************************************
+        Function: PullConfig
+
+        Purpose: This function will update all the configuration settings
+        from the online database of the user.
+
+        Precondition: Requires the email account of the user.
+    
+        Postcondition: None.
+        **************************************************************/
         public void PullConfig(string email)
         {
             try
@@ -228,7 +251,18 @@ namespace PAL.Core
                         using (SqlDataReader pullConfigSQLReader = pullConfigSQLCommand.ExecuteReader())
                         {
                             pullConfigSQLReader.Read();
-                            string example = pullConfigSQLReader.GetString(4);
+                            XmlDocument xmlDoc = new XmlDocument();
+                            xmlDoc.Load("../../config.xml");
+                            for (int i = 4; i < pullConfigSQLReader.FieldCount; i++)
+                            {
+                                XmlNodeList configNodes = xmlDoc.SelectNodes("//configuration/" + pullConfigSQLReader.GetName(i));
+                                foreach (XmlNode configNode in configNodes)
+                                {
+                                    configNode.Attributes["value"].Value = (string)pullConfigSQLReader.GetValue(i);
+                                }
+                            }
+
+                            xmlDoc.Save("../../config.xml");
                         }
                     }
                 }
@@ -239,9 +273,30 @@ namespace PAL.Core
             }
         }
 
-        public void UpdateConfig(string key, string value, string email)
+        /**************************************************************
+        Function: UpdateConfig
+
+        Purpose: This function will update a configuration setting
+        and push the changes online.
+
+        Precondition: Requires the email account of the user, a string
+        stating what setting is to be changed, and a string with what
+        the new value will be.
+    
+        Postcondition: None.
+        **************************************************************/
+        public void UpdateConfig(string email, string key, string value)
         {
-            //Set option in config.
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("../../config.xml");
+            XmlNodeList configNodes = xmlDoc.SelectNodes("//configuration/" + key);
+            foreach (XmlNode configNode in configNodes)
+            {
+                configNode.Attributes["value"].Value = value;
+            }
+
+            xmlDoc.Save("../../config.xml");
+
             PushConfig(email);
         }
     }
