@@ -9,9 +9,8 @@ namespace PAL.Core
     class Program
     {
         static async Task Main(string[] args)
-        {
-            //Listener waiting for stuff from GUI 
-            //### Account testing stuff ###//
+        { 
+            //### Account Testing Stuff ###//
             //Account account = new Account();
             //account.PullConfig("testemail@test.com");
             //account.CreateNewUser("BigBabyJesus", "testemail@test.com", "password");
@@ -19,11 +18,12 @@ namespace PAL.Core
             //account.Logout("testemail@test.com");
             //############################//
 
-            Account account = new Account();
-            account.PushConfig("testemail@test.com");
-            account.UpdateConfig("testoption1", "passedon", "test");
+            //### Config Testing Stuff ###//
+            //Account account = new Account();
+            //account.PushConfig("testemail@test.com");
+            //account.UpdateConfig("testoption1", "passedon", "test");
+            //############################//
 
-            //Listener waiting for stuff from speech listener
             SpeechListener PAL = new SpeechListener();
             List<string> results = (List<string>)await PAL.Start(10);
         }

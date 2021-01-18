@@ -162,6 +162,7 @@ namespace PAL.Core
                 using (SqlConnection logout = new SqlConnection(connectionString))
                 {
                     logout.Open();
+
                     if (logout.State == System.Data.ConnectionState.Open)
                     {
                         using (SqlCommand logout_command = logout.CreateCommand())
