@@ -2,6 +2,12 @@ body {
   background-color: #232325;
 }
 
+h2{
+  font: Arial;
+  color:lightgray;
+  margin: 0px;
+}
+
 p{
   font: Arial;
   color:lightgray;
@@ -121,10 +127,9 @@ button:focus {
   width: 28px;
 }
 
-.loginPage {
+.PopUpPage {
   justify-content: center;
   align-items: center;
-  display: none;
   position:absolute;
   top:0px;
   left:0px;
@@ -135,6 +140,14 @@ button:focus {
   padding: 8px;
   box-sizing: border-box;
   background-color: #000000b7;
+}
+
+.PopUpTitle {
+  text-align: center;
+  padding: 8px;
+}
+.PopUpRow{
+  padding: 8px;
 }
 
 .loginContainer {
@@ -149,9 +162,10 @@ button:focus {
 
 .textInput {
   background-color: #0e0e0f;
+  color:lightgray;
   padding: 8px;
   border-radius: 10px;
-  width: fit-content;
+  width: -webkit-fill-available;
   border-width: 0px;
 }
 

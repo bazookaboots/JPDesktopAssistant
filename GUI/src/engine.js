@@ -29,6 +29,7 @@ function spawnEngine() {
             switch(parseInt(opCode)) {
                 case 0:
                     console.log("console message: " + data )
+                    break;
                 case 1:
                     text = document.getElementById("text")
                     text.innerHTML = data
@@ -44,6 +45,8 @@ function spawnEngine() {
     subprocess.stderr.on('data', (data) => {
         console.log(`stderr: ${data}`);
     });
+
+    subprocess.stdin.write("hello me\n")
 
     console.log(subprocess.pid)
     
