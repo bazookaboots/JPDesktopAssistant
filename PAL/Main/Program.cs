@@ -29,13 +29,17 @@ namespace PAL.Core
 
         static async Task Main(string[] args)
         {
-            //Listener waiting for stuff from GUI
-
-            string message = await GetConsole();
-            WriteConsole(message);
-            //Listener waiting for stuff from speech listener
-
-        
+            //string input = GetConsole();
+            //if(input == "")
+            //{
+            //  initialize without contact book  
+            //  new SpeechListener()
+            //}
+            //else
+            //{
+            //  intialize with contact book
+            //  new SpeechListener(contacts)
+            //}        
         }
     }
 }
