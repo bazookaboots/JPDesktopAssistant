@@ -17,7 +17,7 @@ namespace PAL.Core
     class SpeechListener
     {
         // Very top of the asyncronous call chain. Program begins here.
-        public async Task Start(string[] args)
+        public async Task<object> Start(int seconds)
         {
             // Set "GoogleKey.json" to API environment variable
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
@@ -25,18 +25,19 @@ namespace PAL.Core
 
             // Send API output to STDout.
             Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>)await StreamingMicRecognizeAsync(100);
+            List<string> results = (List<string>)await StreamingMicRecognizeAsync(seconds);
 
             // "Hey Pal"
             // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
             Console.WriteLine("0:" + "Request complete.");
+            return results;
         }
 
-        async Task<object> StreamingMicRecognizeAsync(int seconds)
+        public async Task<object> StreamingMicRecognizeAsync(int seconds)
         {
             //Initialize Keywords table
-            Hashtable keywords = new Hashtable();
-            Hashtable validArgs = new Hashtable();
+            Hashtable verbs = new Hashtable();
+            Hashtable platforms = new Hashtable();
             InitTables();
 
             List<string> transcripts = new List<string>();
@@ -133,14 +134,15 @@ namespace PAL.Core
             void InitTables()
             {
                 //all keys are lowercase!
-                keywords.Add("open", "opening");
-                keywords.Add("play", "playing");
-                keywords.Add("launch", "launching");
-                keywords.Add("stream", "streaming");
-                keywords.Add("call", "calling");
-                keywords.Add("search", "searching for");
+                verbs.Add("open", "opening");
+                verbs.Add("play", "playing");
+                verbs.Add("launch", "launching");
+                verbs.Add("stream", "streaming");
+                verbs.Add("call", "calling");
+                verbs.Add("search", "searching for");
 
-                validArgs.Add("youtube", "youtube");
+                platforms.Add("youtube", "youtube");
+                platforms.Add("spotify", "spotify");
             }
 
             void Parse(string Transcript)
@@ -149,12 +151,12 @@ namespace PAL.Core
                 synthesizer.SetOutputToDefaultAudioDevice();
 
                 // Strip all punctuation from the transcript and ensure everything is lowercase
-                string tempp = Transcript.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c).ToLower();
+                string cleaned = Transcript.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c).ToLower();
                 // Split the string into indvidual words
-                string[] temp = tempp.Split(' ');
+                string[] words = cleaned.Split(' ');
                 //push the transcript onto a queue
                 Queue readText = new Queue();
-                foreach (String word in temp)
+                foreach (String word in words)
                 {
                     readText.Enqueue(word);
                     Console.WriteLine(word);
@@ -163,11 +165,11 @@ namespace PAL.Core
                 //now attempt to find commands in said queue
                 foreach (String word in readText)
                 {
-                    if (keywords.ContainsKey(word))
+                    if (verbs.ContainsKey(word))
                     {
-                        Console.WriteLine(keywords[word]);
+                        Console.WriteLine(verbs[word]);
                         //readText.Dequeue();
-                        if (validArgs.ContainsKey(readText.Peek()))
+                        if (platforms.ContainsKey(readText.Peek()))
                         {
                             //synthesizer.Speak(keywords[word] + " " + validArgs[readText.Peek()]);
                         }

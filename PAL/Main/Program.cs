@@ -18,12 +18,7 @@ namespace PAL.Core
 
         public static async Task WriteConsole(string msg)
         {
-            await Task.Run(
-                () => 
-                {
-                    Console.WriteLine(msg);
-                }
-                );
+            await Task.Run(() => Console.WriteLine(msg));
         }
 
 
@@ -39,7 +34,12 @@ namespace PAL.Core
             //{
             //  intialize with contact book
             //  new SpeechListener(contacts)
-            //}        
+            //}   
+            //Listener waiting for stuff from speech listener
+            SpeechListener PAL = new SpeechListener();
+            List<string> results = (List<string>)await PAL.Start(10);
+            Console.WriteLine(results.First()); 
+
         }
     }
 }

@@ -253,6 +253,9 @@
   <ItemGroup>
     <Content Include="config.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="GoogleKey.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Grpc.Core.2.34.0\build\net45\Grpc.Core.targets" Condition="Exists('..\packages\Grpc.Core.2.34.0\build\net45\Grpc.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
