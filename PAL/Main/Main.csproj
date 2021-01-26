@@ -259,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="config.xml" />
+    <Content Include="WebDriver\bin\chromedriver.exe" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
