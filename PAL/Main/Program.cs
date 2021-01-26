@@ -20,6 +20,7 @@ namespace PAL.Core
             //List<string> results = (List<string>)await PAL.Start(10);
             //Console.WriteLine(results.First()); 
 
+            // I need to move the webdriver to the solution for this to work, just haven't yet.
             IWebDriver driver = new ChromeDriver(@"C:\WebDriver\bin");
             driver.Navigate().GoToUrl(@"https://www.google.com");
             driver.FindElement(By.Name("q")).SendKeys("Mommy Milkers");
