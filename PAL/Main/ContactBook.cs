@@ -86,7 +86,7 @@ namespace Main
             double highestProb = 0.0;
             foreach (Contact contact in this.contacts)
             {
-                double newProb = this.CalculateSimilarity(name, contact.Name);
+                double newProb = this.calculateSimilarity(name, contact.Name);
                 if (newProb > highestProb)
                 {
                     result = contact;
@@ -102,7 +102,7 @@ namespace Main
             List<ContactProbability> results = new List<ContactProbability>();
             foreach(Contact contact in this.contacts)
             {
-                double prob = this.CalculateSimilarity(name, contact.Name);
+                double prob = this.calculateSimilarity(name, contact.Name);
                 if(prob >= thres)
                 {
                     results.Add(new ContactProbability(contact, prob));
