@@ -35,10 +35,6 @@ namespace PAL.Core
 
         public async Task<object> StreamingMicRecognizeAsync(int seconds)
         {
-            //Initialize Keywords table
-            Hashtable verbs = new Hashtable();
-            Hashtable platforms = new Hashtable();
-            InitTables();
 
             List<string> transcripts = new List<string>();
             // Verifies API credentials.
@@ -79,8 +75,8 @@ namespace PAL.Core
                         {
                             // Actual console write.
                             Console.WriteLine("1:" + alternative.Transcript);
-                            //send to parser for processing
-                            Parse(alternative.Transcript);
+                            
+                            
                             transcripts.Add(alternative.Transcript);
                         }
                     }
@@ -126,57 +122,6 @@ namespace PAL.Core
             await streamingCall.WriteCompleteAsync();
             await printResponses;
             return transcripts;
-
-
-            //idk if this is ideal, but it performed as expecte d, tasks are weird
-
-            //keys and data are added here, in the fututre this could read a database or text file.
-            void InitTables()
-            {
-                //all keys are lowercase!
-                verbs.Add("open", "opening");
-                verbs.Add("play", "playing");
-                verbs.Add("launch", "launching");
-                verbs.Add("stream", "streaming");
-                verbs.Add("call", "calling");
-                verbs.Add("search", "searching for");
-
-                platforms.Add("youtube", "youtube");
-                platforms.Add("spotify", "spotify");
-            }
-
-            void Parse(string Transcript)
-            {
-                var synthesizer = new SpeechSynthesizer();
-                synthesizer.SetOutputToDefaultAudioDevice();
-
-                // Strip all punctuation from the transcript and ensure everything is lowercase
-                string cleaned = Transcript.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c).ToLower();
-                // Split the string into indvidual words
-                string[] words = cleaned.Split(' ');
-                //push the transcript onto a queue
-                Queue readText = new Queue();
-                foreach (String word in words)
-                {
-                    readText.Enqueue(word);
-                    Console.WriteLine(word);
-                }
-
-                //now attempt to find commands in said queue
-                foreach (String word in readText)
-                {
-                    if (verbs.ContainsKey(word))
-                    {
-                        Console.WriteLine(verbs[word]);
-                        //readText.Dequeue();
-                        if (platforms.ContainsKey(readText.Peek()))
-                        {
-                            //synthesizer.Speak(keywords[word] + " " + validArgs[readText.Peek()]);
-                        }
-
-                    }
-                }
-            }
         }
     }
 }
