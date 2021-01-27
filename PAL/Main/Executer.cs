@@ -35,6 +35,11 @@ namespace PAL.Core
                     driver.FindElement(By.Name("q")).SendKeys(Keys.Enter);
                     break;
 
+                case "images":
+                    driver.Navigate().GoToUrl(@"https://www.google.com/imghp?hl=en");
+                    driver.FindElement(By.Name("q")).SendKeys(cmd.arg);
+                    driver.FindElement(By.Name("q")).SendKeys(Keys.Enter);
+                    break;
                 default:
                     Console.WriteLine("Uh oh spaghettios");
                     break;
