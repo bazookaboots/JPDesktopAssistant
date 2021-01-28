@@ -24,18 +24,19 @@ namespace PAL.Core
             {
                 case "youtube":
                     driver.Manage().Window.Maximize();
-                    driver.Navigate().GoToUrl(@"https://www.youtube.com");
-                    driver.FindElement(By.Name("search_query")).SendKeys(cmd.arg);
-                    driver.FindElement(By.Name("search_query")).SendKeys(Keys.Enter);
+                    driver.Navigate().GoToUrl(@"https://www.youtube.com/results?search_query=" + cmd.arg);
+                    driver.FindElement(By.Id("video-title")).Click();
                     break;
 
                 case "google":
+                    driver.Manage().Window.Maximize();
                     driver.Navigate().GoToUrl(@"https://www.google.com");
                     driver.FindElement(By.Name("q")).SendKeys(cmd.arg);
                     driver.FindElement(By.Name("q")).SendKeys(Keys.Enter);
                     break;
 
                 case "images":
+                    driver.Manage().Window.Maximize();
                     driver.Navigate().GoToUrl(@"https://www.google.com/imghp?hl=en");
                     driver.FindElement(By.Name("q")).SendKeys(cmd.arg);
                     driver.FindElement(By.Name("q")).SendKeys(Keys.Enter);
