@@ -19,7 +19,7 @@ namespace PAL.Core
 
             //Listener waiting for stuff from speech listener
             SpeechListener PAL = new SpeechListener();
-            string results = ((List<string>)await PAL.Start(10)).First();
+            string results = ((List<string>)await PAL.Start(8)).First();
             Console.WriteLine(results.First());
 
             //send to parser for processing
