@@ -8,16 +8,31 @@ const config = {
     port: 5433
 }
 
-let pool = new sql.connect(config, err => {
-    if (err) console.log(err)
-    else {
-        const request = new sql.Request()
-
-        request.query("CREATE TABLE Persons (Owner varchar(64),Name varchar(64), Platform varchar(64), UserName varchar(64));", (err, result) => {
-            if (err) console.log(err)
-            else console.log(result )
-        })
+async function GetContacts(operationfunction) {
+    try {
+    let connection = await sql.connect(config)
+    let result = await connection.request().query('SELECT * FROM Contacts WHERE Owner = \'Lehi\';').then(value => {
+        data = value.recordset
+        operationfunction(data)
+    })
+    } catch (err) {
+        console.log(err);
     }
-})
-pool.cl
+
+}
+
+// let pool = new sql.connect(config, err => {
+//     if (err) console.log(err)
+//     else {
+//         const request = new sql.Request()
+
+//         request.query("CREATE TABLE Contacts (Owner varchar(64),Name varchar(64), Platform varchar(64), UserName varchar(64));", (err, result) => {
+//             if (err) console.log(err)
+//             else console.log(result )
+//         })
+//     }
+// })
+
+
+
 
