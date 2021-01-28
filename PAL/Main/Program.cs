@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -15,9 +15,6 @@ namespace PAL.Core
     {
         static async Task Main(string[] args)
         {
-            //Listener waiting for stuff from GUI 
-
-            //Listener waiting for stuff from speech listener
             SpeechListener PAL = new SpeechListener();
             string results = ((List<string>)await PAL.Start(8)).First();
             Console.WriteLine(results.First());
