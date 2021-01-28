@@ -15,6 +15,9 @@ namespace PAL.Core
     {
         static async Task Main(string[] args)
         {
+            //Listener waiting for stuff from GUI 
+            // Beep beep boop boop remember to stop and take a poop!
+            //Listener waiting for stuff from speech listener
             SpeechListener PAL = new SpeechListener();
             string results = ((List<string>)await PAL.Start(8)).First();
             Console.WriteLine(results.First());
