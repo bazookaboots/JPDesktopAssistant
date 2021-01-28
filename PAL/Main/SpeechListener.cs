@@ -24,12 +24,12 @@ namespace PAL.Core
 
 
             // Send API output to STDout.
-            Console.WriteLine("0:" + "Attempting request.");
+            Console.WriteLine("1:" + "Attempting request.");
             List<string> results = (List<string>)await StreamingMicRecognizeAsync(seconds);
 
             // "Hey Pal"
             // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
-            Console.WriteLine("0:" + "Request complete.");
+            Console.WriteLine("1:" + "Request complete.");
             return results;
         }
 
@@ -109,7 +109,7 @@ namespace PAL.Core
                 };
 
             waveIn.StartRecording();
-            Console.WriteLine("0:" + "Speak now.");
+            Console.WriteLine("1:" + "Speak now.");
             await Task.Delay(TimeSpan.FromSeconds(seconds));
 
             // Stop recording and shut down.
