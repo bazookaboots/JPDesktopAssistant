@@ -8,30 +8,90 @@ const config = {
     port: 5433
 }
 
-async function GetContacts(operationfunction) {
+// //Create database connection
+// try {
+//     let connection = await sql.connect(config)
+//     let result = await connection.request()
+//         .query().then(response => {
+//         
+//     })
+//     } catch (err) {
+//         console.log(err);
+//     }
+
+async function CreateContact(contact) {
     try {
-    let connection = await sql.connect(config)
-    let result = await connection.request().query('SELECT * FROM Contacts WHERE Owner = \'Lehi\';').then(value => {
-        data = value.recordset
-        operationfunction(data)
-    })
+        let connection = await sql.connect(config)
+        let result = await connection.request()
+            .input('owner', sql.VarChar(64), contact.Owner)
+            .input('name', sql.VarChar(64), contact.Name)
+            .input('platform', sql.VarChar(64), contact.Platform)
+            .input('username', sql.VarChar(64), contact.Username)
+            .query("INSERT INTO Contacts (owner, name, platform, username) "
+                + "VALUES ( @owner, @name, @platform, @username )")
+            .then(response => {
+
+            })
     } catch (err) {
         console.log(err);
     }
 
 }
 
-// let pool = new sql.connect(config, err => {
-//     if (err) console.log(err)
-//     else {
-//         const request = new sql.Request()
+async function ReadContacts(operationfunction) {
+    try {
+        let connection = await sql.connect(config)
+        let result = await connection.request()
+            .input('owner', sql.VarChar(64), 'Lehi')
+            .query("SELECT * FROM Contacts "
+                + "WHERE owner = @owner ;")
+            .then(response => {
+                data = response.recordset
+                operationfunction(data)
+            })
+    } catch (err) {
+        console.log(err);
+    }
+}
 
-//         request.query("CREATE TABLE Contacts (Owner varchar(64),Name varchar(64), Platform varchar(64), UserName varchar(64));", (err, result) => {
-//             if (err) console.log(err)
-//             else console.log(result )
-//         })
-//     }
-// })
+async function UpdateContact(id, values) {
+    try {
+        let connection = await sql.connect(config)
+        let result = await connection.request()
+            .input('owner', sql.VarChar(64), 'Lehi')
+            .input('id', int, id)
+            .input('name', sql.VarChar(64), values.Name)
+            .input('platform', sql.VarChar(64), values.Platform)
+            .input('username', sql.VarChar(64), values.Username)
+            .query("UPDATE Contacts "
+                + "SET name = @name, platform = @platform, username = @username"
+                + "WHERE id = @id"
+                + "AND owner = @owner")
+            .then(response => {
+            console.log(response.rowsAffected)
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function DeleteContact(id) {
+    try {
+        let connection = await sql.connect(config)
+        let result = await connection.request()
+            .input('id', int, id)
+            .query("DELETE FROM Contacts "
+                + "WHERE id = @id"
+                + "AND owner = @owner")
+            .then(response => {
+            console.log(response.rowsAffected)
+        })
+    } catch (err) {
+        console.log(err);
+    }
+
+}
+
 
 
 

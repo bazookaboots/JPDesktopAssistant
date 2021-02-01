@@ -4,4 +4,25 @@
     margin:auto;
   }
 
+  .contactsList {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .contactListing {
+
+  }
+
+  .contactListing input {    
+    background: #101010;
+    padding: 8px 16px;
+    border-radius: 16px / 50%;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: 0;
+    
+  }
+
 
