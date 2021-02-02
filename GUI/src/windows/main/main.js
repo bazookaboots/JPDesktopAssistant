@@ -1,31 +1,16 @@
+
 const { BrowserWindow } = require('electron').remote
 
 
-var isLoggedIn = false;
-
-function init() {
-    // Minimize task
-    // document.getElementById("min-btn").addEventListener("click", (e) => {
-    //     var window = BrowserWindow.getFocusedWindow();
-    //     window.minimize();
-    // });
-
-    // Maximize window
-    // document.getElementById("max-btn").addEventListener("click", (e) => {
-    //     var window = BrowserWindow.getFocusedWindow();
-    //     if(window.isMaximized()){
-    //         window.unmaximize();
-    //     }else{
-    //         window.maximize();
-    //     }
-    // });
-
-
+function init() {    
+    
     //
     if(window.navigator.onLine){
         document.getElementById("status").innerHTML = "online";
         document.getElementById("status").style.color = "greenyellow";
     }
+
+    // EVENT LISTENERS
 
     //
     window.addEventListener('online', (e) => {
@@ -38,12 +23,16 @@ function init() {
         document.getElementById("status").innerHTML = "offline";        
         document.getElementById("status").style.color = "red";
     })
-
+    
     //
     document.getElementById("close-btn").addEventListener("click", (e) => {
         console.log("close-btn function called")   
         var window = BrowserWindow.getFocusedWindow();
         window.close();
+    })
+    document.getElementById("close-menu-btn").addEventListener("click", (e) => {
+        console.log("close-menu-btn function called")   
+        toggleMenu();
     })
 
     //
@@ -92,6 +81,11 @@ function init() {
         console.log("signup area clicked");
         e.stopPropagation();    
     })
+
+    document.getElementById("contacts-btn").addEventListener("click", (e) => {
+        console.log("conatcts-btn pressed");
+        createContactsWindow();
+    })
 }
 
 
@@ -100,6 +94,7 @@ function toggleMenu() {
     if(document.getElementById("menu").style.display == "none")
     {
         document.getElementById("menu").style.display = "block";
+        
         document.getElementById("menu-btn").className = "menuBtnOpen";  
     }
     else{
@@ -140,4 +135,3 @@ function renderLogButton() {
         document.getElementById("logbtn-container").innerHTML = document.getElementById("signup-btn").innerHTML
     }
 }
-

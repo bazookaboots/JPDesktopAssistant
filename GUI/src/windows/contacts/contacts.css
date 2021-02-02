@@ -1,0 +1,54 @@
+  .title {
+    width:fit-content;
+    display: inline-block;
+    margin:auto;
+  }
+
+  .contactsList {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .contactListing {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 4px;
+  }
+
+  .listingTextInputs{
+    display:block;
+
+  }
+
+  .listingBtnInputs{
+    display:block;
+    width:56px;
+
+  }
+
+  .contactListing input {   
+    display: inline-block; 
+    background-color: #0e0e0f;
+    color:lightgray;
+    padding: 8px;
+    border-radius: 10px;
+    border-width: 0px;
+  }
+  .contactListing button {
+    display: inline-block;
+    padding: 2px;
+    width: fit-content;
+    border-radius: 10px;
+    border-width: 0px;
+  }
+
+  .addContactBtn {
+    display: inline-block;
+    padding: 4px;
+    width: fit-content;
+    border-radius: 10px;
+    border-width: 0px;
+  }
