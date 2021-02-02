@@ -44,7 +44,6 @@ function init() {
     //
     document.getElementById("login-btn").addEventListener("click", (e) => {
         console.log("login-btn pressed");
-        GetContacts();
         toggleLoginPage();
         toggleMenu();
         renderLogButton();
