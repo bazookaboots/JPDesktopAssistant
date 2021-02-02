@@ -2,11 +2,8 @@
 function ListContacts(data) {
     for (i = 0; i < 4; i++) {
 
-<<<<<<< Updated upstream
-=======
 
 
->>>>>>> Stashed changes
         // Create item container
         let listing = document.createElement('div')
         listing.setAttribute("class", "contactListing")
@@ -14,38 +11,25 @@ function ListContacts(data) {
         // Create name Editor
         let nameBar = document.createElement('input');
         nameBar.setAttribute("type", "text");
-<<<<<<< Updated upstream
-=======
         nameBar.setAttribute("id", i + "-name-input")
->>>>>>> Stashed changes
         nameBar.value = data[i].Name;
 
         // Create name Editor
         let platformBar = document.createElement('select');
         platformBar.setAttribute("type", "text");
-<<<<<<< Updated upstream
-=======
         nameBar.setAttribute("id", i + "-platform-input")
->>>>>>> Stashed changes
         platformBar.value = data[i].Platform;
 
         // Create name Editor
         let userBar = document.createElement('input');
         userBar.setAttribute("type", "text");
-<<<<<<< Updated upstream
-=======
         nameBar.setAttribute("id", i + "-username-input")
->>>>>>> Stashed changes
         userBar.value = data[i].UserName;
 
         // Create save buttton
         let saveBtn = document.createElement('button');
         saveBtn.innerHTML = "S";
         saveBtn.addEventListener("click", (e) => {
-<<<<<<< Updated upstream
-            console.log("new-listing-btn function called")
-            NewListing();
-=======
             let nameData = document.getElementById(i + "-name-input").value
             let platformData = document.getElementById(i + "-platform-input").value
             let usernameData = document.getElementById( i + "-username-input").value
@@ -55,19 +39,13 @@ function ListContacts(data) {
                     "Username":usernameData
                 }
             )
->>>>>>> Stashed changes
         })
 
         // Create delete button
         let deleteBtn = document.createElement('button');
         deleteBtn.innerHTML = "X";
         deleteBtn.addEventListener("click", (e) => {
-<<<<<<< Updated upstream
-            console.log("new-listing-btn function called")
-            NewListing();
-=======
             DeleteContact(data[i].id)
->>>>>>> Stashed changes
         })
 
         // Append items to listing
