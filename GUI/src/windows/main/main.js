@@ -86,6 +86,11 @@ function init() {
         console.log("conatcts-btn pressed");
         createContactsWindow();
     })
+
+    document.getElementById("settings-btn").addEventListener("click", (e) => {
+        console.log("settings-btn pressed");
+        createSettingsWindow();
+    })
 }
 
 

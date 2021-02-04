@@ -1,0 +1,10 @@
+.title {
+    width:fit-content;
+    display: inline-block;
+    margin:auto;
+  }
+
+  .listingTextInputs{
+    display:block;
+
+  }

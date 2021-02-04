@@ -1,4 +1,4 @@
-
+const { BrowserWindow } = require('electron').remote
 
 testData = [
     { 
@@ -294,6 +294,11 @@ function init() {
 
     //EVENT LISTENERS
     //
+    document.getElementById("close-btn").addEventListener("click", (e) => {
+        console.log("close-btn function called")   
+        var window = BrowserWindow.getFocusedWindow();
+        window.close();
+    })
     document.getElementById("new-listing-btn").addEventListener("click", (e) => {
         console.log("new-listing-btn function called")
         NewListing();
