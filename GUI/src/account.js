@@ -2,12 +2,12 @@ const sql = require('mssql');
 
 async function CreateUser(username, email, password)
 {
-
+    return status;
 }
 
 async function LoginUser(email, password)
 {
-
+    return status;
 }
 
 async function ReadUser(email, password)
@@ -48,18 +48,18 @@ async function DeleteContact(name, platform, username)
 
 //Stuff to put in backend server
 const config = {
-    user: 'lehibriggs',
-    password: 'lehibriggs',
-    server: 'aura.cset.oit.edu', // You can use 'localhost\\instance' to connect to named instance
-    database: 'lehibriggs',
+    user: 'morgananderson2',
+    password: 'morgananderson2',
+    server: 'aura.cset.oit.edu',
+    database: 'morgananderson2',
     port: 5433
 }
 
 async function CreateUser(passedinfo)
 {
     try {
-        //Encrpt password
         //Check password
+        //Encrpt password
         //Check email
         let connection = await sql.connect(config)
         let result = await connection.request()
@@ -67,35 +67,92 @@ async function CreateUser(passedinfo)
             .input('email', sql.VarChar(64), passedinfo.email)
             .input('password', sql.VarChar(64), encryptedpassword)
             .input('logged_in', int, 1)
-            //Add something to parse config to push default values
+            //For loop to get all config values as input
             .query("INSERT INTO morgananderson2.users"
-                + "VALUES ( @username, @email, @password, @logged_in)") //Add something to parse config to push default values
+                + "VALUES ( @username, @email, @password, @logged_in)") //For loop to get all config values as input
             .then(response => {
 
             })
     } catch (err) {
         console.log(err);
     }
+
+    //Create status return
 }
 
 async function LoginUser(passedinfo)
 {
+    try {
+        //Encrpt password
+        //Check password
+        //Check email
+        //Check logged_in
+        let connection = await sql.connect(config)
+        let result = await connection.request()
+            .input('email', sql.VarChar(64), passedinfo.email)
+            .input('password', sql.VarChar(64), encryptedpassword)
+            .query("UPDATE morgananderson2.users"
+                + "SET logged_in = 1"
+                + "WHERE email = @email and password = @password")
+            .then(response => {
+                //Pull user information
+            })
+    } catch (err) {
+        console.log(err);
+    }
 
+    //Create status return
 }
 
 async function ReadUser(passedinfo)
 {
-
+    try {
+        let connection = await sql.connect(config)
+        let result = await connection.request()
+            .input('email', sql.VarChar(64), passedinfo.email)
+            .query("SELECT * FROM morgananderson2.users"
+                + "WHERE email = @email")
+            .then(response => {
+                //Pull user information
+            })
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 async function UpdateUser(passedinfo)
 {
-
+    try {
+        let connection = await sql.connect(config)
+        let result = await connection.request()
+            .input('email', sql.VarChar(64), passedinfo.email)
+            .input('setting', sql.VarChar(64), passedinfo.setting)
+            .input('value', sql.VarChar(64), passedinfo.value)
+            .query("UPDATE morgananderson2.users"
+                + "SET @setting = @value"
+                + "WHERE email = @email")
+            .then(response => {
+                
+            })
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 async function DeleteUser(passedinfo)
 {
-
+    try {
+        let connection = await sql.connect(config)
+        let result = await connection.request()
+            .input('email', sql.VarChar(64), passedinfo.email)
+            .query("DELETE FROM morgananderson2.users"
+                + "WHERE email = @email")
+            .then(response => {
+                
+            })
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 async function CreateContact(contact) {
@@ -114,7 +171,7 @@ async function CreateContact(contact) {
     } catch (err) {
         console.log(err);
     }
-
+    
 }
 
 async function ReadContacts(contact) {
@@ -169,7 +226,6 @@ async function DeleteContact(contact) {
     } catch (err) {
         console.log(err);
     }
-
 }
 
 
