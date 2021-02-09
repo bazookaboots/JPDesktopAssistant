@@ -36,7 +36,7 @@ function init() {
     })
 
     //
-    document.getElementById("menu-btn").addEventListener("click", (e) => {
+    document.getElementById("menu-btn").addEventListener("click", async (e) => {
         console.log("menu-btn pressed");
         toggleMenu();
     })

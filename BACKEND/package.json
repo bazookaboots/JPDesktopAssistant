@@ -4,7 +4,7 @@
   "description": "This is a backend for PAL AI",
   "main": "main.js",
   "scripts": {
-    "start":"node .",
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
