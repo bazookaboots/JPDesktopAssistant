@@ -4,8 +4,8 @@ const app = express()
 
 const testUsers = []
 
-app.get('/users', (req, res) => {
-    res.json(testUsers)
+app.get('/', (req, res) => {
+    res.send("<p>hello</p>")
 })
 
-app.listen(3000)
+app.listen(3010,'127.0.0.1')
