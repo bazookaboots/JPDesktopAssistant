@@ -1,7 +1,13 @@
 const sql = require('mssql');
+const http = require('http')
 
 async function CreateUser(username, email, password)
 {
+    http.get("lehibriggs.org/PAL/users", 
+    {
+        username: "lehi briggs",
+        password: "lehibriggs"
+    })
     return status;
 }
 
