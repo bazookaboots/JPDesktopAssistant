@@ -4,8 +4,12 @@ const app = express()
 
 const testUsers = []
 
-app.get('/', (req, res) => {
-    res.send("This is a damn test")
+app.get('/', (request, response) => {
+    response.send("This is a damn test")
+})
+
+app.post('/', (request, response) => {
+
 })
 
 app.listen(3010,'127.0.0.1')

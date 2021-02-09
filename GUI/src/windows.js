@@ -45,33 +45,6 @@ function createSettingsWindow() {
   win.once('ready-to-show', () => {
     win.show()
   })
+  
   ReadContact("test1", "test2", "test3");
-}
-
-function ReadContact(name, platform, username) {
-  console.log("Called readcontact");
-
-  let options = {
-    host: '127.0.0.1', //Update later
-    path: '/',
-    port: 3010,
-    method: 'GET'
-  };
-
-  const request = http.request(options, response => {
-
-    response.on('data', d => {
-      console.log(d);
-      console.log("FUUUUUUUUUUUUUUUUUUUUUCKKKKKKK");
-    })
-  })
-
-  console.log("Outside response.on");
-
-
-  request.on('error', error => {
-    console.error(error)
-  })
-
-  request.end()
 }
