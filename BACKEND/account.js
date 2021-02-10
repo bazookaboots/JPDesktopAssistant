@@ -1,3 +1,5 @@
+
+
 //Stuff to put in backend server
 const config = {
     user: 'morgananderson2',
@@ -7,8 +9,7 @@ const config = {
     port: 5433
 }
 
-async function CreateUser(passedinfo)
-{
+async function CreateUser(passedinfo) {
     try {
         //Check password
         //Encrpt password
@@ -32,8 +33,7 @@ async function CreateUser(passedinfo)
     //Create status return
 }
 
-async function LoginUser(passedinfo)
-{
+async function LoginUser(passedinfo) {
     try {
         //Encrpt password
         //Check password
@@ -56,8 +56,7 @@ async function LoginUser(passedinfo)
     //Create status return
 }
 
-async function ReadUser(passedinfo)
-{
+async function ReadUser(passedinfo) {
     try {
         let connection = await sql.connect(config)
         let result = await connection.request()
@@ -72,8 +71,7 @@ async function ReadUser(passedinfo)
     }
 }
 
-async function UpdateUser(passedinfo)
-{
+async function UpdateUser(passedinfo) {
     try {
         let connection = await sql.connect(config)
         let result = await connection.request()
@@ -84,15 +82,14 @@ async function UpdateUser(passedinfo)
                 + "SET @setting = @value"
                 + "WHERE email = @email")
             .then(response => {
-                
+
             })
     } catch (err) {
         console.log(err);
     }
 }
 
-async function DeleteUser(passedinfo)
-{
+async function DeleteUser(passedinfo) {
     try {
         let connection = await sql.connect(config)
         let result = await connection.request()
@@ -100,9 +97,10 @@ async function DeleteUser(passedinfo)
             .query("DELETE FROM morgananderson2.users"
                 + "WHERE email = @email")
             .then(response => {
-                
+
             })
     } catch (err) {
         console.log(err);
     }
 }
+module.exports = {CreateUser, ReadUser, UpdateUser, DeleteUser}

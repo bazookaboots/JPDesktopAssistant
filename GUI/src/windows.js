@@ -45,6 +45,4 @@ function createSettingsWindow() {
   win.once('ready-to-show', () => {
     win.show()
   })
-  
-  ReadContact("test1", "test2", "test3");
 }

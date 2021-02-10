@@ -91,6 +91,22 @@ function init() {
         console.log("settings-btn pressed");
         createSettingsWindow();
     })
+
+    // This registers the functionality for when the register form's submit button is hit
+    document.getElementById("register-form-btn").addEventListener("click", (e) => {
+        username = document.getElementById('username-register-input').value
+        email = document.getElementById('email-register-input').value
+        password = document.getElementById('password-register-input').value
+        passwordc = document.getElementById('passwordc-register-input').value
+        CreateUser(username,email,password) //TODO find the proper way to use password confirmation
+    })
+    // This registers the functionality for when the login form's submit button is hit
+    document.getElementById("login-form-btn").addEventListener("click", (e) => {
+        email = document.getElementById('email-login-input').value
+        password = document.getElementById('password-login-input').value
+        LoginUser(email,password) //TODO find the proper way to use password confirmation
+    })
+    
 }
 
 
