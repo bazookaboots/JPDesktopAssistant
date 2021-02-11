@@ -1,6 +1,14 @@
+//Includes
+const { response, request } = require('express')
+const express = require('express')
+const app = express()
+const sql = require('mysql')
+const bcrypt = require('bcrypt')
 
+//Lets express know we are using json objects and how to parse them
+app.use(express.json())
 
-//Stuff to put in backend server
+//Connection config
 const config = {
     user: 'morgananderson2',
     password: 'morgananderson2',
@@ -9,62 +17,32 @@ const config = {
     port: 5433
 }
 
-async function CreateUser(passedinfo) {
-    try {
-        //Check password
-        //Encrpt password
-        //Check email
-        let connection = await sql.connect(config)
+async function CreateUser(request) {
+    try{
+        let connection = await sql.createConnection(config)
         let result = await connection.request()
-            .input('username', sql.VarChar(64), passedinfo.username)
-            .input('email', sql.VarChar(64), passedinfo.email)
-            .input('password', sql.VarChar(64), encryptedpassword)
-            .input('logged_in', int, 1)
-            //For loop to get all config values as input
+            .input('username', sql.VarChar(64), request.username)
+            .input('email', sql.VarChar(64), request.email)
+            .input('password', sql.VarChar(64), hashedPassword)
             .query("INSERT INTO morgananderson2.users"
-                + "VALUES ( @username, @email, @password, @logged_in)") //For loop to get all config values as input
+                + "VALUES ( @username, @email, @password)")
             .then(response => {
 
             })
     } catch (err) {
         console.log(err);
     }
-
-    //Create status return
-}
-
-async function LoginUser(passedinfo) {
-    try {
-        //Encrpt password
-        //Check password
-        //Check email
-        //Check logged_in
-        let connection = await sql.connect(config)
-        let result = await connection.request()
-            .input('email', sql.VarChar(64), passedinfo.email)
-            .input('password', sql.VarChar(64), encryptedpassword)
-            .query("UPDATE morgananderson2.users"
-                + "SET logged_in = 1"
-                + "WHERE email = @email and password = @password")
-            .then(response => {
-                //Pull user information
-            })
-    } catch (err) {
-        console.log(err);
-    }
-
-    //Create status return
 }
 
 async function ReadUser(passedinfo) {
     try {
-        let connection = await sql.connect(config)
+        let connection = await sql.createConnection(config)
         let result = await connection.request()
             .input('email', sql.VarChar(64), passedinfo.email)
             .query("SELECT * FROM morgananderson2.users"
                 + "WHERE email = @email")
             .then(response => {
-                //Pull user information
+                //TODO Return a JSON settings string
             })
     } catch (err) {
         console.log(err);
@@ -73,13 +51,16 @@ async function ReadUser(passedinfo) {
 
 async function UpdateUser(passedinfo) {
     try {
-        let connection = await sql.connect(config)
+        //Build update list
+        passedinfo.settings.forEach(element => {
+            stringvar += passedinfo.settings[i].key + " =" + passedinfo.settings[i].value + " "
+        });
+
+        let connection = await sql.createConnection(config)
         let result = await connection.request()
             .input('email', sql.VarChar(64), passedinfo.email)
-            .input('setting', sql.VarChar(64), passedinfo.setting)
-            .input('value', sql.VarChar(64), passedinfo.value)
             .query("UPDATE morgananderson2.users"
-                + "SET @setting = @value"
+                + "SET " + stringvar
                 + "WHERE email = @email")
             .then(response => {
 
@@ -91,7 +72,7 @@ async function UpdateUser(passedinfo) {
 
 async function DeleteUser(passedinfo) {
     try {
-        let connection = await sql.connect(config)
+        let connection = await sql.createConnection(config)
         let result = await connection.request()
             .input('email', sql.VarChar(64), passedinfo.email)
             .query("DELETE FROM morgananderson2.users"
@@ -103,4 +84,39 @@ async function DeleteUser(passedinfo) {
         console.log(err);
     }
 }
-module.exports = {CreateUser, ReadUser, UpdateUser, DeleteUser}
+
+async function CheckUser(passedinfo)
+{
+    try {
+        let connection = await sql.createConnection(config)
+        let result = await connection.request()
+            .input('email', sql.VarChar(64), passedinfo.email)
+            .query("SELECT * FROM morgananderson2.users"
+                + "WHERE email = @email")
+            .then(response => {
+                //TODO if null, return 0, if not, return 1
+            })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function CheckPassword(passedinfo)
+{
+    try {
+        let connection = await sql.createConnection(config)
+        let result = await connection.request()
+            .input('email', sql.VarChar(64), passedinfo.email)
+            .input('password', sql.VarChar(64), passedinfo.password)
+            .query("SELECT * FROM morgananderson2.users"
+                + "WHERE email = @email"
+                + "AND password = @password")
+            .then(response => {
+                //TODO if null, return 0, if not, return 1
+            })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports = {CreateUser, ReadUser, UpdateUser, DeleteUser, CheckUser, CheckPassword}

@@ -3,7 +3,7 @@
  * @requires express
  * @requires bcrypt
  */
-const { ReadUser, CreateUser } = require('./account')
+const { CreateUser, ReadUser, UpdateUser, DeleteUser, CheckUser, CheckPassword } = require('./account')
 const { response, request } = require('express')
 const express = require('express')
 const app = express()
@@ -11,9 +11,6 @@ const bcrypt = require('bcrypt')
 
 //lets express know we are using json objects and how to parse them
 app.use(express.json())
-
-//test object to store users instead of database
-const testUsers = []
 
 /**
  * This is an Express.js route for the PAL backend that
@@ -27,38 +24,34 @@ const testUsers = []
  */
 app.post('/users', async (request, response) => {
     console.log("/users route called")
-    try {
-        //Find email check if its in use
-        //Find the user in the databse //TODO needs to actually be connected to database instead of testUsers
-        const userCheck = testUsers.find((user) => {
-            user.email === request.body.email
-        })
-        
 
+    try {
         //Check that no user was found
-        if (userCheck != null) {
-            //Sends Error status if user is not null
+        if (!CheckUser(request.body.email)) {
             return response.status(400).send()
+        }
+        //Check that the email is expression valid
+        if (!true){
+            response.status(500).send();
         }
 
         //Hash user password
-        const hashedPassword = await bcrypt.hash(request.body.password/*TODO figure out the correct way to access this value*/, 10)
+        const hashedPassword = await bcrypt.hash(request.body.password, 10);
 
         //Create user object
         const user = {
             email: request.body.email,
-            name: request.body.name,//TODO figure out the correct way to access this value
+            name: request.body.username,
             password: hashedPassword
         }
 
         //Adds user to database
-        testUsers.push(user)//TODO needs to actually be connected to database instead of testUsers
+        CreateUser(user);
 
         //Sends response to the frontend
         response.status(201).send()
 
     } catch (error) {
-
         console.log(error)
 
         //Sends response to the frontend
@@ -79,29 +72,31 @@ app.post('/users', async (request, response) => {
 app.post('/users/login', async (request, response) => {
     console.log("/users/login route called")
     try {
-
-        //Find the user in the databse //TODO needs to actually be connected to database instead of testUsers
-        const user = testUsers.find((user) => {
-            user.email === request.body.email
-        })
-
-        //Test to see if user was found
-        if (user == null) {
-            //Sends Error status if user is not found
+        //Check that no user was found
+        if (!CheckUser(request.body.email)) {
+            return response.status(400).send()
+        }
+        //Compares the user password with encrypted password
+        if (!CheckPassword(request.body.email, request.body.password)) {
             return response.status(400).send()
         }
 
-        //Compares the user password with encrypted password
-        if (await bcrypt.compare(request.body.password, user.password)) {
-            //Code executed if password matches
-            response.send('Success')
-        } else {
-            //Code executed if password does not match
-            response.send('failure')
+        //Create user object
+        const user = {
+            email: request.body.email,
         }
 
-    } catch (error) {
+        ReadUser(user); 
+        //TODO Return JSON settings string
 
+        //Sends response to the frontend
+        response.status(201).send()
+
+    } catch (error) {
+        console.log(error)
+
+        //Sends response to the frontend
+        response.status(500).send()
     }
 })
 

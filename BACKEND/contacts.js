@@ -19,7 +19,7 @@ async function CreateContact(contact) {
 
 async function ReadContacts(contact) {
     
-    /*try {
+    try {
         let connection = await sql.connect(config)
         let result = await connection.request()
             .input('owner', sql.VarChar(64), contact.Owner)
@@ -32,7 +32,6 @@ async function ReadContacts(contact) {
     } catch (err) {
         console.log(err);
     }
-    */
 }
 
 async function UpdateContact(contact) {
