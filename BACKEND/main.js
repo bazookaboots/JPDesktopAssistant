@@ -9,17 +9,11 @@ const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
 
+//lets express know we are using json objects and how to parse them
 app.use(express.json())
 
+//test object to store users instead of database
 const testUsers = []
-
-
-
-//
-app.get('/account', (request, response) => {
-
-})
-
 
 /**
  * This is an Express.js route for the PAL backend that
