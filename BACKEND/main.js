@@ -3,7 +3,7 @@
  * @requires express
  * @requires bcrypt
  */
-const { CreateUser, ReadUser, UpdateUser, DeleteUser, CheckUser, CheckPassword } = require('./account')
+const { CreateUser, ReadUser, UpdateUser, DeleteUser, CheckEmail, CheckPassword } = require('./account')
 const { response, request } = require('express')
 const express = require('express')
 const app = express()
@@ -26,8 +26,22 @@ app.post('/users', async (request, response) => {
     console.log("/users route called")
 
     try {
-        //Check that no user was found
-        if (!CheckUser(request.body.email)) {
+        //TODO
+        //Check that the email meets character requirements
+        /*if (request.body.email.regex()){
+            return response.status(400).send()
+        }
+        */
+
+        //TODO
+        //Check that the username meets character requirements
+        /*if (request.body.email.regex()){
+            return response.status(400).send()
+        }
+        */
+
+        //Check that the email does not already exist.
+        if (CheckEmail(request.body.email)) {
             return response.status(400).send()
         }
         //Check that the email is expression valid
@@ -72,8 +86,15 @@ app.post('/users', async (request, response) => {
 app.post('/users/login', async (request, response) => {
     console.log("/users/login route called")
     try {
-        //Check that no user was found
-        if (!CheckUser(request.body.email)) {
+        //TODO
+        //Check that the email meets character requirements
+        /*if (request.body.email.regex()){
+            return response.status(400).send()
+        }
+        */
+
+        //Check that the user exists
+        if (!CheckEmail(request.body.email)) {
             return response.status(400).send()
         }
         //Compares the user password with encrypted password
