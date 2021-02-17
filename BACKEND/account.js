@@ -52,8 +52,16 @@ async function ReadUser(request) {
 
 async function UpdateUser(request) {
     try {
+        i = 0;
         request.settings.forEach(element => {
-            stringvar += request.settings[i].key + " =" + request.settings[i].value + " "
+            if (i != Object.keys(request.settings).length - 1){
+                stringvar += request.settings[i].key + " =" + request.settings[i].value + ", ";    
+            }
+            else{
+                stringvar += request.settings[i].key + " =" + request.settings[i].value + " ";
+            }
+            
+            i++;
         });
 
         let connection = await sql.connect(config)
