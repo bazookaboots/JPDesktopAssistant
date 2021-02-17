@@ -24,19 +24,6 @@ app.use(express.json())
  */
 app.post('/users/create', async (request, response) => {
     console.log("/users/create route called")
-
-    const user = {
-        email: request.body.email,
-        name: request.body.username,
-        password: request.body.email,
-        settings: {
-                ree: request.body.email,
-                teee: request.body.password
-        }
-    }
-
-    console.log("EEEE:" + Object.keys(user.settings).length)
-
     try {
         //Check that the email meets character requirements
         if (!request.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
@@ -68,14 +55,9 @@ app.post('/users/create', async (request, response) => {
         //Create user object
         const user = {
             email: request.body.email,
-            name: request.body.username,
-            password: hashedPassword,
-            settings: {
-                    ree: request.body.email
-            }
+            username: request.body.username,
+            password: hashedPassword
         }
-
-        Object.keys(user.settings).length
 
         //Adds user to database
         CreateUser(user);
