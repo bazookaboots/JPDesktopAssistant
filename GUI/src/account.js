@@ -24,7 +24,7 @@ async function CreateUser(username, email, password)
       //Set configuration parameters for the request
       let options = { //TODO change configuration parameters production parameters
         host: '127.0.0.1', 
-        path: '/users',
+        path: '/users/create',
         port: 3010,
         method: 'POST',
         headers: {
@@ -71,7 +71,7 @@ async function LoginUser(email, password)
       console.log("LoginUser Called");
       let options = {
         host: '127.0.0.1',
-        path: '/users/login', //points it at the login route
+        path: '/users/read', //points it at the login route
         port: 3010,
         method: 'POST',
         headers: {
@@ -111,7 +111,7 @@ async function ReadUser(email, password)
       console.log("Called readcontact");
       let options = {
         host: '127.0.0.1', //Update later
-        path: '/account',
+        path: '/users/read',
         port: 3010,
         method: 'POST',
         headers: {
@@ -152,7 +152,7 @@ async function UpdateUser(email, password)
       console.log("Called readcontact");
       let options = {
         host: '127.0.0.1', //Update later
-        path: '/account',
+        path: '/users/update',
         port: 3010,
         method: 'POST',
         headers: {
@@ -192,7 +192,7 @@ async function DeleteUser(email, password)
       console.log("Called readcontact");
       let options = {
         host: '127.0.0.1', //Update later
-        path: '/account',
+        path: '/users/delete',
         port: 3010,
         method: 'POST',
         headers: {
