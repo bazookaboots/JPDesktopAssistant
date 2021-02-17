@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>settings</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+    <!-- LOCAL REFERNCES -->
+    <script src="account.js"></script>
+    <link rel="stylesheet" href="account.css">
+
+    <!-- GLOBAL REFERNCES -->
+    <script src="../../engine.js"></script>
+    <script src="../../account.js"></script>
+    <script src="../../windows.js"></script>
+    <script src="../../contact.js"></script>
+    <link rel="stylesheet" href="../../global-styles.css" />
+</head>
+
+<body onload="init()" style="height: 470px; margin: 0px">
+    <div class="pageContainer">
+        <div class="topNavbar pageBlock">
+            <div class="title">
+                <h2>Account Info</h2>
+            </div>
+            <div id="close-btn" class="closeBtn">
+                <img src="../../assets/icons/close_24px_outlined.svg" />
+            </div>
+        </div>
+        <div id="account-details-container" class="accountDetailsContainer pageBlock">
+            <div class="accountDetailsList">
+                <div>
+                    Username:
+                </div>
+                <input class="textInput">
+                <div>
+                    Email:
+                </div>
+                <input class="textInput">
+                <div>
+                    Change Password:
+                </div>
+                <input class="textInput">
+                <div><button id="btn-update" class="formBtn" style="margin-top:auto;"> Update </button></div>
+                <div style="margin-top:auto;padding-bottom:16px;"><button id="btn-delete-account" class="formBtn red" style="margin-top:auto;"> Delete Account </button></div>
+            </div>
+        </div>
+
+</body>
+
+</html>
