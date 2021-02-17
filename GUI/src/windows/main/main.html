@@ -5,18 +5,17 @@
     <meta charset="UTF-8" />
     <title>main</title>
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
-    
+
+    <!-- LOCAL REFERNCES -->
+    <script src="./main.js"></script>
+    <link rel="stylesheet" href="./main.css" />
+
     <!-- GLOBAL REFERNCES -->
     <script src="../../engine.js"></script>
     <script src="../../account.js"></script>
     <script src="../../contact.js"></script>
     <script src="../../windows.js"></script>
-    <link rel="stylesheet" href="../../global-styles.css" /> 
-
-    <!-- LOCAL REFERNCES -->
-    <script src="./main.js"></script>
-    <link rel="stylesheet" href="./main.css">
-
+    <link rel="stylesheet" href="../../global-styles.css" />
 </head>
 
 <body onload="init()" style="height: 470px; margin: 0px">
@@ -25,15 +24,15 @@
             <div id="menu-btn" class="menuBtnClosed">
                 <img src="../../assets/icons/menu_24px_outlined.svg" />
             </div>
-            
+
             <div id="close-btn" class="closeBtn">
                 <img src="../../assets/icons/close_24px_outlined.svg" />
             </div>
         </div>
         <div class="mainIconArea pageBlock">
             <button class="toggleEngine" onclick="spawnEngine()">
-                <img src="../../assets/icons/Logo Idea 1.svg" />
-            </button>
+          <img src="../../assets/icons/Logo Idea 1.svg" />
+        </button>
         </div>
         <div id="status" class="pageBlock">connection unknown</div>
         <div class="textArea pageBlock">
@@ -47,11 +46,11 @@
         </div> -->
     </div>
 
-    <!-- LOGIN WINDOW  -->
+    <!-- LOGIN PAGE  -->
     <div id="login-form" class="PopUpPage" style="display: none">
         <div id="login-container" class="loginContainer card">
             <div class="PopUpTitle">
-                <h2> Log in 👋 </h2>
+                <h2>Log in 👋</h2>
             </div>
             <div class="PopUpRow">
                 <input id="email-login-input" class="textInput" type="text" placeholder="Enter Email" name="email" required />
@@ -60,16 +59,18 @@
                 <input id="password-login-input" class="textInput" type="password" placeholder="Enter Password" name="password" required />
             </div>
             <div class="PopUpRow">
-                <button id="login-form-btn" class="formBtn" type="submit">Login</button>
+                <button id="btn-login-form" class="formBtn" type="submit">
+            Login
+          </button>
                 <label>
-                    <input type="checkbox" checked="checked" name="remember" /> Remember
-                    me
-                </label>
+            <input type="checkbox" checked="checked" name="remember" /> Remember
+            me
+          </label>
             </div>
         </div>
     </div>
 
-    <!-- SIGNUP WINDOW  -->
+    <!-- REGISTER PAGE  -->
     <div id="signup-form" class="PopUpPage" style="display: none">
         <div id="signup-container" class="loginContainer card">
             <div class="PopUpTitle">
@@ -88,24 +89,26 @@
                 <input id="passwordc-register-input" class="textInput" type="password" placeholder="re-Enter Password" name="password" required />
             </div>
             <div class="PopUpRow">
-                <button id="register-form-btn" class="formBtn" type="submit">Create</button>
+                <button id="btn-register-form" class="formBtn" type="submit">
+            Create
+          </button>
                 <label>
-                    <input type="checkbox" checked="checked" name="remember" /> Remember
-                    me
-                </label>
+            <input type="checkbox" checked="checked" name="remember" /> Remember
+            me
+          </label>
             </div>
         </div>
     </div>
 
+
     <!-- SIDE NAVIGATION MENU -->
     <div id="menu" class="menu">
-        <div id="close-menu-btn" href="javascript:void(0)" class="closebtn">&times;</div>
-        <div>Guest User</div>
-        <div id="contacts-btn">Contacts</div>
-        <div id="signup-btn">Register</div>
-        <div id="login-btn">Login</div>
-        <div id="settings-btn">Settings</div>
-      </div>
+        <div class="menuContainer">
+            <div class="menuTitle">Guest User</div>
+            <div id="menu-container" class="menuItemsContainer"></div>
+        </div>
+        <div id="non-menu-area" style="width: 50%;display: flex;height: 100%;"></div>
+    </div>
 </body>
 
 </html>

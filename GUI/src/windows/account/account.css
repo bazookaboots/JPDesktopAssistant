@@ -1,0 +1,17 @@
+.title {
+    width: fit-content;
+    display: inline-block;
+    margin: auto;
+}
+
+.accountDetailsContainer {
+    display: block;
+    height: auto;
+}
+
+.accountDetailsList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 18px;
+}
