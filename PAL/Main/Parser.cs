@@ -44,6 +44,10 @@ namespace PAL.Core
             platforms.Add("youtube", "youtube");
             platforms.Add("google", "youtube");
             platforms.Add("spotify", "spotify");
+            // Bailey remove this when you're done playing with it 
+            platforms.Add("images", "images");
+            platforms.Add("crunchyroll", "crunchyroll");
+            platforms.Add("wikipedia", "wikipedia");
         }
 
         public Queue Tokenize(string Transcript)
