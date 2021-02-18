@@ -20,16 +20,10 @@ namespace PAL.Core
     {
         public async Task ExecuteCommand(Command cmd)
         {
-            //cmd.Print();
-            //Console.WriteLine("Here");
-
-            //IWebDriver driver = new ChromeDriver(@"C:\Users\baygo\Documents\GitHub\JPDesktopAssistant\PAL\Main\WebDriver\bin");
+            var url = "";
             switch (cmd.platform)
             {
                 case "youtube":
-                    /*driver.Manage().Window.Maximize();
-                    driver.Navigate().GoToUrl(@"https://www.youtube.com/results?search_query=" + cmd.arg);
-                    driver.FindElement(By.Id("video-title")).Click();*/
                     var youtubeService = new YouTubeService(new BaseClientService.Initializer()
                     {
                         ApiKey = "AIzaSyBzWeIae0ygOk1163fSAmhDOhI8zpa9xbY",
@@ -53,7 +47,7 @@ namespace PAL.Core
                         switch (searchResult.Id.Kind)
                         {
                             case "youtube#video":
-                                var url = @"https://www.youtube.com/watch?v=" + searchResult.Id.VideoId;
+                                url = @"https://www.youtube.com/watch?v=" + searchResult.Id.VideoId;
                                 Process.Start("chrome.exe", url);
                                 break;
 
@@ -66,31 +60,27 @@ namespace PAL.Core
                                 break;
                         }
                     }
-
-                    Console.WriteLine(String.Format("Videos:\n{0}\n", string.Join("\n", videos)));
-                    //Console.WriteLine(String.Format("Channels:\n{0}\n", string.Join("\n", channels)));
-                    //Console.WriteLine(String.Format("Playlists:\n{0}\n", string.Join("\n", playlists)));
-
                     break;
 
                 case "google":
-                    /*driver.Manage().Window.Maximize();
-                    driver.Navigate().GoToUrl(@"https://www.google.com");
-                    driver.FindElement(By.Name("q")).SendKeys(cmd.arg);
-                    driver.FindElement(By.Name("q")).SendKeys(Keys.Enter);*/
-
+                    url = @"http://www.google.com/search?q=" + cmd.arg;
+                    Process.Start("chrome.exe", url);
                     break;
 
                 case "images":
-                    /*driver.Manage().Window.Maximize();
-                    driver.Navigate().GoToUrl(@"https://www.google.com/imghp?hl=en");
-                    driver.FindElement(By.Name("q")).SendKeys(cmd.arg);
-                    driver.FindElement(By.Name("q")).SendKeys(Keys.Enter);*/
-
                     break;
 
                 case "spotify":
-                    //SpotifyPlayer player = new SpotifyPlayer(new MMBot.Robot());
+                    break;
+
+                case "crunchyroll":
+                    url = @"https://www.crunchyroll.com/" + cmd.arg.Replace(' ', '-').TrimEnd('-');
+                    Process.Start("chrome.exe", url);
+                    break;
+
+                case "wikipedia":
+                    url = @"https://en.wikipedia.org/wiki/" + cmd.arg.Replace(' ', '_');
+                    Process.Start("chrome.exe", url);
                     break;
 
                 default:
