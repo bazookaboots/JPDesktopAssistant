@@ -29,8 +29,19 @@ namespace PAL.Core
             //pass tokenized string to parser, which returns a command to execute
             Command cmd = parser.Parse(transcript);
             cmd.Print();
-            Executer exe = new Executer();
-            exe.ExecuteCommand(cmd);
+
+            try
+            {
+                new Executer().ExecuteCommand(cmd).Wait();
+            }
+            catch (AggregateException e)
+            {
+                foreach (var ex in e.InnerExceptions)
+                {
+                    Console.WriteLine("ERROR: " + ex.Message);
+                }
+            }
+            
         }
     }
 }
