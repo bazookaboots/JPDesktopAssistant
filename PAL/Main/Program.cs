@@ -11,9 +11,10 @@ using System.Collections;
 
 namespace PAL.Core
 {
+    
     class Program
     {
-        static async Task Main(string[] args)
+        public static async Task<string> GetConsole()
         {
             //Listener waiting for stuff from GUI 
             // Beep beep boop boop remember to stop and take a poop!

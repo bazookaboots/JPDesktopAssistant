@@ -14,7 +14,7 @@ function createWindow () {
   })
   win.setMenuBarVisibility(false)
 
-  win.loadFile('src\\index.html')
+  win.loadFile('src\\windows\\main\\main.html')
   win.webContents.openDevTools({ mode: 'detach' })
 }
 
@@ -35,3 +35,7 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+
+
+
