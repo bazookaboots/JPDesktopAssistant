@@ -25,7 +25,7 @@ namespace PAL.Core
         Hashtable platforms;
         public Parser()
         {
-            //Initialize Keywords table
+            //Initialize Keyword tables
             verbs = new Hashtable();
             platforms = new Hashtable();
             InitTables();

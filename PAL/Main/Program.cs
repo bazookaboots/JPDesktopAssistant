@@ -21,7 +21,7 @@ namespace PAL.Core
             string results = ((List<string>)await PAL.Start(10)).First();
             Console.WriteLine(results.First());
 
-            //send to parser for processing
+            //send results to parser for processing
             Parser parser = new Parser();
             Queue transcript = parser.Tokenize(results);
 
