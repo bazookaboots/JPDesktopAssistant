@@ -52,7 +52,7 @@ namespace PAL.Core
                                 break;
 
                             case "youtube#channel":
-                                channels.Add(String.Format("{0} ({1})", searchResult.Snippet.Title, searchResult.Id.ChannelId));
+                                url = @"https://www.youtube.com/channel/" + searchResult.Id.ChannelId;
                                 break;
 
                             case "youtube#playlist":
@@ -68,13 +68,15 @@ namespace PAL.Core
                     break;
 
                 case "images":
+                    url = @"https://www.google.com/search?tbm=isch&q=" + cmd.arg.Replace(' ', '+');
+                    Process.Start("chrome.exe", url);
                     break;
 
                 case "spotify":
                     break;
 
                 case "crunchyroll":
-                    url = @"https://www.crunchyroll.com/" + cmd.arg.Replace(' ', '-').TrimEnd('-');
+                    url = @"https://www.crunchyroll.com/search?from=&q=" + cmd.arg.Replace(' ', '-').TrimEnd('-');
                     Process.Start("chrome.exe", url);
                     break;
 
