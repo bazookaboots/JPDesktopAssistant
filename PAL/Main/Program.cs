@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -11,16 +11,25 @@ using System.Collections;
 
 namespace PAL.Core
 {
-    
     class Program
     {
         public static async Task<string> GetConsole()
+        {
+            string input = await Task.Run(()=> Console.ReadLine());
+            return input;
+        }
+
+        public static async Task WriteConsole(string msg)
+        {
+            await Task.Run(() => Console.WriteLine(msg));
+        }
+        static async Task Main(string[] args)
         {
             //Listener waiting for stuff from GUI 
             // Beep beep boop boop remember to stop and take a poop!
             //Listener waiting for stuff from speech listener
             SpeechListener PAL = new SpeechListener();
-            string results = ((List<string>)await PAL.Start(10)).First();
+            string results = ((List<string>)await PAL.Start(8)).First();
             Console.WriteLine(results.First());
 
             //send results to parser for processing

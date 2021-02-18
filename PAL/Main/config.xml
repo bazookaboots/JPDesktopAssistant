@@ -1,1 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <testoption1 value="reeeeeeee">
+  </testoption1>
+  <testoption2 value="avalue2">
+  </testoption2>
+</configuration>
