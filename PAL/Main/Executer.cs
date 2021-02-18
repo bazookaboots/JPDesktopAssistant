@@ -63,7 +63,7 @@ namespace PAL.Core
                     break;
 
                 case "google":
-                    url = @"http://www.google.com/search?q=" + cmd.arg;
+                    url = @"http://www.google.com/search?q=" + cmd.arg.Replace(' ', '+');
                     Process.Start("chrome.exe", url);
                     break;
 
