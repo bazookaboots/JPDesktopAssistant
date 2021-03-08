@@ -1,15 +1,17 @@
 const http = require('http');
+const jwt_token = '';
 
-/**
- * Sends an HTTP POST request to the backend asking if it can
- * create a user from the given account information
- * @name CreateUser
- * @memberof account.js
- * @param {string} username - string representing the desired username
- * @param {string} email - string representing the desired email
- * @param {string} password - string representing the desired password
- */
-async function CreateUser(username, email, password) {
+const hostURL = "http://www.lehibriggs.org/PAL"
+    /**
+     * Sends an HTTP POST request to the backend asking if it can
+     * create a user from the given account information
+     * @name CreateUser
+     * @memberof account.js
+     * @param {string} username - string representing the desired username
+     * @param {string} email - string representing the desired email
+     * @param {string} password - string representing the desired password
+     */
+async function RegisterUser(username, email, password) {
     //Create body of HTTP/POST request
     const data = JSON.stringify({
         username: username,
@@ -21,8 +23,8 @@ async function CreateUser(username, email, password) {
 
     //Set configuration parameters for the request
     let options = { //TODO change configuration parameters production parameters
-        host: '127.0.0.1',
-        path: '/users/create',
+        host: hostURL,
+        path: '/register',
         port: 3010,
         method: 'POST',
         headers: {
@@ -67,47 +69,10 @@ async function LoginUser(email, password) {
 
     console.log("LoginUser Called");
     let options = {
-        host: '127.0.0.1',
-        path: '/users/read', //points it at the login route
+        host: hostURL,
+        path: '/login', //points it at the login route
         port: 3010,
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-        }
-    };
-
-    const request = http.request(options, response => {
-        console.log(`statusCode: ${response.statusCode}`)
-        response.on('data', d => {
-            console.log(d);
-        })
-    })
-
-
-    request.on('error', error => {
-        console.error(error)
-    })
-
-    //Write actual data  
-    request.write(data)
-
-    request.end()
-
-}
-
-//TODO implement this function vvvv
-async function ReadUser(email) {
-    const data = JSON.stringify({
-        email: email
-    })
-
-    console.log("ReadUser Called");
-    let options = {
-        host: '127.0.0.1', //Update later
-        path: '/users/read',
-        port: 3010,
-        method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Content-Length': data.length
@@ -139,13 +104,14 @@ async function UpdateUser(email, password) {
     const data = JSON.stringify({
         name: name,
         platform: platform,
-        username: username
+        username: username,
+        'Authorization': "Bearer " + jwt_token
     })
 
     console.log("Called readcontact");
     let options = {
-        host: '127.0.0.1', //Update later
-        path: '/users/update',
+        host: hostURL, //Update later
+        path: '/update',
         port: 3010,
         method: 'POST',
         headers: {
@@ -178,13 +144,14 @@ async function DeleteUser(email, password) {
     const data = JSON.stringify({
         name: name,
         platform: platform,
-        username: username
+        username: username,
+        'Authorization': "Bearer " + jwt_token
     })
 
     console.log("Called readcontact");
     let options = {
-        host: '127.0.0.1', //Update later
-        path: '/users/delete',
+        host: hostURL, //Update later
+        path: '/delete',
         port: 3010,
         method: 'POST',
         headers: {
