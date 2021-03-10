@@ -45,7 +45,9 @@ namespace PAL.Core
                         {
                             case "youtube#video":
                                 url = @"https://www.youtube.com/watch?v=" + searchResult.Id.VideoId;
-                                Process.Start("chrome.exe", url);
+                                ProcessStartInfo startInfo = new ProcessStartInfo("chrome.exe", url);
+                                startInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                                Process.Start(startInfo);
                                 break;
 
                             case "youtube#channel":
