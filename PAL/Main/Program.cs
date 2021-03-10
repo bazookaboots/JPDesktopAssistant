@@ -33,6 +33,7 @@ namespace PAL.Core
             bool vocal = true; //determines whether pal should speak back or not
             bool listenting = true; // controls always-on, always-listening functionality (hey pal)
             bool active = false; // when true, pal will respond to commands (set in hey Pal scope or hotkey scope)
+            int requestDuration = 3; //how long the user should have to speak (this is changed frequently, not good for settings)
 
             var synthesizer = new SpeechSynthesizer();
             synthesizer.SetOutputToDefaultAudioDevice();
@@ -42,26 +43,33 @@ namespace PAL.Core
 
             while (pal)
             {
-
-                if (active)
+                //Initialize Google Listener
+                SpeechListener PAL = new SpeechListener();
+                string results;
+                try
                 {
-                    //Initialize Google Listener
-                    SpeechListener PAL = new SpeechListener();
-                    string results;
-                    try
-                    {
-                        results = ((List<string>)await PAL.Start(8)).First();
-                    }
-                    catch 
-                    {
-                        results = " ";
-                    }
-                    Console.WriteLine(results.First());
+                    results = ((List<string>)await PAL.Start(requestDuration)).First();
+                }
+                catch 
+                {
+                    results = " ";
+                }
 
-                    //send results to parser for processing
-                    Parser parser = new Parser();
-                    Queue transcript = parser.Tokenize(results);
+                //send results to parser for processing
+                Parser parser = new Parser();
+                Queue transcript = parser.Tokenize(results);
 
+                if (!active)
+                {
+                    active = parser.IsPhrase("hey pal", transcript);
+                    if (active && vocal) 
+                    {
+                        synthesizer.Speak("Yes Master?");
+                        requestDuration = 8; //give user time to speak
+                    }
+                }
+                else
+                {
                     //pass tokenized string to parser, which returns a command to execute
                     Command cmd = parser.Parse(transcript);
                     cmd.Print();
@@ -70,6 +78,7 @@ namespace PAL.Core
                     try
                     {
                         new Executer().ExecuteCommand(cmd).Wait();
+                        if (vocal) synthesizer.Speak("It is done.");
                     }
                     catch (AggregateException e)
                     {
@@ -78,18 +87,8 @@ namespace PAL.Core
                             Console.WriteLine("ERROR: " + ex.Message);
                         }
                     }
-                }
-                else if (listenting) // heyPal Functionality
-                {
-                    //if (recognizer.Result.Text.ToLowerInvariant().ToString() == "hey pal")
-                    {
-                        if (vocal) synthesizer.Speak("Yes master?");
-                        active = true;
-                    }
-                }
-                else 
-                { 
-                //keypress could also set active flag
+                    active = false;
+                    requestDuration = 3; //go back to short term listening
                 }
             }
             
