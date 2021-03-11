@@ -88,5 +88,17 @@ namespace PAL.Core
             }
             return cmd;
         }
+
+        //look for a multi-token term in a transcript
+        public bool IsPhrase(string phrase, Queue transcript)
+        {
+            Queue targetPhrase = Tokenize(phrase);
+            if (targetPhrase.Count > transcript.Count) return false;
+            foreach (string word in targetPhrase)
+            {
+                if (word != (string)transcript.Dequeue()) return false;
+            }
+            return true;
+        }
     }
 }
