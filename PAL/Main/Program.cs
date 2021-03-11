@@ -9,7 +9,6 @@ using System.Threading;
 using OpenQA.Selenium.Remote;
 using System.Collections;
 using System.Speech.Synthesis;
-using System.Speech.Recognition;
 
 namespace PAL.Core
 {
@@ -58,14 +57,22 @@ namespace PAL.Core
                 //send results to parser for processing
                 Parser parser = new Parser();
                 Queue transcript = parser.Tokenize(results);
+                
+                if ((string)transcript.Peek() == "stop")
+                {
+                    if (vocal) synthesizer.Speak("seeya meatsack");
+                    pal = false;
+                }
+
 
                 if (!active)
                 {
                     active = parser.IsPhrase("hey pal", transcript);
+                    requestDuration = 8; //give user time to speak
                     if (active && vocal) 
                     {
                         synthesizer.Speak("Yes Master?");
-                        requestDuration = 8; //give user time to speak
+                        
                     }
                 }
                 else
