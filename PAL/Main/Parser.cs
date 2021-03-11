@@ -25,7 +25,7 @@ namespace PAL.Core
         Hashtable platforms;
         public Parser()
         {
-            //Initialize Keywords table
+            //Initialize Keyword tables
             verbs = new Hashtable();
             platforms = new Hashtable();
             InitTables();
@@ -46,6 +46,8 @@ namespace PAL.Core
             platforms.Add("spotify", "spotify");
             // Bailey remove this when you're done playing with it 
             platforms.Add("images", "images");
+            platforms.Add("crunchyroll", "crunchyroll");
+            platforms.Add("wikipedia", "wikipedia");
         }
 
         public Queue Tokenize(string Transcript)
@@ -85,6 +87,18 @@ namespace PAL.Core
                 }
             }
             return cmd;
+        }
+
+        //look for a multi-token term in a transcript
+        public bool IsPhrase(string phrase, Queue transcript)
+        {
+            Queue targetPhrase = Tokenize(phrase);
+            if (targetPhrase.Count > transcript.Count) return false;
+            foreach (string word in targetPhrase)
+            {
+                if (word != (string)transcript.Dequeue()) return false;
+            }
+            return true;
         }
     }
 }

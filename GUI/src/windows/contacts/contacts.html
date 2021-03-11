@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>contacts</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+
+
+    <!-- LOCAL REFERNCES -->
+    <script src="contacts.js"></script>
+    <link rel="stylesheet" href="contacts.css" />
+
+    <!-- GLOBAL REFERNCES -->
+    <script src="../../engine.js"></script>
+    <script src="../../account.js"></script>
+    <script src="../../windows.js"></script>
+    <script src="../../contact.js"></script>
+    <link rel="stylesheet" href="../../global-styles.css" />
+
+    <!-- LOCAL REFERNCES -->
+    <script src="contacts.js"></script>
+    <link rel="stylesheet" href="contacts.css" />
+</head>
+
+<body onload="init()" style="height: 470px; margin: 0px">
+    <div class="pageContainer">
+        <div class="topNavbar pageBlock">
+            <div class="title">
+                <h2>Contacts</h2>
+            </div>
+            <div id="close-btn" class="closeBtn">
+                <img src="../../assets/icons/close_24px_outlined.svg" />
+            </div>
+        </div>
+        <div id="contacts-list" class="contactsList pageBlock"></div>
+        <button id="new-listing-btn" class="addContactBtn green">
+            Add Contact
+        </button>
+    </div>
+</body>
+
+</html>

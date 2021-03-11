@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>settings</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    
+    <!-- GLOBAL REFERNCES -->
+    <script src="../../engine.js"></script>
+    <script src="../../account.js"></script>
+    <script src="../../windows.js"></script>
+    <script src="../../contact.js"></script>
+    <link rel="stylesheet" href="../../global-styles.css" />
+
+    <!-- LOCAL REFERNCES -->
+    <script src="settings.js"></script>
+    <link rel="stylesheet" href="settings.css">
+</head>
+
+<body onload="init()" style="height: 470px; margin: 0px">
+    <div class="pageContainer">
+        <div class="topNavbar pageBlock">
+            <div class="title"><h2>Settings</h2></div>         
+            <div id="close-btn" class="closeBtn">
+                <img src="../../assets/icons/close_24px_outlined.svg" />
+            </div>
+        </div>
+        <div id="settings-list" class="settingsList pageBlock">
+    </div>
+    
+</body>
+
+</html>
