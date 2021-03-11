@@ -14,7 +14,7 @@
   "author": "Team Bailey",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^10.1.5",
+    "electron": "^10.4.0",
     "electron-cgi": "^1.0.6",
     "prettier": "^2.1.2",
     "tslint": "^6.1.3",

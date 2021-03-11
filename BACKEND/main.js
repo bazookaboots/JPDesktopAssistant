@@ -100,13 +100,13 @@ app.get('/login', async(req, res) => {
                 //fake compare made for security
                 let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`;
                 await bcrypt.compare(req.body.password, fakePass);
-                //res.status(401).send("asaas/users/login POST > Could Not Login User")
+                res.status(401).send("asaas/users/login POST > Could Not Login User")
             }
         })
 
 
     } catch (error) {
-        //res.status(401).send("asddas/users/login POST > Could Not Login User")
+        res.status(401).send("asddas/users/login POST > Could Not Login User")
     }
 })
 
@@ -114,6 +114,16 @@ app.delete('/delete', authenticateToken, async(req, res) => {
     console.log("/delete route called")
     try {
         DeleteUser(req.user.id)
+        console.log("testing")
+    } catch (error) {
+
+    }
+})
+
+app.get('/logout', authenticateToken, async(req, res) => {
+    console.log("/delete route called")
+    try {
+        //TODO implement more robust logout function
         console.log("testing")
     } catch (error) {
 

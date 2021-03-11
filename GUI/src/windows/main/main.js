@@ -1,5 +1,5 @@
 const { BrowserWindow } = require('electron').remote
-
+const authTokens = {}
 const LoggedOutMenu = '<div id="btn-login">Log In</div>' +
     '<div id="btn-settings"> Settings</div>' +
     '<div style="margin-top:auto;padding-bottom:16px;">' +
@@ -28,25 +28,25 @@ function init() {
 
     //Hides register page when back of register area is clicked
     document.getElementById("signup-form").addEventListener("click", (e) => {
-        console.log("exit signup area clicked");
+        //console.log("exit signup area clicked");
         toggleRegisterPage();
     })
 
     //Blocks clicks on the register page from propagating to the back of the register area
     document.getElementById("signup-container").addEventListener("click", (e) => {
-        console.log("signup area clicked");
+        //console.log("signup area clicked");
         e.stopPropagation();
     })
 
     //Hides login page when back of login area is clicked
     document.getElementById("login-form").addEventListener("click", (e) => {
-        console.log("exit login area clicked");
+        //console.log("exit login area clicked");
         toggleLoginPage();
     })
 
     //Blocks clicks on the login page from propagating to the back of the login area
     document.getElementById("login-container").addEventListener("click", (e) => {
-        console.log("login area clicked");
+        //console.log("login area clicked");
         e.stopPropagation();
     })
 
@@ -64,25 +64,22 @@ function init() {
 
     //Closes window on close button click
     document.getElementById("close-btn").addEventListener("click", (e) => {
-        console.log("close-btn function called")
+        //console.log("close-btn function called")
         var window = BrowserWindow.getFocusedWindow();
         window.close();
     })
 
     //Opens menu on menu-btn click event
     document.getElementById("menu-btn").addEventListener("click", async(e) => {
-        console.log("menu-btn pressed");
+        //console.log("menu-btn pressed");
         toggleMenu();
     })
 
     //Closes menu on close-menu-btn click event
     document.getElementById("non-menu-area").addEventListener("click", (e) => {
-        console.log("non-menu-area function called")
+        //console.log("non-menu-area function called")
         toggleMenu();
     })
-
-
-
 
     // This registers the functionality for when the register form's submit button is hit
     document.getElementById("btn-register-form").addEventListener("click", (e) => {
@@ -91,7 +88,7 @@ function init() {
             password = document.getElementById('password-register-input').value
             passwordc = document.getElementById('passwordc-register-input').value
             if (password === passwordc) {
-                CreateUser(username, email, password)
+                RegisterUser(username, email, password)
                 toggleRegisterPage()
             } else {
                 document.getElementById('password-register-input').value = ''
@@ -104,9 +101,7 @@ function init() {
     document.getElementById("btn-login-form").addEventListener("click", (e) => {
         email = document.getElementById('email-login-input').value
         password = document.getElementById('password-login-input').value
-        LoginUser(email, password) //TODO clear form if user is not found and make it red
-        toggleLoginPage()
-        RenderLoggedIn() //TODO add validation before this is ran
+        LoginUser(email, password, authTokens, HandleLoginResponse)
     })
 
 }
@@ -117,7 +112,7 @@ function init() {
  * @memberof Main:main.js
  */
 function toggleMenu() {
-    console.log("toggleMenu() Called")
+    //console.log("toggleMenu() Called")
     if (document.getElementById("menu").style.display == "none") {
         document.getElementById("menu").style.display = "block";
 
@@ -135,7 +130,7 @@ function toggleMenu() {
  * @memberof Main:main.js
  */
 function toggleLoginPage() {
-    console.log("toggleLoginPage() Called")
+    //console.log("toggleLoginPage() Called")
     if (document.getElementById("login-form").style.display == "none") {
         document.getElementById("login-form").style.display = "flex";
 
@@ -151,7 +146,7 @@ function toggleLoginPage() {
  * @memberof Main:main.js
  */
 function toggleRegisterPage() {
-    console.log("toggleSignupPage() Called")
+    //console.log("toggleSignupPage() Called")
     if (document.getElementById("signup-form").style.display == "none") {
         document.getElementById("signup-form").style.display = "flex";
     } else {
@@ -165,26 +160,27 @@ function RenderLoggedIn() {
 
     //Creates Contacts window when btn-contacts is clicked
     document.getElementById("btn-contacts").addEventListener("click", (e) => {
-        console.log("btn-contacts pressed");
+        //console.log("btn-contacts pressed");
         createContactsWindow();
     })
 
     //Creates Account window when btn-account is clicked
     document.getElementById("btn-account").addEventListener("click", (e) => {
-        console.log("btn-account pressed");
+        //console.log("btn-account pressed");
         createAccountWindow();
     })
 
 
     //Creates Settings window when settings-btn is clicked
     document.getElementById("btn-settings").addEventListener("click", (e) => {
-        console.log("btn-settings pressed");
+        //console.log("btn-settings pressed");
         createSettingsWindow();
     })
 
     //Makes login page visible on login-btn click event
     document.getElementById("btn-logout").addEventListener("click", (e) => {
-        console.log("btn-logout pressed");
+        //console.log("btn-logout pressed");
+        LogoutUser()
         RenderLoggedOut()
     })
 }
@@ -212,4 +208,21 @@ function RenderLoggedOut() {
         console.log("btn-settings pressed");
         createSettingsWindow();
     })
+}
+
+function HandleLoginResponse(response) {
+    console.log("HandleLoginResponse received: " + response)
+    console.log("jwt_token: " + authTokens.jwt_token)
+    if (response === 200) {
+        toggleLoginPage()
+        RenderLoggedIn()
+        return
+    } else {
+        document.getElementById("alert-login").innerHTML = "Incorrect Username or Password"
+        document.getElementById('password-login-input').value = ''
+        document.getElementById('email-login-input').value = ''
+        document.getElementById('password-login-input').style.border = '2px solid red'
+        document.getElementById('email-login-input').style.border = '2px solid red'
+    }
+
 }
