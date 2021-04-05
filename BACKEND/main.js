@@ -3,13 +3,26 @@ const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const {Server} = require("socket.io")
 
 const {
     CreateUser,
     FindUserByEmail,
     DeleteUser,
     UpdateUser
-} = require('./accountSQL')
+} = require('./accountSQL');
+
+const {
+     AddMessage,
+     DeleteMessage,
+     GetMessages
+} = require('./messageSQL');
+
+const { request } = require('express');
+
+server = new Server(8000);
+
+let sequenceNumberByClient = new Map();
 
 app.use(express.json())
 
@@ -190,5 +203,85 @@ app.get('/test-find', async(req, res) => {
         res.status(401).send("/users/login POST > Could Not Login User")
     }
 })
+
+app.post('/register', async(req, res) => {
+    console.log("/register route called")
+    try {
+        await FindUserByEmail(req.body.email, async(foundUser) => {
+            if (foundUser === undefined) {
+                //Check that the email meets character requirements
+                if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
+                    console.log("EMAIL IS INVALID") //DEBUG
+                    return res.status(422).send()
+                }
+
+                //Check that the username meets character requirements
+                if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5) {
+                    console.log("USERNAME IS INVALID") //DEBUG
+                    return res.status(422).send()
+                }
+
+                //Check that the password is expression valid
+                if ( /* !req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/) || */ req.body.password.length < 8) {
+                    console.log("PASSWORD IS INVALID") //DEBUG
+                    return res.status(422).send()
+                }
+                //Hash user password
+                const hashedPassword = await bcrypt.hash(req.body.password, 10);
+                //Create user object
+                const user = {
+                    id: Date.now(),
+                    email: req.body.email,
+                    username: req.body.username,
+                    passhash: hashedPassword
+                }
+                await CreateUser(user, async(response) => {
+                    res.status(201).send()
+                });
+
+            } else {
+                console.log("USER ALREADY FOUND")
+                res.status(422).send()
+            }
+        })
+
+    } catch (error) {
+
+    }
+})
+
+//GetMessages path
+    //Call GetMessages
+
+//DeleteMessage path
+    //Call DeleteMessage
+
+
+//socket.io stuff
+// event fired every time a new client connects:
+server.on("connection", (socket) => {
+    console.info(`Client connected [id=${socket.id}]`);
+    // initialize this client's sequence number
+    sequenceNumberByClient.set(socket, 1);
+
+    // when socket disconnects, remove it from the list:
+    socket.on("disconnect", () => {
+        sequenceNumberByClient.delete(socket);
+        console.info(`Client gone [id=${socket.id}]`);
+    });
+});
+
+//server.on(sendmessage)
+    //add to database
+    //if user is connected currently, send socket message
+
+//sends each client its current sequence number
+setInterval(() => {
+    for (const [client, sequenceNumber] of sequenceNumberByClient.entries()) {
+        client.emit("seq-num", sequenceNumber);
+        sequenceNumberByClient.set(client, sequenceNumber + 1);
+    }
+}, 1000);
+
 
 app.listen(3010, '127.0.0.1')
