@@ -204,52 +204,6 @@ app.get('/test-find', async(req, res) => {
     }
 })
 
-app.post('/register', async(req, res) => {
-    console.log("/register route called")
-    try {
-        await FindUserByEmail(req.body.email, async(foundUser) => {
-            if (foundUser === undefined) {
-                //Check that the email meets character requirements
-                if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-                    console.log("EMAIL IS INVALID") //DEBUG
-                    return res.status(422).send()
-                }
-
-                //Check that the username meets character requirements
-                if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5) {
-                    console.log("USERNAME IS INVALID") //DEBUG
-                    return res.status(422).send()
-                }
-
-                //Check that the password is expression valid
-                if ( /* !req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/) || */ req.body.password.length < 8) {
-                    console.log("PASSWORD IS INVALID") //DEBUG
-                    return res.status(422).send()
-                }
-                //Hash user password
-                const hashedPassword = await bcrypt.hash(req.body.password, 10);
-                //Create user object
-                const user = {
-                    id: Date.now(),
-                    email: req.body.email,
-                    username: req.body.username,
-                    passhash: hashedPassword
-                }
-                await CreateUser(user, async(response) => {
-                    res.status(201).send()
-                });
-
-            } else {
-                console.log("USER ALREADY FOUND")
-                res.status(422).send()
-            }
-        })
-
-    } catch (error) {
-
-    }
-})
-
 //GetMessages path
     //Call GetMessages
 
