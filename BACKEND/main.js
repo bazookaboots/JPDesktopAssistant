@@ -3,7 +3,8 @@ const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {Server} = require("socket.io")
+const Server = require("socket.io")
+app.use(express.json())
 
 const {
     CreateUser,
@@ -18,13 +19,18 @@ const {
      GetMessages
 } = require('./messageSQL');
 
-const { request } = require('express');
-
 server = new Server(8000);
-
 let sequenceNumberByClient = new Map();
 
-app.use(express.json())
+server.on("connection", (socket) => {
+    console.info(`Client connected [id=${socket.id}]`);
+    sequenceNumberByClient.set(socket, 1);
+
+    socket.on("disconnect", () => {
+        sequenceNumberByClient.delete(socket);
+        console.info(`Client gone [id=${socket.id}]`);
+    });
+});
 
 function authenticateToken(request, response, next) {
     const authHeader = request.headers['authorization']
@@ -40,7 +46,6 @@ function authenticateToken(request, response, next) {
         next()
     })
 }
-
 
 app.post('/register', async(req, res) => {
     console.log("/register route called")
@@ -210,32 +215,8 @@ app.get('/test-find', async(req, res) => {
 //DeleteMessage path
     //Call DeleteMessage
 
-
-//socket.io stuff
-// event fired every time a new client connects:
-server.on("connection", (socket) => {
-    console.info(`Client connected [id=${socket.id}]`);
-    // initialize this client's sequence number
-    sequenceNumberByClient.set(socket, 1);
-
-    // when socket disconnects, remove it from the list:
-    socket.on("disconnect", () => {
-        sequenceNumberByClient.delete(socket);
-        console.info(`Client gone [id=${socket.id}]`);
-    });
-});
-
 //server.on(sendmessage)
     //add to database
     //if user is connected currently, send socket message
-
-//sends each client its current sequence number
-setInterval(() => {
-    for (const [client, sequenceNumber] of sequenceNumberByClient.entries()) {
-        client.emit("seq-num", sequenceNumber);
-        sequenceNumberByClient.set(client, sequenceNumber + 1);
-    }
-}, 1000);
-
 
 app.listen(3010, '127.0.0.1')
