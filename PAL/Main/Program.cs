@@ -56,9 +56,10 @@ namespace PAL.Core
 
                 //send results to parser for processing
                 Parser parser = new Parser();
+                string full = results.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c).ToLower();
                 Queue transcript = parser.Tokenize(results);
                 
-                if ((string)transcript.Peek() == "stop")
+                if (parser.calculateSimilarity(full, "stop") > 0.8 )
                 {
                     if (vocal) synthesizer.Speak("seeya meatsack");
                     pal = false;
@@ -67,8 +68,13 @@ namespace PAL.Core
 
                 if (!active)
                 {
-                    active = parser.IsPhrase("hey pal", transcript);
-                    requestDuration = 8; //give user time to speak
+                    Console.WriteLine(parser.calculateSimilarity(full, "hey pal"));
+                    if (parser.calculateSimilarity(full, "hey pal") > 0.5) 
+                    {
+                        active = true;
+                        requestDuration = 8; //give user time to speak
+                    }
+                    
                     if (active && vocal) 
                     {
                         synthesizer.Speak("Yes Master?");
