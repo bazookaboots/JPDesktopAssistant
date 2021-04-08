@@ -1,9 +1,8 @@
 require('dotenv').config();
 const express = require('express')
-const app = express()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const Server = require("socket.io")
+const app = express()
 app.use(express.json())
 
 const {
@@ -12,25 +11,6 @@ const {
     DeleteUser,
     UpdateUser
 } = require('./accountSQL');
-
-const {
-     AddMessage,
-     DeleteMessage,
-     GetMessages
-} = require('./messageSQL');
-
-server = new Server(8000);
-let sequenceNumberByClient = new Map();
-
-server.on("connection", (socket) => {
-    console.info(`Client connected [id=${socket.id}]`);
-    sequenceNumberByClient.set(socket, 1);
-
-    socket.on("disconnect", () => {
-        sequenceNumberByClient.delete(socket);
-        console.info(`Client gone [id=${socket.id}]`);
-    });
-});
 
 function authenticateToken(request, response, next) {
     const authHeader = request.headers['authorization']
@@ -209,14 +189,64 @@ app.get('/test-find', async(req, res) => {
     }
 })
 
-//GetMessages path
-    //Call GetMessages
+// Messaging Logic //
 
-//DeleteMessage path
-    //Call DeleteMessage
+const Server = require("socket.io")
+
+const {
+    AddMessage,
+    DeleteMessage,
+    GetMessages
+} = require('./messageSQL');
+
+server = new Server(8000);
+let sequenceNumberByClient = new Map();
+
+server.on("connection", (socket) => {
+   console.info(`Client connected [id=${socket.id}]`);
+   sequenceNumberByClient.set(socket, 1);
+
+   socket.on("disconnect", () => {
+       sequenceNumberByClient.delete(socket);
+       console.info(`Client gone [id=${socket.id}]`);
+   });
+});
 
 //server.on(sendmessage)
     //add to database
     //if user is connected currently, send socket message
 
+app.post('/getmessages', authenticateToken, async(req, res) => {
+    console.log("/getmessages route called")
+    try {
+        const request = {
+            fromid: req.body.fromid,
+            toid: req.body.toid
+        }
+        await GetMessages(request, async(response) => {
+            res.status(201).send()
+        });
+
+    } catch (error) {
+
+    }
+})
+
+app.delete('/deletemessage', authenticateToken, async(req, res) => {
+    console.log("/deletemessage route called")
+    try {
+        const request = {
+            fromid: req.body.fromid,
+            toid: req.body.toid,
+            messageid: req.body.messageid
+        }
+        await DeleteMessage(request, async(response) => {
+            res.status(201).send()
+        });
+
+    } catch (error) {
+
+    }
+})
+    
 app.listen(3010, '127.0.0.1')
