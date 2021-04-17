@@ -27,8 +27,8 @@ function authenticateToken(request, response, next) {
     })
 }
 
-app.post('/register', async(req, res) => {
-    console.log("/register route called")
+app.post('/register', /*authenticateToken,*/ async(req, res) => {
+    console.log("/register route called")   //DEBUG
     try {
         await FindUserByEmail(req.body.email, async(foundUser) => {
             if (foundUser === undefined) {
@@ -45,7 +45,7 @@ app.post('/register', async(req, res) => {
                 }
 
                 //Check that the password is expression valid
-                if ( /* !req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/) || */ req.body.password.length < 8) {
+                if (req.body.password.length < 8) {
                     console.log("PASSWORD IS INVALID") //DEBUG
                     return res.status(422).send()
                 }
@@ -73,8 +73,8 @@ app.post('/register', async(req, res) => {
     }
 })
 
-app.get('/login', async(req, res) => {
-    console.log("/login route called")
+app.get('/login', /*authenticateToken,*/ async(req, res) => {
+    console.log("/login route called")  //DEBUG
     try {
         await FindUserByEmail(req.body.email, async function(foundUser) {
             if (foundUser !== undefined) {
@@ -108,8 +108,8 @@ app.get('/login', async(req, res) => {
     }
 })
 
-app.delete('/delete', authenticateToken, async(req, res) => {
-    console.log("/delete route called")
+app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
+    console.log("/delete route called") //DEBUG
     try {
         DeleteUser(req.user.id)
         console.log("testing")
@@ -118,8 +118,8 @@ app.delete('/delete', authenticateToken, async(req, res) => {
     }
 })
 
-app.get('/logout', authenticateToken, async(req, res) => {
-    console.log("/delete route called")
+app.get('/logout', /*authenticateToken,*/ async(req, res) => {
+    console.log("/delete route called") //DEBUG
     try {
         //TODO implement more robust logout function
         console.log("testing")
@@ -128,8 +128,8 @@ app.get('/logout', authenticateToken, async(req, res) => {
     }
 })
 
-app.patch('/update', authenticateToken, async(req, res) => {
-    console.log("/update route called")
+app.patch('/update', /*authenticateToken,*/ async(req, res) => {
+    console.log("/update route called") //DEBUG
     try {
         await FindUserByEmail(req.user.email, async(foundUser) => {
             if (foundUser) {
@@ -146,7 +146,7 @@ app.patch('/update', authenticateToken, async(req, res) => {
                 }
 
                 //Check that the password is expression valid
-                if ( /* !req.body.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/) || */ req.body.password.length < 8) {
+                if (req.body.password.length < 8) {
                     console.log("PASSWORD IS INVALID") //DEBUG
                     return res.status(422).send()
                 }
@@ -175,7 +175,7 @@ app.patch('/update', authenticateToken, async(req, res) => {
 })
 
 app.get('/test-find', async(req, res) => {
-    console.log("/test-find route called")
+    console.log("/test-find route called") //DEBUG
     try {
         let accessToken = jwt.sign({
             id: "foundUser.id",
@@ -198,7 +198,7 @@ const {
     DeleteMessage,
     GetMessages
 } = require('./messageSQL');
-
+/*
 server = new Server(8000);
 let sequenceNumberByClient = new Map();
 
@@ -211,13 +211,13 @@ server.on("connection", (socket) => {
        console.info(`Client gone [id=${socket.id}]`);
    });
 });
-
+*/
 //server.on(sendmessage)
     //add to database
     //if user is connected currently, send socket message
 
-app.post('/getmessages', authenticateToken, async(req, res) => {
-    console.log("/getmessages route called")
+app.post('/getmessages', /*authenticateToken,*/ async(req, res) => {
+    console.log("/getmessages route called") //DEBUG
     try {
         const request = {
             fromid: req.body.fromid,
@@ -232,8 +232,8 @@ app.post('/getmessages', authenticateToken, async(req, res) => {
     }
 })
 
-app.delete('/deletemessage', authenticateToken, async(req, res) => {
-    console.log("/deletemessage route called")
+app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
+    console.log("/deletemessage route called")  //DEBUG
     try {
         const request = {
             fromid: req.body.fromid,
