@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config()
 const express = require('express')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -10,14 +10,14 @@ const {
     FindUserByEmail,
     DeleteUser,
     UpdateUser
-} = require('./accountSQL');
+} = require('./accountSQL')
 
 function authenticateToken(request, response, next) {
     const authHeader = request.headers['authorization']
 
-    console.log("authHeader value = " + authHeader)
+    console.log("authHeader value = " + authHeader) //DEBUG
     const token = authHeader && authHeader.split(' ')[1]
-    console.log("token value = " + token)
+    console.log("token value = " + token)   //DEBUG
     if (token == null) return response.status(401).send("Failed to AuthenticateToken")
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
@@ -32,35 +32,33 @@ app.post('/register', /*authenticateToken,*/ async(req, res) => {
     try {
         await FindUserByEmail(req.body.email, async(foundUser) => {
             if (foundUser === undefined) {
-                //Check that the email meets character requirements
                 if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
                     console.log("EMAIL IS INVALID") //DEBUG
                     return res.status(422).send()
                 }
 
-                //Check that the username meets character requirements
                 if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5) {
                     console.log("USERNAME IS INVALID") //DEBUG
                     return res.status(422).send()
                 }
 
-                //Check that the password is expression valid
                 if (req.body.password.length < 8) {
                     console.log("PASSWORD IS INVALID") //DEBUG
                     return res.status(422).send()
                 }
-                //Hash user password
-                const hashedPassword = await bcrypt.hash(req.body.password, 10);
-                //Create user object
+
+                const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
                 const user = {
                     id: Date.now(),
                     email: req.body.email,
                     username: req.body.username,
                     passhash: hashedPassword
                 }
+
                 await CreateUser(user, async(response) => {
                     res.status(201).send()
-                });
+                })
 
             } else {
                 console.log("USER ALREADY FOUND")
@@ -78,8 +76,8 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
     try {
         await FindUserByEmail(req.body.email, async function(foundUser) {
             if (foundUser !== undefined) {
-                let submittedPass = req.body.password;
-                let storedPassHash = foundUser.passhash;
+                let submittedPass = req.body.password
+                let storedPassHash = foundUser.passhash
                 await bcrypt.compare(submittedPass, storedPassHash, function(err, passMatch) {
                     if (passMatch) {
                         let userSig = {
@@ -95,14 +93,11 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
                     }
                 })
             } else {
-                //fake compare made for security
-                let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`;
-                await bcrypt.compare(req.body.password, fakePass);
+                let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`
+                await bcrypt.compare(req.body.password, fakePass)
                 res.status(401).send("asaas/users/login POST > Could Not Login User")
             }
         })
-
-
     } catch (error) {
         res.status(401).send("asddas/users/login POST > Could Not Login User")
     }
@@ -133,26 +128,23 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
     try {
         await FindUserByEmail(req.user.email, async(foundUser) => {
             if (foundUser) {
-                //Check that the email meets character requirements
                 if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
                     console.log("EMAIL IS INVALID") //DEBUG
                     return res.status(422).send()
                 }
 
-                //Check that the username meets character requirements
                 if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5) {
                     console.log("USERNAME IS INVALID") //DEBUG
                     return res.status(422).send()
                 }
 
-                //Check that the password is expression valid
                 if (req.body.password.length < 8) {
                     console.log("PASSWORD IS INVALID") //DEBUG
                     return res.status(422).send()
                 }
-                //Hash user password
-                const hashedPassword = await bcrypt.hash(req.body.password, 10);
-                //Create user object
+
+                const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
                 const user = {
                     id: foundUser.id,
                     email: req.body.email,
@@ -161,7 +153,7 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
                 }
                 await UpdateUser(user, async(response) => {
                     res.status(201).send()
-                });
+                })
 
             } else {
                 console.log("USER ALREADY FOUND")
@@ -191,45 +183,48 @@ app.get('/test-find', async(req, res) => {
 
 // Messaging Logic //
 
-const Server = require("socket.io")
+const
+    {Server} = require("socket.io"),
+    server = new Server(8000);
 
 const {
     AddMessage,
     DeleteMessage,
-    GetMessages
-} = require('./messageSQL');
-/*
-server = new Server(8000);
-let sequenceNumberByClient = new Map();
+    GetUserMessages,
+    GetAllMessages
+} = require('./messageSQL')
+
+let sequenceNumberByClient = new Map()
 
 server.on("connection", (socket) => {
-   console.info(`Client connected [id=${socket.id}]`);
-   sequenceNumberByClient.set(socket, 1);
+   console.info(`Client connected [id=${socket.id}], [userid=${socket.handshake.query['userid']}]`)   //DEBUG
+   sequenceNumberByClient.set(socket.handshake.query['userid'], socket) //add socket, key is userid
 
    socket.on("disconnect", () => {
-       sequenceNumberByClient.delete(socket);
-       console.info(`Client gone [id=${socket.id}]`);
-   });
-});
-*/
-//server.on(sendmessage)
-    //add to database
-    //if user is connected currently, send socket message
+       sequenceNumberByClient.delete(socket.handshake.query['userid'])  //remove socket, key is userid
+       console.info(`Client gone [id=${socket.id}]`)    //DEBUG
+   })
+   socket.on("sendmessage", (request) => {
+        console.info(`Client got message [message=${request.message}], [message=${request.toid}], [message=${request.fromid}]`)    //DEBUG
+        try {
+            const message = {
+                messageid: Date.now(),
+                message: request.message,
+                toid: request.toid,
+                fromid: request.fromid
+            }
+            
+            AddMessage(message, async(response))    //add to database
 
-app.post('/getmessages', /*authenticateToken,*/ async(req, res) => {
-    console.log("/getmessages route called") //DEBUG
-    try {
-        const request = {
-            fromid: req.body.fromid,
-            toid: req.body.toid
+            if (sequenceNumberByClient.get(request.toid))   //If client is connected
+            {
+                sequenceNumberByClient.get(request.toid).emit("getmessage", message);   //Emit message to client from socket list.
+            }
         }
-        await GetMessages(request, async(response) => {
-            res.status(201).send()
-        });
+        catch (error) {
 
-    } catch (error) {
-
-    }
+        }
+    })
 })
 
 app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
@@ -242,11 +237,42 @@ app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
         }
         await DeleteMessage(request, async(response) => {
             res.status(201).send()
-        });
+        })
 
     } catch (error) {
 
     }
 })
     
+app.get('/getusermessages', /*authenticateToken,*/ async(req, res) => {
+    console.log("/getusermessages route called") //DEBUG
+    try {
+        const request = {
+            toid: req.body.toid,
+            fromid: req.body.fromid
+        }
+        await GetUserMessages(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (error) {
+
+    }
+})
+
+app.get('/getallmessages', /*authenticateToken,*/ async(req, res) => {
+    console.log("/getallmessages route called") //DEBUG
+    try {
+        const request = {
+            fromid: req.body.fromid
+        }
+        await GetAllMessages(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (error) {
+
+    }
+})
+
 app.listen(3010, '127.0.0.1')

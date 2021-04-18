@@ -1,5 +1,18 @@
-const
-    io = require("socket.io-client"),
-    ioClient = io.connect("http://localhost:8000");
+const io = require("socket.io-client"),
+const ioClient = io.connect("http://localhost:8000", 1111);
 
-ioClient.on("seq-num", (msg) => console.info(msg));
+ioClient.on("getmessage", (msg) => console.info(msg));
+
+test();
+
+function test() {
+    const message = {
+        messageid: Date.now(),
+        message: "This is a test",
+        toid: 1111,
+        fromid: 2222
+    }
+
+    ioClient.emit("sendmessage", message)
+
+}

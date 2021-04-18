@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config()
 const sql = require('mssql')
 const jwt = require('jsonwebtoken')
 
@@ -17,17 +17,17 @@ const config = {
 async function AddMessage(requested, callback) {
     console.log("Fucntion Called> AddMessage(request)") //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn);
-        request.input('messageid', sql.VarChar(255), requested.messageid);
-        request.input('message', sql.VarChar(255), requested.message);
-        request.input('fromid', sql.VarChar(255), requested.fromid);
-        request.input('toid', sql.VarChar(255), requested.toid);
+        var request = new sql.Request(conn)
+        request.input('messageid', sql.VarChar(255), requested.messageid)
+        request.input('message', sql.VarChar(255), requested.message)
+        request.input('fromid', sql.VarChar(255), requested.fromid)
+        request.input('toid', sql.VarChar(255), requested.toid)
         request.execute('spMessages_AddMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.log(err);
-        });
-    });
+            console.log(err)
+        })
+    })
 
 }
 
@@ -35,30 +35,44 @@ async function AddMessage(requested, callback) {
 async function DeleteMessage(requested, callback) {
     console.log("Fucntion Called> DeleteMessage(request)")  //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn);
-        request.input('messageid', sql.VarChar(255), requested.messageid);
+        var request = new sql.Request(conn)
+        request.input('messageid', sql.VarChar(255), requested.messageid)
         request.execute('spMessages_DeleteMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.log(err);
-        });
-    });
+            console.log(err)
+        })
+    })
 
 }
 
-async function GetMessages(requested, callback) {
-    console.log("Fucntion Called> GetMessages(request)")    //DEBUG
+async function GetUserMessages(requested, callback) {
+    console.log("Fucntion Called> GetUserMessages(request)")    //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn);
-        request.input('fromid', sql.VarChar(255), requested.fromid);
-        request.input('toid', sql.VarChar(255), requested.toid);
-        request.execute('spMessages_GetMessages').then(function(recordsets, err) {
+        var request = new sql.Request(conn)
+        request.input('fromid', sql.VarChar(255), requested.fromid)
+        request.input('toid', sql.VarChar(255), requested.toid)
+        request.execute('spMessages_GetUserMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.log(err);
-        });
-    });
+            console.log(err)
+        })
+    })
 
 }
 
-module.exports = { AddMessage, DeleteMessage, GetMessages }
+async function GetAllMessages(requested, callback) {
+    console.log("Fucntion Called> GetAllMessages(request)")    //DEBUG
+    var conn = new sql.connect(config).then(function(conn) {
+        var request = new sql.Request(conn)
+        request.input('fromid', sql.VarChar(255), requested.fromid)
+        request.execute('spMessages_GetAllMessages').then(function(recordsets, err) {
+            callback(recordsets)
+        }).catch(function(err) {
+            console.log(err)
+        })
+    })
+
+}
+
+module.exports = { AddMessage, DeleteMessage, GetUserMessages, GetAllMessages }
