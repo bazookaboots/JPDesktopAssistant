@@ -25,7 +25,7 @@ async function AddMessage(requested, callback) {
         request.execute('spMessages_AddMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.log(err)
+            console.error(err)
         })
     })
 }
@@ -38,7 +38,7 @@ async function DeleteMessage(requested, callback) {
         request.execute('spMessages_DeleteMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.log(err)
+            console.error(err)
         })
     })
 }
@@ -52,7 +52,7 @@ async function GetUserMessages(requested, callback) {
         request.execute('spMessages_GetUserMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.log(err)
+            console.error(err)
         })
     })
 }
@@ -65,7 +65,7 @@ async function GetAllMessages(requested, callback) {
         request.execute('spMessages_GetAllMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.log(err)
+            console.error(err)
         })
     })
 }
