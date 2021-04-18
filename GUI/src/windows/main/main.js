@@ -106,6 +106,7 @@ function init() {
 
 }
 
+//DEBUG START
 const io = require("socket.io-client"),
 ioClient = io.connect("http://localhost:8000", 
     { 
@@ -118,6 +119,7 @@ ioClient.on("getmessage", (message) => {
     console.log("Got a message")
     console.log(message.message);
 })
+//DEBUG END
 
 /**
  * Toggles the visibility of the side menu in the HTML document
@@ -125,7 +127,7 @@ ioClient.on("getmessage", (message) => {
  * @memberof Main:main.js
  */
 function toggleMenu() {
-
+//DEBUG START
     const request = {
         message: "test2",
         toid: 1111,
@@ -133,8 +135,8 @@ function toggleMenu() {
     }
 
     ioClient.emit("sendmessage", request)
+//DEBUG END
 
-    //console.log("toggleMenu() Called")
     if (document.getElementById("menu").style.display == "none") {
         document.getElementById("menu").style.display = "block";
 

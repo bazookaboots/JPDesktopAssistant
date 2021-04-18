@@ -4,7 +4,7 @@ ioClient = NULL
 
 // This function is automatic
 ioClient.on("getmessage", (msg) => {
-    console.info(msg);
+    console.info(msg)
     //TODO: Add logic for the user to see these messages in the GUI
     //You will receive: messageid, message, fromid, and toid
 })
@@ -16,9 +16,9 @@ function Startup(m_userid)
     { 
         query: {
         userid: m_userid
-    }});
+    }})
     
-    GetAllMessages(m_userid);
+    GetAllMessages(m_userid)
 }
 
 //TODO: This function needs to run when the user sends a message in the GUI

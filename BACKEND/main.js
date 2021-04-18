@@ -67,7 +67,7 @@ app.post('/register', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (error) {
-
+        console.error(error.message)
     }
 })
 
@@ -100,6 +100,7 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (error) {
+        console.error(error.message)
         res.status(401).send("asddas/users/login POST > Could Not Login User")
     }
 })
@@ -111,7 +112,7 @@ app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
         console.log("testing")
     } 
     catch (error) {
-
+        console.error(error.message)
     }
 })
 
@@ -121,7 +122,7 @@ app.get('/logout', /*authenticateToken,*/ async(req, res) => {
         //TODO implement more robust logout function
         console.log("testing")
     } catch (error) {
-
+        console.error(error.message)
     }
 })
 
@@ -165,7 +166,7 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
 
     } 
     catch (error) {
-
+        console.error(error.message)
     }
 })
 
@@ -181,6 +182,7 @@ app.get('/test-find', async(req, res) => {
         res.status(200).json({ Token: accessToken })
     } 
     catch (error) {
+        console.error(error.message)
         res.status(401).send("/users/login POST > Could Not Login User")
     }
 })
@@ -219,18 +221,15 @@ server.on("connection", (socket) => {
                 fromid: request.fromid
             }
 
-            AddMessage(message, async(response))
-
-            console.log(sequenceNumberByClient.has(request.toid))
+            AddMessage(message)
 
             if (sequenceNumberByClient.get(request.toid))
             {
-                console.log("Got here")
                 sequenceNumberByClient.get(request.toid).emit("getmessage", message)
             }
         }
         catch (error) {
-
+            console.error(error.message)
         }
     })
 })
@@ -250,7 +249,7 @@ app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
 
     } 
     catch (error) {
-
+        console.error(error.message)
     }
 })
     
@@ -267,7 +266,7 @@ app.get('/getusermessages', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (error) {
-
+        console.error(error.message)
     }
 })
 
@@ -282,7 +281,7 @@ app.get('/getallmessages', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (error) {
-
+        console.error(error.message)
     }
 })
 
