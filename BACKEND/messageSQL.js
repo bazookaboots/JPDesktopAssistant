@@ -28,10 +28,8 @@ async function AddMessage(requested, callback) {
             console.log(err)
         })
     })
-
 }
 
-//TODO clean up function and add comments
 async function DeleteMessage(requested, callback) {
     console.log("Fucntion Called> DeleteMessage(request)")  //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
@@ -43,7 +41,6 @@ async function DeleteMessage(requested, callback) {
             console.log(err)
         })
     })
-
 }
 
 async function GetUserMessages(requested, callback) {
@@ -58,7 +55,6 @@ async function GetUserMessages(requested, callback) {
             console.log(err)
         })
     })
-
 }
 
 async function GetAllMessages(requested, callback) {
@@ -72,7 +68,6 @@ async function GetAllMessages(requested, callback) {
             console.log(err)
         })
     })
-
 }
 
 module.exports = { AddMessage, DeleteMessage, GetUserMessages, GetAllMessages }

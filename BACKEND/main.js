@@ -65,8 +65,8 @@ app.post('/register', /*authenticateToken,*/ async(req, res) => {
                 res.status(422).send()
             }
         })
-
-    } catch (error) {
+    } 
+    catch (error) {
 
     }
 })
@@ -98,7 +98,8 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
                 res.status(401).send("asaas/users/login POST > Could Not Login User")
             }
         })
-    } catch (error) {
+    } 
+    catch (error) {
         res.status(401).send("asddas/users/login POST > Could Not Login User")
     }
 })
@@ -108,7 +109,8 @@ app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
     try {
         DeleteUser(req.user.id)
         console.log("testing")
-    } catch (error) {
+    } 
+    catch (error) {
 
     }
 })
@@ -161,7 +163,8 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
             }
         })
 
-    } catch (error) {
+    } 
+    catch (error) {
 
     }
 })
@@ -176,7 +179,8 @@ app.get('/test-find', async(req, res) => {
         }, process.env.ACCESS_TOKEN_SECRET)
         console.log("contents of accessToken = " + accessToken)
         res.status(200).json({ Token: accessToken })
-    } catch (error) {
+    } 
+    catch (error) {
         res.status(401).send("/users/login POST > Could Not Login User")
     }
 })
@@ -185,7 +189,7 @@ app.get('/test-find', async(req, res) => {
 
 const
     {Server} = require("socket.io"),
-    server = new Server(8000);
+    server = new Server(8000)
 
 const {
     AddMessage,
@@ -197,15 +201,16 @@ const {
 let sequenceNumberByClient = new Map()
 
 server.on("connection", (socket) => {
-   console.info(`Client connected [id=${socket.id}], [userid=${socket.handshake.query['userid']}]`)   //DEBUG
-   sequenceNumberByClient.set(socket.handshake.query['userid'], socket) //add socket, key is userid
+   console.info(`Client connected [id=${socket.id}], [userid=${socket.handshake.query.userid}]`)   //DEBUG
+   sequenceNumberByClient.set(parseInt(socket.handshake.query.userid), socket)
 
    socket.on("disconnect", () => {
-       sequenceNumberByClient.delete(socket.handshake.query['userid'])  //remove socket, key is userid
+       sequenceNumberByClient.delete(socket.handshake.query.userid)
        console.info(`Client gone [id=${socket.id}]`)    //DEBUG
    })
+
    socket.on("sendmessage", (request) => {
-        console.info(`Client got message [message=${request.message}], [message=${request.toid}], [message=${request.fromid}]`)    //DEBUG
+        console.info(`Client got message [message=${request.message}], [toid=${request.toid}], [fromid=${request.fromid}]`)    //DEBUG
         try {
             const message = {
                 messageid: Date.now(),
@@ -213,12 +218,15 @@ server.on("connection", (socket) => {
                 toid: request.toid,
                 fromid: request.fromid
             }
-            
-            AddMessage(message, async(response))    //add to database
 
-            if (sequenceNumberByClient.get(request.toid))   //If client is connected
+            AddMessage(message, async(response))
+
+            console.log(sequenceNumberByClient.has(request.toid))
+
+            if (sequenceNumberByClient.get(request.toid))
             {
-                sequenceNumberByClient.get(request.toid).emit("getmessage", message);   //Emit message to client from socket list.
+                console.log("Got here")
+                sequenceNumberByClient.get(request.toid).emit("getmessage", message)
             }
         }
         catch (error) {
@@ -235,11 +243,13 @@ app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
             toid: req.body.toid,
             messageid: req.body.messageid
         }
+
         await DeleteMessage(request, async(response) => {
             res.status(201).send()
         })
 
-    } catch (error) {
+    } 
+    catch (error) {
 
     }
 })
@@ -251,6 +261,7 @@ app.get('/getusermessages', /*authenticateToken,*/ async(req, res) => {
             toid: req.body.toid,
             fromid: req.body.fromid
         }
+
         await GetUserMessages(request, async(response) => {
             res.status(201).send()
         })
