@@ -9,7 +9,9 @@ const {
     CreateUser,
     FindUserByEmail,
     DeleteUser,
-    UpdateUser
+    UpdateUser,
+    UpdateContact,
+    GetContacts
 } = require('./accountSQL')
 
 function authenticateToken(request, response, next) {
@@ -49,14 +51,14 @@ app.post('/register', /*authenticateToken,*/ async(req, res) => {
 
                 const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
-                const user = {
+                const request = {
                     id: Date.now(),
                     email: req.body.email,
                     username: req.body.username,
                     passhash: hashedPassword
                 }
 
-                await CreateUser(user, async(response) => {
+                await CreateUser(request, async(response) => {
                     res.status(201).send()
                 })
 
@@ -148,13 +150,13 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
 
                 const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
-                const user = {
+                const request = {
                     id: foundUser.id,
                     email: req.body.email,
                     username: req.body.username,
                     passhash: hashedPassword
                 }
-                await UpdateUser(user, async(response) => {
+                await UpdateUser(request, async(response) => {
                     res.status(201).send()
                 })
 
@@ -184,6 +186,39 @@ app.get('/test-find', async(req, res) => {
     catch (error) {
         console.error(error.message)
         res.status(401).send("/users/login POST > Could Not Login User")
+    }
+})
+
+app.post('/updatecontacts', /*authenticateToken,*/ async(req, res) => {
+    console.log("/updatecontacts route called")   //DEBUG
+    try {
+        const request = {
+            userid: req.body.userid,
+            contacts: req.body.contacts
+        }
+
+        await UpdateContact(request, async(response) => {
+            res.status(201).send()
+        })
+    }
+    catch (error) {
+        console.error(error.message)
+    }
+})
+
+app.get('/getcontacts', /*authenticateToken,*/ async(req, res) => {
+    console.log("/getcontacts route called") //DEBUG
+    try {
+        const request = {
+            userid: req.body.userid
+        }
+
+        await GetContacts(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (error) {
+        console.error(error.message)
     }
 })
 
