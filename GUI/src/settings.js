@@ -4,8 +4,10 @@ async function UpdateSettings(userid, setting, value)
 {
   console.log("Called updatesettings"); //DEBUG
 
+    //TODO: Logic for updating settings string
+
   let options = {
-    host: '127.0.0.1', //Update later
+    host: '127.0.0.1',
     path: '/updatesettings',
     port: 3010,
     method: 'POST',
@@ -20,7 +22,7 @@ async function UpdateSettings(userid, setting, value)
     response.on('data', d => {
       console.log(d); //DEBUG
       
-    //TODO: Logic for updating settings json
+    //TODO: Save new string
 
       const data = JSON.stringify(UPDATE, null, 4);
       fs.writeFile('settings.json', data, (err))
@@ -40,7 +42,7 @@ async function GetSettings(userid) {
   console.log("Called getcontacts");  //DEBUG
 
   let options = {
-    host: '127.0.0.1', //Update later
+    host: '127.0.0.1',
     path: '/getsettings',
     port: 3010,
     method: 'GET'

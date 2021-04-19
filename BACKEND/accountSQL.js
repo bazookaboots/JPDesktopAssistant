@@ -2,7 +2,6 @@ require('dotenv').config()
 const sql = require('mssql')
 const jwt = require('jsonwebtoken')
 
-//Connection config
 const config = {
     server: process.env.DB_SERVER,
     user: process.env.DB_USER,
@@ -29,7 +28,6 @@ async function CreateUser(user, callback) {
             console.log(err)
         })
     })
-
 }
 
 //TODO clean up function and add comments
@@ -46,8 +44,8 @@ async function FindUserByEmail(email, callback) {
                 console.dir("ERROR CAUGHT IN FindUserByEmail( " + email + " ): " + err)
             })
         })
-
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error)
     }
 }
@@ -63,8 +61,8 @@ async function DeleteUser(id, callback) {
                 console.dir("ERROR CAUGHT IN DeleteUser( " + id + ", " + callback + "): " + err)
             })
         })
-
-    } catch (error) {
+    } 
+    catch (error) {
         console.log(error)
     }
 }

@@ -2,7 +2,6 @@ require('dotenv').config()
 const sql = require('mssql')
 const jwt = require('jsonwebtoken')
 
-//TODO Create new automated databse functions
 const config = {
     server: process.env.DB_SERVER,
     user: process.env.DB_USER,

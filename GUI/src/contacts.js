@@ -1,4 +1,7 @@
-//const fs = require('fs');
+//TODO: Function to get user information
+//TODO: Function to search for users
+
+const fs = require('fs');
 
 async function CreateContact(userid, name, username, contactid)
 {
@@ -9,10 +12,10 @@ async function CreateContact(userid, name, username, contactid)
     contactid: contactid
   })
   
-  //TODO: Logic to add to long string of contacts
-  //TODO: Update json to also pass userid
+  //TODO: Logic to add to string of contacts
+
   let options = {
-    host: '127.0.0.1', //Update later
+    host: '127.0.0.1',
     path: '/updatecontacts',
     port: 3010,
     method: 'POST',
@@ -26,12 +29,13 @@ async function CreateContact(userid, name, username, contactid)
     console.log(`statusCode: ${response.statusCode}`)
     response.on('data', d => {
       console.log(d); //DEBUG
+
+      //TODO: Save new string
       
       const data = JSON.stringify(d, null, 4);
       fs.writeFile('contacts.json', data, (err))
     })
   })
-
 
   request.on('error', error => {
     console.error(error)
@@ -40,17 +44,16 @@ async function CreateContact(userid, name, username, contactid)
   request.write(data)
 
   request.end()
-
 }
 
 async function DeleteContact(userid, contactid)
 {
   console.log("Called updatecontacts"); //DEBUG
 
-  //TODO: Logic to delete contact from string
-  //TODO: Update json
+  //TODO: Logic to delete contact from string of contacts
+
   let options = {
-    host: '127.0.0.1', //Update later
+    host: '127.0.0.1',
     path: '/updatecontacts',
     port: 3010,
     method: 'POST',
@@ -65,6 +68,8 @@ async function DeleteContact(userid, contactid)
     response.on('data', d => {
       console.log(d); //DEBUG
       
+      //TODO: Save new string
+
       const data = JSON.stringify(d, null, 4);
       fs.writeFile('contacts.json', data, (err))
     })
@@ -83,10 +88,10 @@ async function UpdateContact(userid, name, username, contactid)
 {
   console.log("Called updatecontacts"); //DEBUG
 
-  //TODO: Logic to update long string of contacts
-  //TODO: Update json
+  //TODO: Logic to update string of contacts
+
   let options = {
-    host: '127.0.0.1', //Update later
+    host: '127.0.0.1',
     path: '/updatecontacts',
     port: 3010,
     method: 'POST',
@@ -101,6 +106,8 @@ async function UpdateContact(userid, name, username, contactid)
     response.on('data', d => {
       console.log(d); //DEBUG
       
+      //TODO: Save new string
+
       const data = JSON.stringify(d, null, 4);
       fs.writeFile('contacts.json', data, (err))
     })
@@ -119,7 +126,7 @@ async function GetContacts(userid) {
   console.log("Called getcontacts");  //DEBUG
 
   let options = {
-    host: '127.0.0.1', //Update later
+    host: '127.0.0.1',
     path: '/getcontacts',
     port: 3010,
     method: 'GET'
