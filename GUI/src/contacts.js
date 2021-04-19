@@ -1,4 +1,4 @@
-const fs = require('fs');
+//const fs = require('fs');
 
 async function CreateContact(userid, name, username, contactid)
 {

@@ -85,31 +85,4 @@ async function UpdateUser(user, callback) {
     })
 }
 
-async function UpdateContact(requested, callback) {
-    console.log("Fucntion Called> UpdateContact(request)") //DEBUG
-    var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('userid', sql.VarChar(255), requested.userid)
-        request.input('contactstring', sql.VarChar(255), requested.contactstring)
-        request.execute('spContacts_UpdateContacts').then(function(recordsets, err) {
-            callback(recordsets)
-        }).catch(function(err) {
-            console.error(err)
-        })
-    })
-}
-
-async function GetContacts(requested, callback) {
-    console.log("Fucntion Called> GetContacts(request)") //DEBUG
-    var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('userid', sql.VarChar(255), requested.userid)
-        request.execute('spContacts_GetContacts').then(function(recordsets, err) {
-            callback(recordsets)
-        }).catch(function(err) {
-            console.error(err)
-        })
-    })
-}
-
-module.exports = { CreateUser, FindUserByEmail, DeleteUser, UpdateUser, UpdateContact, GetContacts }
+module.exports = { CreateUser, FindUserByEmail, DeleteUser, UpdateUser }

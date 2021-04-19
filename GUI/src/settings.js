@@ -4,8 +4,6 @@ async function UpdateSettings(userid, setting, value)
 {
   console.log("Called updatesettings"); //DEBUG
 
-  //TODO: Logic to update long string of settings
-  //TODO: Update json
   let options = {
     host: '127.0.0.1', //Update later
     path: '/updatesettings',
@@ -22,6 +20,8 @@ async function UpdateSettings(userid, setting, value)
     response.on('data', d => {
       console.log(d); //DEBUG
       
+    //TODO: Logic for updating settings json
+
       const data = JSON.stringify(UPDATE, null, 4);
       fs.writeFile('settings.json', data, (err))
     })

@@ -9,9 +9,7 @@ const {
     CreateUser,
     FindUserByEmail,
     DeleteUser,
-    UpdateUser,
-    UpdateContact,
-    GetContacts
+    UpdateUser
 } = require('./accountSQL')
 
 function authenticateToken(request, response, next) {
@@ -189,44 +187,7 @@ app.get('/test-find', async(req, res) => {
     }
 })
 
-app.post('/updatecontacts', /*authenticateToken,*/ async(req, res) => {
-    console.log("/updatecontacts route called")   //DEBUG
-    try {
-        const request = {
-            userid: req.body.userid,
-            contacts: req.body.contacts
-        }
-
-        await UpdateContact(request, async(response) => {
-            res.status(201).send()
-        })
-    }
-    catch (error) {
-        console.error(error.message)
-    }
-})
-
-app.get('/getcontacts', /*authenticateToken,*/ async(req, res) => {
-    console.log("/getcontacts route called") //DEBUG
-    try {
-        const request = {
-            userid: req.body.userid
-        }
-
-        await GetContacts(request, async(response) => {
-            res.status(201).send()
-        })
-    } 
-    catch (error) {
-        console.error(error.message)
-    }
-})
-
 // Messaging Logic //
-
-const
-    {Server} = require("socket.io"),
-    server = new Server(8000)
 
 const {
     AddMessage,
@@ -234,6 +195,10 @@ const {
     GetUserMessages,
     GetAllMessages
 } = require('./messageSQL')
+
+const
+    {Server} = require("socket.io"),
+    server = new Server(8000)
 
 let sequenceNumberByClient = new Map()
 
@@ -320,4 +285,83 @@ app.get('/getallmessages', /*authenticateToken,*/ async(req, res) => {
     }
 })
 
+// Contacts Logic //
+
+const {
+    UpdateContacts,
+    GetContacts
+} = require('./contactsSQL')
+
+app.post('/updatecontacts', /*authenticateToken,*/ async(req, res) => {
+    console.log("/updatecontacts route called")   //DEBUG
+    try {
+        const request = {
+            userid: req.body.userid,
+            contacts: req.body.contacts
+        }
+
+        await UpdateContacts(request, async(response) => {
+            res.status(201).send()
+        })
+    }
+    catch (error) {
+        console.error(error.message)
+    }
+})
+
+app.get('/getcontacts', /*authenticateToken,*/ async(req, res) => {
+    console.log("/getcontacts route called") //DEBUG
+    try {
+        const request = {
+            userid: req.body.userid
+        }
+
+        await GetContacts(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (error) {
+        console.error(error.message)
+    }
+})
+
+// Settings Logic //
+
+const {
+    UpdateSettings,
+    GetSettings
+} = require('./settingsSQL')
+
+app.post('/updatesettings', /*authenticateToken,*/ async(req, res) => {
+    console.log("/updatesettings route called")   //DEBUG
+    try {
+        const request = {
+            userid: req.body.userid,
+            contacts: req.body.settings
+        }
+
+        await UpdateSettings(request, async(response) => {
+            res.status(201).send()
+        })
+    }
+    catch (error) {
+        console.error(error.message)
+    }
+})
+
+app.get('/getsettings', /*authenticateToken,*/ async(req, res) => {
+    console.log("/getsettings route called") //DEBUG
+    try {
+        const request = {
+            userid: req.body.userid
+        }
+
+        await GetSettings(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (error) {
+        console.error(error.message)
+    }
+})
 app.listen(3010, '127.0.0.1')
