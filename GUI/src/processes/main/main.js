@@ -189,3 +189,17 @@ function HandleLoginResponse(response) {
     }
 
 }
+
+// //DEBUG START
+// const io = require("socket.io-client"),
+// ioClient = io.connect("http://localhost:8000", 
+//     { 
+//         query: {
+//         userid: 2222
+//     }});
+
+// ioClient.on("getmessage", (message) => {
+
+//     console.log("Got a message")
+//     console.log(message.message);
+// })

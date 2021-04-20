@@ -1,5 +1,8 @@
 const spawn = require('child_process').spawn;
 
+//NOTES FOR EREN
+//const { overlayController} = require('./WindowUtil')
+
 
 class PalEngineController {
     constructor() {
@@ -29,7 +32,7 @@ class PalEngineController {
                 }
             );
 
-            // Registers a function to be ran when data is sent over the stdout(used for data) channel
+            // Registers a function to be ran when data is sent over the stdout(used for data) channel            
             this.subprocess.stdout.on('data',
                 // This is the function that is ran when it detects data being sent
                 (data) => {
@@ -44,6 +47,8 @@ class PalEngineController {
                             text = document.getElementById("text")
                             text.innerHTML = data
                             console.log("data was: " + data);
+                            //NOTES FOR EREN
+                            //overlayController.open("https://youtube.com")
                             break;
                         default:
                             console.log("ERROR: Invalid OpCode data was: "+data);
@@ -56,9 +61,7 @@ class PalEngineController {
                 console.log(`stderr: ${data}`);
             });
 
-            //this.subprocess.stdin.write("hello me\n")
-
-            
+            //this.subprocess.stdin.write("hello me\n")            
         }
 
     }
