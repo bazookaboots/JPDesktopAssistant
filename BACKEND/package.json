@@ -19,7 +19,8 @@
     "jsonwebtoken": "^8.5.1",
     "msql": "^1.0.3",
     "mssql": "^6.3.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "socket.io": "^3.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

@@ -1,0 +1,27 @@
+POST http://127.0.0.1:3010/getmessages HTTP/1.1
+content-type: application/json 
+
+{
+    "fromid": 1,
+    "toid": 2
+}
+
+###
+
+GET http://127.0.0.1:3010/test HTTP/1.1
+content-type: application/json 
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
+
+###
+
+GET http://127.0.0.1:3010/test HTTP/1.1
+content-type: application/json 
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
