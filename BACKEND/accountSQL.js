@@ -40,6 +40,7 @@ async function FindUserByEmail(email, callback) {
             var request = new sql.Request(conn);
             request.input('email', sql.VarChar(255), email);
             request.execute('spPerson_FindUserByEmail').then((recordsets, err) => {
+                console.dir(recordsets)
                 if (typeof recordsets.recordset !== undefined) callback(recordsets.recordset[0]);
                 else callback(undefined)
             }).catch(function(err) {

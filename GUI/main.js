@@ -1,30 +1,45 @@
-const { app, BrowserWindow, session } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
+const { ValueStore } = require("./src/libraries/StorageUtil")
+const { userState } = require("./src/libraries/StateUtil")
+const { mainWin, contactsWin, settingsWin, accountWin } = require("./src/libraries/WindowUtil")
+const { palEngine } = require("./src/libraries/SpeechEngineUtil")
 
-function createWindow() {
-    let win = new BrowserWindow({
-        width: 330,
-        height: 470,
-        frame: false,
-        resizable: false,
-        webPreferences: {
-            nodeIntegration: true,
-            enableRemoteModule: true,
-            //devTools: false
-        }
-    })
+const { LoginUser } = require("./src/libraries/AccountAPI")
 
-    let mainSession = win.webContents.session
-    win.setMenuBarVisibility(false)
-
-    win.loadFile('src\\windows\\main\\main.html')
-    win.webContents.openDevTools({ mode: 'detach' })
+//attempt to log in
+const cache = new ValueStore()
+let user = {
+    username: cache.retrieve("username"),
+    email: cache.retrieve("email"),
+    password: cache.retrieve("password")
 }
+if (user.password != null
+    && user.username != null
+    && user.email != null) 
+{
+    console.log("attempting to log user in")
+    LoginUser(user.email,user.password,
+        (authToken)=> {
+            console.log(JSON.parse(authToken))
+            cache.store("token",authToken,true)
+            userState.setState('loggedin')
+        })
+    
+}
+else {
+    userState.setState('loggedout')
+}
+
 
 function closeWindow() {
     win.close()
 }
 
-app.whenReady().then(createWindow)
+app.on('ready', OnReady)
+
+function OnReady() {
+    mainWin.start()
+}
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
@@ -36,4 +51,38 @@ app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow()
     }
+})
+
+ipcMain.on('get-state', (event, arg) => {
+    event.reply('change-state', userState.getState())
+})
+
+ipcMain.on('logout-user', (event, arg) => {
+    console.log('logout ipc called')
+    userState.setState('loggedout')
+    event.reply('change-state', userState.getState())
+})
+
+ipcMain.on('login-user', (event, arg) => {
+    console.log('login ipc called')
+    userState.setState('loggedin')
+    event.reply('change-state', userState.getState())
+})
+
+ipcMain.on('close-app', (event, arg) => {
+    var window = BrowserWindow.getFocusedWindow();
+    window.close();
+})
+
+ipcMain.on('spawn-engine', (event, arg) => {
+    palEngine.start()
+})
+ipcMain.on('open-account-page', (event, arg) => {
+    accountWin.start()
+})
+ipcMain.on('open-settings-page', (event, arg) => {
+    settingsWin.start()
+})
+ipcMain.on('open-contacts-page', (event, arg) => {
+    contactsWin.start()
 })

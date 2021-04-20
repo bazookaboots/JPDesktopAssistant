@@ -1,4 +1,4 @@
-const { BrowserWindow } = require('electron').remote
+//const { ipcRenderer } = require('electron')
 
 
 function init() {    

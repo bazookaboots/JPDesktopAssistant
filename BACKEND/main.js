@@ -29,10 +29,10 @@ function authenticateToken(request, response, next) {
 }
 
 
-app.post('/register', async(req, res) => {
+app.post('/register', async (req, res) => {
     console.log("/register route called")
     try {
-        await FindUserByEmail(req.body.email, async(foundUser) => {
+        await FindUserByEmail(req.body.email, async (foundUser) => {
             if (foundUser === undefined) {
                 //Check that the email meets character requirements
                 if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
@@ -60,7 +60,7 @@ app.post('/register', async(req, res) => {
                     username: req.body.username,
                     passhash: hashedPassword
                 }
-                await CreateUser(user, async(response) => {
+                await CreateUser(user, async (response) => {
                     res.status(201).send()
                 });
 
@@ -75,14 +75,15 @@ app.post('/register', async(req, res) => {
     }
 })
 
-app.get('/login', async(req, res) => {
+app.get('/login', async (req, res) => {
     console.log("/login route called")
     try {
-        await FindUserByEmail(req.body.email, async function(foundUser) {
+        console.dir(req.body);
+        await FindUserByEmail(req.body.email, async function (foundUser) {
             if (foundUser !== undefined) {
                 let submittedPass = req.body.password;
                 let storedPassHash = foundUser.passhash;
-                await bcrypt.compare(submittedPass, storedPassHash, function(err, passMatch) {
+                await bcrypt.compare(submittedPass, storedPassHash, function (err, passMatch) {
                     if (passMatch) {
                         let userSig = {
                             username: foundUser.username,
@@ -100,17 +101,17 @@ app.get('/login', async(req, res) => {
                 //fake compare made for security
                 let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`;
                 await bcrypt.compare(req.body.password, fakePass);
-                res.status(401).send("asaas/users/login POST > Could Not Login User")
+                res.status(401).send("/login GET> Could Not Login User")
             }
         })
 
 
     } catch (error) {
-        res.status(401).send("asddas/users/login POST > Could Not Login User")
+        res.status(401).send("/login POST > Could Not Login User")
     }
 })
 
-app.delete('/delete', authenticateToken, async(req, res) => {
+app.delete('/delete', authenticateToken, async (req, res) => {
     console.log("/delete route called")
     try {
         DeleteUser(req.user.id)
@@ -120,7 +121,7 @@ app.delete('/delete', authenticateToken, async(req, res) => {
     }
 })
 
-app.get('/logout', authenticateToken, async(req, res) => {
+app.get('/logout', authenticateToken, async (req, res) => {
     console.log("/delete route called")
     try {
         //TODO implement more robust logout function
@@ -130,10 +131,10 @@ app.get('/logout', authenticateToken, async(req, res) => {
     }
 })
 
-app.patch('/update', authenticateToken, async(req, res) => {
+app.patch('/update', authenticateToken, async (req, res) => {
     console.log("/update route called")
     try {
-        await FindUserByEmail(req.user.email, async(foundUser) => {
+        await FindUserByEmail(req.user.email, async (foundUser) => {
             if (foundUser) {
                 //Check that the email meets character requirements
                 if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
@@ -161,7 +162,7 @@ app.patch('/update', authenticateToken, async(req, res) => {
                     username: req.body.username,
                     passhash: hashedPassword
                 }
-                await UpdateUser(user, async(response) => {
+                await UpdateUser(user, async (response) => {
                     res.status(201).send()
                 });
 
@@ -176,7 +177,7 @@ app.patch('/update', authenticateToken, async(req, res) => {
     }
 })
 
-app.get('/test-find', async(req, res) => {
+app.get('/test-tok', async (req, res) => {
     console.log("/test-find route called")
     try {
         let accessToken = jwt.sign({

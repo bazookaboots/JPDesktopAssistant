@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>main</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="../../global-styles.css" />
+
+    <!-- LOCAL REFERNCES -->
+    <link rel="stylesheet" href="./main.css" />
+</head>
+
+<body style="height: 470px; margin: 0px">
+    <div class="mainContainer">
+        <div class="topNavbar pageBlock">
+            <div id="menu-btn" class="menuBtnClosed">
+                <img src="../../assets/icons/menu_24px_outlined.svg" />
+            </div>
+
+            <div id="close-btn" class="closeBtn">
+                <img src="../../assets/icons/close_24px_outlined.svg" />
+            </div>
+        </div>
+        <div class="mainIconArea pageBlock">
+            <button id="startpal-btn" class="toggleEngine" >
+                <img src="../../assets/icons/Logo Idea 1.svg" />
+            </button>
+        </div>
+        <div class="textArea pageBlock">
+            <p id="text">nothing heard</p>
+        </div>
+        <div class="onlineArea pageBlock" style="margin-top: auto;">
+            <div id="online-tag"></div>
+        </div>
+    </div>
+
+    <!-- PAGE CONTAINER-->
+    <div id="page-container" class="PopUpPage" style="display: none">
+    </div>
+
+    <!-- SIDE MENU CONTAINER -->
+    <div id="menu" class="menu">
+        <div class="menuContainer">
+            <div class="menuTitle">Guest User</div>
+            <div id="menu-container" class="menuItemsContainer"></div>
+        </div>
+        <div id="non-menu-area" style="width: 50%; display: flex; height: 100%"></div>
+    </div>
+</body>
+<script src="main.js"></script>
+
+</html>
