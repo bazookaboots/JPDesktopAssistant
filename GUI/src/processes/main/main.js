@@ -73,22 +73,8 @@ document.getElementById("non-menu-area").addEventListener("click", (e) => {
     toggleMenu();
 })
 
-//Hides register page when back of register area is clicked
-document.getElementById("signup-form").addEventListener("click", (e) => {
-    //console.log("exit signup area clicked");
-    toggleRegisterPage();
-})
-
-//Blocks clicks on the register page from propagating to the back of the register area
-document.getElementById("signup-container").addEventListener("click", (e) => {
-    //console.log("signup area clicked");
-    e.stopPropagation();
-})
-
-//Hides login page when back of login area is clicked
-document.getElementById("login-form").addEventListener("click", (e) => {
-    //console.log("exit login area clicked");
-    toggleLoginPage();
+document.getElementById("page-container").addEventListener("click", (e) => {
+    document.getElementById("page-container").style.display = "none"
 })
 
 //Blocks clicks on the login page from propagating to the back of the login area

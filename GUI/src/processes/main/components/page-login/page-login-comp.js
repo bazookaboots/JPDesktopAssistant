@@ -1,6 +1,37 @@
 const component = `
 <style>
+.PopUpTitle {
+    text-align: center;
+    padding: 8px;
+}
 
+.PopUpRow {
+    padding: 8px;
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: max-content;
+    height: max-content;
+    background-color: #232325;
+    z-index: 3;
+}
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.747);
+    transition: 0.3s;
+}
+.textInput {
+    background-color: #0e0e0f;
+    color: lightgray;
+    padding: 8px;
+    border-radius: 10px;
+    width: -webkit-fill-available;
+    border-width: 0px;
+}
 </style>
 
 <!-- LOGIN PAGE  -->
@@ -45,7 +76,10 @@ class LoginPage extends HTMLElement {
         var template = document.createElement('template');
         template.innerHTML = component;
         this._shadowRoot.appendChild(template.content.cloneNode(true));
-
+        this._shadowRoot.getElementById('login-container').addEventListener("click", (e) => {
+            //console.log("login area clicked");
+            e.stopPropagation();
+        })
     }
 }
 customElements.define('page-login', LoginPage)
