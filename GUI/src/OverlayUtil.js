@@ -1,7 +1,7 @@
 const path = require("path");
 const {app, BrowserWindow, ipcMain, shell} = require("electron");
 
-function onReady() {
+async function onReady() {
 
     const win = new BrowserWindow({
         title: "PAL Overlay",
@@ -26,7 +26,7 @@ function onReady() {
     // and load the index.html of the app.
 //     win.loadFile("docs/index.html");
     win.loadURL("https://www.youtube.com/");
-    win.setIgnoreMouseEvents(false);
+    win.setIgnoreMouseEvents(true);
     win.setMovable(true);
 
 //     win.on("page-title-updated", (evt) => {
