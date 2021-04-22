@@ -64,6 +64,36 @@ app.on('window-all-closed', () => {
     }
 })
 
+app.whenReady().then(() => {
+    // Register a 'CommandOrControl+Y' shortcut listener.
+    globalShortcut.register('CommandOrControl+O', () => {
+        if (overlayWin.win != undefined)
+        {
+            overlayWin.win.minimize()
+        }
+    })
+  })
+
+  app.whenReady().then(() => {
+    // Register a 'CommandOrControl+Y' shortcut listener.
+    globalShortcut.register('CommandOrControl+P', () => {
+        if (overlayWin.win != undefined) 
+        {
+            overlayWin.win.restore()
+        }  
+    })
+  })
+
+  app.whenReady().then(() => {
+    // Register a 'CommandOrControl+Y' shortcut listener.
+    globalShortcut.register('CommandOrControl+I', () => {
+        if (overlayWin.win != undefined) 
+        {
+            overlayWin.win.close()
+        } 
+    })
+  })
+
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
         createWindow()

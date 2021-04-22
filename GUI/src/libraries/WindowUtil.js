@@ -148,7 +148,7 @@ class OverlayController {
             //win.loadFile(path)
             // Send command strings here
             this.win.loadURL(path);
-            this.win.setIgnoreMouseEvents(false);
+            this.win.setIgnoreMouseEvents(true);
     
             //this.win.webContents.openDevTools({ mode: 'detach' })
     
