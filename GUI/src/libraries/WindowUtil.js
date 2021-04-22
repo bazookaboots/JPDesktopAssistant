@@ -29,7 +29,7 @@ class MainWinController {
         win.setMenuBarVisibility(false)
 
         win.loadFile(path)
-        win.webContents.openDevTools({ mode: 'detach' })
+        //win.webContents.openDevTools({ mode: 'detach' })
         win.once('ready-to-show', () => {
             win.show()
         })
@@ -139,9 +139,10 @@ class OverlayController {
                 nodeIntegration: true
             } }
     
-            //let mergedOptions = { ...defualtOptions, ...options }
-            //let mergedOptions = options;
-            this.win = new BrowserWindow(mergedOptions)
+            //mergedOptions = { ...defualtOptions, ...options }
+            //mergedOptions = options;
+
+            this.win = new BrowserWindow(options)
             this.win.setMenuBarVisibility(false)
     
             //win.loadFile(path)
@@ -149,7 +150,7 @@ class OverlayController {
             this.win.loadURL(path);
             this.win.setIgnoreMouseEvents(false);
     
-            this.win.webContents.openDevTools({ mode: 'detach' })
+            //this.win.webContents.openDevTools({ mode: 'detach' })
     
             this.win.once('ready-to-show', () => {
                 this.win.show()
