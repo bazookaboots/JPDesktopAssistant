@@ -3,11 +3,11 @@ ioClient = NULL
 
 ioClient.on("getmessage", (msg) => {
     console.info(msg)
-    //TODO: Add logic for the user to see these messages in the GUI
-    //You will receive: messageid, message, fromid, and toid
+    //TODO: DisplayReceivedMessage(messageid, message, toid, fromid)
+    //Should take apart the object and display in messages for a user
 })
 
-//TODO: This function needs to run when pal starts and it needs the user id
+//TODO: Run this when the GUI starts
 function Startup(id)
 {
     ioClient = io.connect("http://localhost:8000", 
@@ -21,24 +21,17 @@ function Startup(id)
 
 //TODO: This function needs to run when the user sends a message in the GUI
 //You will need: message, toid, fromid
-function SendMessage(mess, to, from) {
+function SendMessage(message, toid, fromid) {
     const request = {
-        message: mess,
-        toid: to,
-        fromid: from
+        message: message,
+        toid: toid,
+        fromid: fromid
     }
 
     ioClient.emit("sendmessage", request)
 }
 
-/**
- * Sends an HTTP POST request to the backend asking if it can
- * delete a message
- * @name DeleteMessage
- * @memberof messages.js
- * @param {int} messid - int representing the desired message
- */
- async function DeleteMessage(messid) {
+async function DeleteMessage(messid) {
 
     const data = JSON.stringify({
         messageid: messid
@@ -73,15 +66,7 @@ function SendMessage(mess, to, from) {
     request.end()
 }
 
-/**
- * Sends an HTTP POST request to the backend asking if it can
- * delete a message
- * @name GetUserMessages
- * @memberof messages.js
- * @param {int} to - int representing the user message was sent to
- * @param {int} from -  int representing the user message was sent from
- */
- async function GetUserMessages(to, from) {
+async function GetUserMessages(to, from) {
 
     const data = JSON.stringify({
         toid: to,
@@ -105,6 +90,8 @@ function SendMessage(mess, to, from) {
         console.log(`statusCode: ${response.statusCode}`)
         response.on('data', d => {
             console.log(d);
+            //TODO: GetUserMessages(d)
+            //Should take apart the object and display in messages for a user
         })
     })
 
@@ -117,14 +104,7 @@ function SendMessage(mess, to, from) {
     request.end()
 }
 
-/**
- * Sends an HTTP POST request to the backend asking if it can
- * delete a message
- * @name GetAllMessages
- * @memberof messages.js
- * @param {int} userid - int representing the user
- */
- async function GetAllMessages(userid) {
+async function GetAllMessages(userid) {
 
     const data = JSON.stringify({
         fromid: userid
@@ -147,6 +127,8 @@ function SendMessage(mess, to, from) {
         console.log(`statusCode: ${response.statusCode}`)
         response.on('data', d => {
             console.log(d);
+            //TODO: GetAllMessages(d)
+            //Should take apart the object inside the object list and display in messages for a user
         })
     })
 

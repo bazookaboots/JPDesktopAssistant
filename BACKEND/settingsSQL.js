@@ -14,7 +14,7 @@ const config = {
 }
 
 async function UpdateSettings(requested, callback) {
-    console.log("Fucntion Called> UpdateSettings(request)") //DEBUG
+    console.log("Fucntion Called> UpdateSettings()") //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('userid', sql.VarChar(255), requested.userid)
@@ -28,7 +28,7 @@ async function UpdateSettings(requested, callback) {
 }
 
 async function GetSettings(requested, callback) {
-    console.log("Fucntion Called> GetSettings(request)") //DEBUG
+    console.log("Fucntion Called> GetSettings()") //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('userid', sql.VarChar(255), requested.userid)
