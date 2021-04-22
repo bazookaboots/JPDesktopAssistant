@@ -110,6 +110,62 @@ class AccountWinController {
     }
 }
 
+class OverlayController {
+    constructor() {
+        if (!OverlayController.instance) {
+            OverlayController.instance = this
+        }
+    }
+
+    // Add path parameter
+    start() {
+
+        if(this.win == undefined)
+        {
+            let path = "https://www.youtube.com/watch?v=YrlJum5u4uE"
+            let options = { 
+            title: "PAL Overlay",
+            x: 0,
+            y: 0,
+            maxWidth: 600,
+            maxHeight: 400,
+            transparent: true,
+            opacity: 0.9,
+            frame: false,
+            alwaysOnTop: true,
+            movable: true,
+            resizable: true,
+            webPreferences: {
+                nodeIntegration: true
+            } }
+    
+            let mergedOptions = { ...defualtOptions, ...options }
+            this.win = new BrowserWindow(mergedOptions)
+            this.win.setMenuBarVisibility(false)
+    
+            //win.loadFile(path)
+            // Send command strings here
+            this.win.loadURL(path);
+            this.win.setIgnoreMouseEvents(false);
+    
+            this.win.webContents.openDevTools({ mode: 'detach' })
+    
+            this.win.once('ready-to-show', () => {
+                this.win.show()
+            })
+            return this.win
+        }
+    }
+
+    end() {
+
+        if(this.win != undefined)
+        {
+            this.win.close();
+        }
+    }
+}
+
 const mainWin = new MainWinController()
 Object.freeze(mainWin)
 
@@ -122,9 +178,13 @@ Object.freeze(settingsWin)
 const accountWin = new AccountWinController()
 Object.freeze(accountWin)
 
+const overlayWin = new OverlayController()
+//Object.freeze(overlayWin)
+
 module.exports = {
     mainWin,
     contactsWin,
     settingsWin,
-    accountWin
+    accountWin,
+    overlayWin
 }

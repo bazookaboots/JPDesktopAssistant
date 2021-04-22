@@ -1,7 +1,7 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron')
 const { ValueStore } = require("./src/libraries/StorageUtil")
 const { userState } = require("./src/libraries/StateUtil")
-const { mainWin, contactsWin, settingsWin, accountWin } = require("./src/libraries/WindowUtil")
+const { mainWin, contactsWin, settingsWin, accountWin, overlayWin } = require("./src/libraries/WindowUtil")
 const { palEngine } = require("./src/libraries/SpeechEngineUtil")
 
 const { LoginUser } = require("./src/libraries/AccountAPI")
@@ -30,6 +30,23 @@ else {
     userState.setState('loggedout')
 }
 
+// Toggle off
+app.whenReady().then(() => {
+    // Register a 'CommandOrControl+Y' shortcut listener.
+    globalShortcut.register('CommandOrControl+Y', () => {
+      // Do stuff when Y and either Command/Control is pressed.
+      overlayWin.start();
+    })
+  })
+
+
+app.whenReady().then(() => {
+    // Register a 'CommandOrControl+Y' shortcut listener.
+    globalShortcut.register('CommandOrControl+U', () => {
+     // Do stuff when Y and either Command/Control is pressed.
+    overlayWin.end();
+    })
+  })
 
 function closeWindow() {
     win.close()
