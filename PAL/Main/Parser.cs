@@ -40,7 +40,7 @@ namespace PAL.Core
             verbs.Add("stream", "streaming");
             verbs.Add("call", "calling");
             verbs.Add("search", "searching for");
-            verbs.Add("google", "googling");
+            //verbs.Add("google", "googling");
 
             platforms.Add("youtube", "youtube");
             platforms.Add("google", "youtube");
@@ -74,7 +74,7 @@ namespace PAL.Core
             bool argflag = false;
             foreach (string word in transcript)
             {
-                if (word == "on") argflag = false;
+                if (word == "on" || word == "with") argflag = false;
                 if (argflag)
                 {
                     cmd.arg += word + " ";
