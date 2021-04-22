@@ -35,7 +35,7 @@ function authenticateToken(request, response, next) {
 
 
 app.post('/register', async (req, res) => {
-    console.log("/register route called")
+    console.log("/register route called")   //DEBUG
     try {
         await FindUserByEmail(req.body.email, async (foundUser) => {
             if (foundUser === undefined) {
@@ -68,20 +68,19 @@ app.post('/register', async (req, res) => {
                 })
 
             } else {
-                console.log("USER ALREADY FOUND")
                 res.status(422).send()
             }
         })
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 
 app.get('/login', /*authenticateToken,*/ async(req, res) => {
     console.log("/login route called")  //DEBUG
     try {
-        console.dir(req.body);
+        console.dir(req.body)
         await FindUserByEmail(req.body.email, async function (foundUser) {
             if (foundUser !== undefined) {
                 let submittedPass = req.body.password
@@ -107,8 +106,8 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
             }
         })
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
         res.status(401).send("asddas/users/login POST > Could Not Login User")
     }
 })
@@ -117,20 +116,18 @@ app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
     console.log("/delete route called") //DEBUG
     try {
         DeleteUser(req.user.id)
-        console.log("testing")
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 
 app.get('/logout', /*authenticateToken,*/ async(req, res) => {
     console.log("/delete route called") //DEBUG
     try {
-        //TODO implement more robust logout function
-        console.log("testing")
-    } catch (error) {
-        console.error(error.message)
+        //TODO: Implement logout function
+    } catch (err) {
+        console.error(err)
     }
 })
 
@@ -167,14 +164,13 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
                 })
 
             } else {
-                console.log("USER ALREADY FOUND")
                 res.status(422).send()
             }
         })
 
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 
@@ -186,14 +182,30 @@ app.get('/test-tok', async (req, res) => {
             username: "foundUser.username",
             email: "foundUser.email"
         }, process.env.ACCESS_TOKEN_SECRET)
-        console.log("contents of accessToken = " + accessToken)
+        console.log("contents of accessToken = " + accessToken) //DEBUG
         res.status(200).json({ Token: accessToken })
     } 
-    catch (error) {
-        console.error(error.message)
-        res.status(401).send("/users/login POST > Could Not Login User")
+    catch (err) {
+        console.error(err)
     }
 })
+
+app.get('/getusername', /*authenticateToken,*/ async(req, res) => {
+    console.log("/getusername route called") //DEBUG
+    try {
+        const request = {
+            userid: req.body.userid
+        }
+
+        await GetUserMessages(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (err) {
+        console.error(err)
+    }
+})
+
 
 // Messaging Logic //
 
@@ -236,8 +248,8 @@ server.on("connection", (socket) => {
                 sequenceNumberByClient.get(request.toid).emit("getmessage", message)
             }
         }
-        catch (error) {
-            console.error(error.message)
+        catch (err) {
+            console.error(err)
         }
     })
 })
@@ -256,8 +268,8 @@ app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
         })
 
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
     
@@ -273,8 +285,8 @@ app.get('/getusermessages', /*authenticateToken,*/ async(req, res) => {
             res.status(201).send()
         })
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 
@@ -288,8 +300,8 @@ app.get('/getallmessages', /*authenticateToken,*/ async(req, res) => {
             res.status(201).send()
         })
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 
@@ -312,8 +324,8 @@ app.post('/updatecontacts', /*authenticateToken,*/ async(req, res) => {
             res.status(201).send()
         })
     }
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 
@@ -328,8 +340,8 @@ app.get('/getcontacts', /*authenticateToken,*/ async(req, res) => {
             res.status(201).send()
         })
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 
@@ -352,8 +364,8 @@ app.post('/updatesettings', /*authenticateToken,*/ async(req, res) => {
             res.status(201).send()
         })
     }
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 
@@ -368,8 +380,8 @@ app.get('/getsettings', /*authenticateToken,*/ async(req, res) => {
             res.status(201).send()
         })
     } 
-    catch (error) {
-        console.error(error.message)
+    catch (err) {
+        console.error(err)
     }
 })
 app.listen(3010, '127.0.0.1')

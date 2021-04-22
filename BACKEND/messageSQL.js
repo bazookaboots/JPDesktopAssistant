@@ -14,7 +14,7 @@ const config = {
 }
 
 async function AddMessage(requested, callback) {
-    console.log("Fucntion Called> AddMessage(request)") //DEBUG
+    console.log("Fucntion Called> AddMessage()") //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('messageid', sql.VarChar(255), requested.messageid)
@@ -30,7 +30,7 @@ async function AddMessage(requested, callback) {
 }
 
 async function DeleteMessage(requested, callback) {
-    console.log("Fucntion Called> DeleteMessage(request)")  //DEBUG
+    console.log("Fucntion Called> DeleteMessage()")  //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('messageid', sql.VarChar(255), requested.messageid)
@@ -43,7 +43,7 @@ async function DeleteMessage(requested, callback) {
 }
 
 async function GetUserMessages(requested, callback) {
-    console.log("Fucntion Called> GetUserMessages(request)")    //DEBUG
+    console.log("Fucntion Called> GetUserMessages()")    //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('fromid', sql.VarChar(255), requested.fromid)
@@ -57,7 +57,7 @@ async function GetUserMessages(requested, callback) {
 }
 
 async function GetAllMessages(requested, callback) {
-    console.log("Fucntion Called> GetAllMessages(request)")    //DEBUG
+    console.log("Fucntion Called> GetAllMessages()")    //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('fromid', sql.VarChar(255), requested.fromid)

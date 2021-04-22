@@ -14,7 +14,7 @@ const config = {
 }
 
 async function UpdateContacts(requested, callback) {
-    console.log("Fucntion Called> UpdateContact(request)") //DEBUG
+    console.log("Fucntion Called> UpdateContact()") //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('userid', sql.VarChar(255), requested.userid)
@@ -28,7 +28,7 @@ async function UpdateContacts(requested, callback) {
 }
 
 async function GetContacts(requested, callback) {
-    console.log("Fucntion Called> GetContacts(request)") //DEBUG
+    console.log("Fucntion Called> GetContacts()") //DEBUG
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('userid', sql.VarChar(255), requested.userid)

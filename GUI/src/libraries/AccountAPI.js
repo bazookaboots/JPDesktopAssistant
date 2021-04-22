@@ -202,6 +202,44 @@ async function DeleteUser(email, password, authTokens) {
 
 }
 
+async function GetUserName(userid) {
+    const body = JSON.stringify(
+        {
+            userid:userid
+        }
+    )
+    console.log(body)
+
+    const options = {
+        hostname: hostURL,
+        path: '/getusername',
+        port: 3010,
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': body.length
+        }
+    }
+
+    const request = http.request(options, response => {
+        console.log(`statusCode: ${response.statusCode}`)
+        response.on('data', d => {
+            console.log(d); //DEBUG
+            //TODO: Return username
+        })
+    })
+
+    request.on('error', error => {
+        console.error(error)
+    })
+
+    //Write actual data  
+    request.write(data)
+
+    request.end()
+
+}
+
 
 module.exports = {
     RegisterUser,
