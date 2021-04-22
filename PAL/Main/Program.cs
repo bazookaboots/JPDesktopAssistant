@@ -29,7 +29,7 @@ namespace PAL.Core
             //boolean settings defined here, 
             //these can be moved elsewhere to connect/read from gui as long as they can be accessed in this scope
             bool pal = true; //controls whether this process should continue running in background
-            bool vocal = true; //determines whether pal should speak back or not
+            bool vocal = false; //determines whether pal should speak back or not
             bool listenting = true; // controls always-on, always-listening functionality (hey pal)
             bool active = false; // when true, pal will respond to commands (set in hey Pal scope or hotkey scope)
             int requestDuration = 3; //how long the user should have to speak (this is changed frequently, not good for settings)
@@ -68,7 +68,7 @@ namespace PAL.Core
 
                 if (!active)
                 {
-                    Console.WriteLine(parser.calculateSimilarity(full, "hey pal"));
+                    //Console.WriteLine(parser.calculateSimilarity(full, "hey pal"));
                     if (parser.calculateSimilarity(full, "hey pal") > 0.5) 
                     {
                         active = true;

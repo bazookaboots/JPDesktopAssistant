@@ -12,10 +12,11 @@ namespace PAL.Core
         public string platform;
         public string action;
         public string arg;
+        public string browser;
 
         public void Print()
         {
-            Console.WriteLine("CMD:" + action + " " + arg + " on " + platform);
+            Console.WriteLine("0:" + "CMD:" + action + " " + arg + " on " + platform + " with " + browser);
         }
     }
 
@@ -45,6 +46,7 @@ namespace PAL.Core
             platforms.Add("google", "youtube");
             platforms.Add("spotify", "spotify");
             // Bailey remove this when you're done playing with it 
+            // ...or not --Eren
             platforms.Add("images", "images");
             platforms.Add("crunchyroll", "crunchyroll");
             platforms.Add("wikipedia", "wikipedia");
@@ -68,6 +70,7 @@ namespace PAL.Core
         public Command Parse(Queue transcript)
         {
             Command cmd = new Command();
+            cmd.browser = "chrome";
             bool argflag = false;
             foreach (string word in transcript)
             {
@@ -84,6 +87,10 @@ namespace PAL.Core
                 if (platforms.ContainsKey(word))
                 {
                     cmd.platform = word;
+                }
+                if (!argflag && calculateSimilarity(word, "overlay") > 0.8 )
+                {
+                    cmd.browser = "overlay";
                 }
             }
             return cmd;

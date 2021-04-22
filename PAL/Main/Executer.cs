@@ -45,9 +45,13 @@ namespace PAL.Core
                         {
                             case "youtube#video":
                                 url = @"https://www.youtube.com/watch?v=" + searchResult.Id.VideoId;
-                                ProcessStartInfo startInfo = new ProcessStartInfo("chrome.exe", url);
-                                startInfo.WindowStyle = ProcessWindowStyle.Minimized;
-                                Process.Start(startInfo);
+                                if (cmd.browser == "chrome")
+                                {
+                                    ProcessStartInfo startInfo = new ProcessStartInfo("chrome.exe", url);
+                                    startInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                                    Process.Start(startInfo);
+                                }
+                                if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                                 break;
 
                             case "youtube#channel":
@@ -63,12 +67,14 @@ namespace PAL.Core
 
                 case "google":
                     url = @"http://www.google.com/search?q=" + cmd.arg.Replace(' ', '+');
-                    Process.Start("chrome.exe", url);
+                    if (cmd.browser == "chrome") Process.Start("chrome.exe", url);
+                    if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                     break;
 
                 case "images":
                     url = @"https://www.google.com/search?tbm=isch&q=" + cmd.arg.Replace(' ', '+');
-                    Process.Start("chrome.exe", url);
+                    if (cmd.browser == "chrome") Process.Start("chrome.exe", url);
+                    if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                     break;
 
                 case "spotify":
@@ -76,16 +82,18 @@ namespace PAL.Core
 
                 case "crunchyroll":
                     url = @"https://www.crunchyroll.com/search?from=&q=" + cmd.arg.Replace(' ', '-').TrimEnd('-');
-                    Process.Start("chrome.exe", url);
+                    if (cmd.browser == "chrome") Process.Start("chrome.exe", url);
+                    if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                     break;
 
                 case "wikipedia":
                     url = @"https://en.wikipedia.org/wiki/" + cmd.arg.Replace(' ', '_');
-                    Process.Start("chrome.exe", url);
+                    if (cmd.browser == "chrome") Process.Start("chrome.exe", url);
+                    if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                     break;
 
                 default:
-                    Console.WriteLine("Uh oh spaghettios");
+                    Console.WriteLine("Cmd N/A");
                     break;
             }
         }

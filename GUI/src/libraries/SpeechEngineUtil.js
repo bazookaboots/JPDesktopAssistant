@@ -47,8 +47,11 @@ class PalEngineController {
                             text = document.getElementById("text")
                             text.innerHTML = data
                             console.log("data was: " + data);
+                            break;
+                        case 2:
                             //NOTES FOR EREN
                             //overlayController.open("https://youtube.com")
+                            console.log("overlay url was: " + data);
                             break;
                         default:
                             console.log("ERROR: Invalid OpCode data was: "+data);
