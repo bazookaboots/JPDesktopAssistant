@@ -1,7 +1,7 @@
 const spawn = require('child_process').spawn;
 
 //NOTES FOR EREN
-//const { overlayController} = require('./WindowUtil')
+const { overlayWin } = require('./WindowUtil')
 
 
 class PalEngineController {
@@ -51,6 +51,8 @@ class PalEngineController {
                             //NOTES FOR EREN
                             //overlayController.open("https://youtube.com")
                             console.log("overlay url was: " + data);
+                            overlayWin.start(data.toString())
+                            
                             break;
                         default:
                             console.log("ERROR: Invalid OpCode data was: "+data);

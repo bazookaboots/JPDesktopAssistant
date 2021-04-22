@@ -118,11 +118,11 @@ class OverlayController {
     }
 
     // Add path parameter
-    start() {
-
+    start(data) {
+        console.log(data)
         if(this.win == undefined)
         {
-            let path = "https://www.youtube.com/watch?v=YrlJum5u4uE"
+            let path = data
             let options = { 
             title: "PAL Overlay",
             x: 0,
@@ -140,7 +140,7 @@ class OverlayController {
             } }
     
             //let mergedOptions = { ...defualtOptions, ...options }
-            let mergedOptions = options;
+            //let mergedOptions = options;
             this.win = new BrowserWindow(mergedOptions)
             this.win.setMenuBarVisibility(false)
     
@@ -156,10 +156,12 @@ class OverlayController {
             })
             return this.win
         }
+        else {
+            this.win.loadURL(data);
+        }
     }
 
     end() {
-
         if(this.win != undefined)
         {
             this.win.close();
