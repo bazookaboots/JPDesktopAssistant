@@ -139,7 +139,7 @@ class OverlayController {
                 nodeIntegration: true
             } }
     
-            let mergedOptions = { ...defualtOptions, ...options }
+            let mergedOptions = { ...ptions, ...defualtOptions }
             this.win = new BrowserWindow(mergedOptions)
             this.win.setMenuBarVisibility(false)
     
