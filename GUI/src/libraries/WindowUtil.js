@@ -119,7 +119,7 @@ class OverlayController {
 
     // Add path parameter
     start(data) {
-        console.log(data)
+        console.log("Hey we here " + data)
         if(this.win == undefined)
         {
             let path = data
