@@ -37,15 +37,14 @@ class PalEngineController {
                 // This is the function that is ran when it detects data being sent
                 (data) => {
                     console.log(data.toString())
-                    opCode = data.slice(0, 1)
+                    let opCode = data.slice(0, 1)
                     data = data.slice(2)
                     switch (parseInt(opCode)) {
                         case 0:
                             console.log("console message: " + data)
                             break;
                         case 1:
-                            text = document.getElementById("text")
-                            text.innerHTML = data
+                            
                             console.log("data was: " + data);
                             break;
                         case 2:
