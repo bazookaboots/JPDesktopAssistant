@@ -74,7 +74,8 @@ ipcRenderer.on('change-state', (event, arg) => {
 // EVENT LISTENERS
 //Calls the event to close the GUI
 document.getElementById("close-btn").addEventListener("click", (e) => {
-    ipcRenderer.send('close-app')
+    console.log("menu-closed-button pressed");
+    ipcRenderer.send('close-mainWin')
 })
 
 //Calls the IPC event to start the PAL Engine

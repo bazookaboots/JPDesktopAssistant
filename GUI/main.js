@@ -10,13 +10,12 @@ const { LoginUser } = require("./src/libraries/AccountAPI")
 const cache = new ValueStore()
 var user = cache.retrieveUser()
 
-if (user != null) 
-{
+if (user != null) {
     console.log("user data found attempting login")
-    LoginUser(user.email,user.password,
-        (authToken)=> {
+    LoginUser(user.email, user.password,
+        (authToken) => {
             console.log(JSON.parse(authToken))
-            cache.store("token",authToken,true)
+            cache.store("token", authToken, true)
             userState.setState('loggedin')
         })
 }
@@ -28,21 +27,21 @@ else {
 
 // Toggle off
 //app.whenReady().then(() => {
-    // Register a 'CommandOrControl+Y' shortcut listener.
-    //globalShortcut.register('CommandOrControl+Y', () => {
-      // Do stuff when Y and either Command/Control is pressed.
-      //overlayWin.start();
-    //})
-  //})
+// Register a 'CommandOrControl+Y' shortcut listener.
+//globalShortcut.register('CommandOrControl+Y', () => {
+// Do stuff when Y and either Command/Control is pressed.
+//overlayWin.start();
+//})
+//})
 
 
 //app.whenReady().then(() => {
-    // Register a 'CommandOrControl+Y' shortcut listener.
-    //globalShortcut.register('CommandOrControl+U', () => {
-     // Do stuff when Y and either Command/Control is pressed.
-    //overlayWin.end();
-    //})
-  //})
+// Register a 'CommandOrControl+Y' shortcut listener.
+//globalShortcut.register('CommandOrControl+U', () => {
+// Do stuff when Y and either Command/Control is pressed.
+//overlayWin.end();
+//})
+//})
 
 function closeWindow() {
     win.close()
@@ -54,7 +53,28 @@ function OnReady() {
     mainWin.start()
 }
 
+ipcMain.on('close-mainWin', (event, arg) => {
+    console.log('close-mainWin ipc called')
+    mainWin.close()
+})
+
+ipcMain.on('close-contactsWin', (event, arg) => {
+    console.log('close-contactsWin ipc called')
+    mainWin.close()
+})
+
+ipcMain.on('close-settingsWin', (event, arg) => {
+    console.log('close-settingsWin ipc called')
+    mainWin.close()
+})
+
+ipcMain.on('close-accountWin', (event, arg) => {
+    console.log('close-accountWin ipc called')
+    mainWin.close()
+})
+
 app.on('window-all-closed', () => {
+    console.log('all windows closed event called')
     if (process.platform !== 'darwin') {
         app.quit()
     }
@@ -63,32 +83,29 @@ app.on('window-all-closed', () => {
 app.whenReady().then(() => {
     // Register a 'CommandOrControl+Y' shortcut listener.
     globalShortcut.register('CommandOrControl+O', () => {
-        if (overlayWin.win != undefined)
-        {
+        if (overlayWin.win != undefined) {
             overlayWin.win.minimize()
         }
     })
-  })
+})
 
-  app.whenReady().then(() => {
+app.whenReady().then(() => {
     // Register a 'CommandOrControl+Y' shortcut listener.
     globalShortcut.register('CommandOrControl+P', () => {
-        if (overlayWin.win != undefined) 
-        {
+        if (overlayWin.win != undefined) {
             overlayWin.win.restore()
-        }  
+        }
     })
-  })
+})
 
-  app.whenReady().then(() => {
+app.whenReady().then(() => {
     // Register a 'CommandOrControl+Y' shortcut listener.
     globalShortcut.register('CommandOrControl+I', () => {
-        if (overlayWin.win != undefined) 
-        {
+        if (overlayWin.win != undefined) {
             overlayWin.win.close()
-        } 
+        }
     })
-  })
+})
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -110,11 +127,6 @@ ipcMain.on('login-user', (event, arg) => {
     console.log('login ipc called')
     userState.setState('loggedin')
     event.reply('change-state', userState.getState())
-})
-
-ipcMain.on('close-app', (event, arg) => {
-    var window = BrowserWindow.getFocusedWindow();
-    window.close();
 })
 
 ipcMain.on('spawn-engine', (event, arg) => {

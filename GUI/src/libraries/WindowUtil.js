@@ -21,19 +21,29 @@ class MainWinController {
     }
 
     start() {
+        console.log("mainWin start function called")
         let path = 'src\\processes\\main\\main.html'
         let options = { width: 330, height: 470 }
 
         let mergedOptions = { ...defualtOptions, ...options }
-        let win = new BrowserWindow(mergedOptions)
-        win.setMenuBarVisibility(false)
+        this.win = new BrowserWindow(mergedOptions)
+        this.win.setMenuBarVisibility(false)
 
-        win.loadFile(path)
-        win.webContents.openDevTools({ mode: 'detach' })
-        win.once('ready-to-show', () => {
-            win.show()
+        this.win.loadFile(path)
+        this.win.webContents.openDevTools({ mode: 'detach' })
+        this.win.once('ready-to-show', () => {
+            this.win.show()
         })
-        return win
+        return this.win
+    }
+
+    close() {
+        let win = MainWinController.instance.win
+        if (win.isDevToolsOpened()) {
+            win.closeDevTools();
+        }
+        console.log("mainWin close function called")
+        win.close()
     }
 
 }
@@ -60,6 +70,11 @@ class ContactsWinController {
         })
         return win
     }
+
+    close() {
+        console.log("contactsWin close function called")
+        ContactsWinController.instance.win.close()
+    }
 }
 
 class SettingsWinController {
@@ -83,6 +98,11 @@ class SettingsWinController {
             win.show()
         })
         return win
+    }
+
+    close() {
+        console.log("settingsWin close function called")
+        SettingsWinController.instance.win.close()
     }
 }
 
@@ -108,6 +128,11 @@ class AccountWinController {
         })
         return win
     }
+
+    close() {
+        console.log("accountWin close function called")
+        AccountWinController.instance.win.close()
+    }
 }
 
 class OverlayController {
@@ -120,38 +145,38 @@ class OverlayController {
     // Add path parameter
     start(data) {
         console.log("Hey we here " + data)
-        if(this.win == undefined)
-        {
+        if (this.win == undefined) {
             let path = data
-            let options = { 
-            title: "PAL Overlay",
-            x: 0,
-            y: 0,
-            maxWidth: 600,
-            maxHeight: 400,
-            transparent: true,
-            opacity: 0.9,
-            frame: false,
-            alwaysOnTop: true,
-            movable: true,
-            resizable: true,
-            webPreferences: {
-                nodeIntegration: true
-            } }
-    
+            let options = {
+                title: "PAL Overlay",
+                x: 0,
+                y: 0,
+                maxWidth: 600,
+                maxHeight: 400,
+                transparent: true,
+                opacity: 0.9,
+                frame: false,
+                alwaysOnTop: true,
+                movable: true,
+                resizable: true,
+                webPreferences: {
+                    nodeIntegration: true
+                }
+            }
+
             //mergedOptions = { ...defualtOptions, ...options }
             //mergedOptions = options;
 
             this.win = new BrowserWindow(options)
             this.win.setMenuBarVisibility(false)
-    
+
             //win.loadFile(path)
             // Send command strings here
             this.win.loadURL(path);
             this.win.setIgnoreMouseEvents(true);
-    
+
             //this.win.webContents.openDevTools({ mode: 'detach' })
-    
+
             this.win.once('ready-to-show', () => {
                 this.win.show()
             })
@@ -163,15 +188,14 @@ class OverlayController {
     }
 
     end() {
-        if(this.win != undefined)
-        {
+        if (this.win != undefined) {
             this.win.close();
         }
     }
 }
 
 const mainWin = new MainWinController()
-Object.freeze(mainWin)
+//Object.freeze(mainWin)
 
 const contactsWin = new ContactsWinController()
 Object.freeze(contactsWin)
