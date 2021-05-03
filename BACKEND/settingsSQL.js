@@ -22,7 +22,7 @@ async function UpdateSettings(requested, callback) {
         request.execute('spSettings_UpdateSettings').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }
@@ -35,7 +35,7 @@ async function GetSettings(requested, callback) {
         request.execute('spSettings_GetSettings').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }

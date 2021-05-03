@@ -24,7 +24,7 @@ async function CreateUser(requested, callback) {
         request.execute('spPerson_CreateUser').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }
@@ -39,12 +39,12 @@ async function FindUserByEmail(requested, callback) {
                 if (typeof recordsets.recordset !== undefined) callback(recordsets.recordset[0])
                 else callback(undefined)
             }).catch(function(err) {
-                console.debug("Error: SQL operation failed.")
+                console.error(`Error: SQL operation failed: ${err}`)
             })
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to find user by email.")
+        console.error(`Error: Failed to find user by email: ${err}`)
     }
 }
 
@@ -56,12 +56,12 @@ async function DeleteUser(requested, callback) {
             request.input('id', sql.VarChar(255), requested.id)
             request.execute('spPerson_DeleteUser').then((recordsets, err) => {
             }).catch(function(err) {
-                console.debug("Error: SQL operation failed.")
+                console.error(`Error: SQL operation failed: ${err}`)
             })
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to delete user.")
+        console.error(`Error: Failed to delete user: ${err}`)
     }
 }
 
@@ -76,7 +76,7 @@ async function UpdateUser(requested, callback) {
         request.execute('spPerson_UpdateUser').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }
@@ -91,12 +91,12 @@ async function FindUsername(requested, callback) {
                 if (typeof recordsets.recordset !== undefined) callback(recordsets.recordset[0])
                 else callback(undefined)
             }).catch(function(err) {
-                console.debug("Error: SQL operation failed.")
+                console.error(`Error: SQL operation failed: ${err}`)
             })
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to find username.")
+        console.error(`Error: Failed to find username: ${err}`)
     }
 }
 

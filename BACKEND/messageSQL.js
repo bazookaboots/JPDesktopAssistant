@@ -24,7 +24,7 @@ async function AddMessage(requested, callback) {
         request.execute('spMessages_AddMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }
@@ -37,7 +37,7 @@ async function DeleteMessage(requested, callback) {
         request.execute('spMessages_DeleteMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }
@@ -51,7 +51,7 @@ async function GetUserMessages(requested, callback) {
         request.execute('spMessages_GetUserMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }
@@ -64,7 +64,7 @@ async function GetAllMessages(requested, callback) {
         request.execute('spMessages_GetAllMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }

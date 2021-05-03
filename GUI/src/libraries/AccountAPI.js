@@ -1,8 +1,7 @@
-const http = require('http');
-const { callbackify } = require('util');
-const { ValueStore } = require('./StorageUtil');
+const http = require('http')
+const { callbackify } = require('util')
+const { ValueStore } = require('./StorageUtil')
 const hostURL = "127.0.0.1"
-
 
 /**
 * Sends an HTTP POST request to the backend asking if it can
@@ -14,17 +13,15 @@ const hostURL = "127.0.0.1"
 * @param {string} password - string representing the desired password
 */
 async function RegisterUser(username, email, password) {
-    //Create body of HTTP/POST request
+    console.debug("Function Called: RegisterUser()")
+
     const body = JSON.stringify({
         username: username,
         email: email,
         password: password
     })
 
-    console.log("Called RegisterUser");
-
-    //Set configuration parameters for the request
-    const options = { //TODO change configuration parameters production parameters
+    const options = {
         host: hostURL,
         path: '/register',
         port: 3010,
@@ -33,29 +30,27 @@ async function RegisterUser(username, email, password) {
             'Content-Type': 'application/json',
             'Content-Length': body.length
         }
-    };
+    }
 
-    //Create the request to be sent to the backend
     const req = http.request(options, res => {
-        console.log(`statusCode: ${res.statusCode}`)
         let data =''
         res.on('data', d => {
             if(d != undefined)
-                data += d;
+                data += d
+                //TODO: Implement this logic.
         })
 
         res.on("end", () => {
-            callback( data)
+            callback(data)
         })
     })
 
-    //register what to do if there is an error
-    req.on('error', error => {
-        console.error(error)
+    req.on('error', err => {
+        console.error(`Error: Failed to register user: ${err}`)
     })
 
-    //Write actual data  
     req.write(body)
+
     req.end()
 }
 
@@ -68,6 +63,7 @@ async function RegisterUser(username, email, password) {
  * @param {string} password - string representing the desired password
  */
 async function LoginUser(email, password, callback) {
+    console.debug("Function Called: LoginUser()")
 
     const body = JSON.stringify(
         {
@@ -75,7 +71,6 @@ async function LoginUser(email, password, callback) {
             password: password
         }
     )
-    console.log(body)
 
     const options = {
         hostname: hostURL,
@@ -89,22 +84,24 @@ async function LoginUser(email, password, callback) {
     }
 
     const req = http.request(options, res => {
-        console.log(`statusCode: ${res.statusCode}`)
-        let data ='';
+        let data =''
         res.on('data', d => {
             if(d != undefined)
-                data += d;
+                data += d
+                //TODO: Implement this logic.
         })
 
         res.on("end", () => {
-            callback( data)
+            callback(data)
         })
     })
 
-    req.on('error', error => {
-        console.error(error)
+    req.on('error', err => {
+        console.error(`Error: Failed to log in: ${err}`)
     })
+
     req.write(body)
+
     req.end()
 }
 
@@ -117,22 +114,22 @@ async function LoginUser(email, password, callback) {
  * @param {string} password - string representing the desired password
  */
 async function LogoutUser(authTokens) {
-    jwt_token = '';
+    console.debug("Function Called: LogoutUser()")
+
+    jwt_token = ''
 }
 
-
-//TODO implement this function vvvv
 async function UpdateUser(email, username, password, authTokens) {
+    console.debug("Function Called: UpdateUser()")
+
     const data = JSON.stringify({
         email: email,
         username: username,
         password: password
     })
 
-    console.dir(authTokens.jwt_token)
-    console.log("Called UpdateUser()");
     let options = {
-        host: hostURL, //Update later
+        host: hostURL,
         path: '/update',
         port: 3010,
         method: 'PATCH',
@@ -141,29 +138,27 @@ async function UpdateUser(email, username, password, authTokens) {
             'Content-Length': data.length,
             'Authorization': 'Bearer ' + authTokens['jwt_token']
         }
-    };
+    }
 
     const request = http.request(options, response => {
-        console.log(`statusCode: ${response.statusCode}`)
         response.on('data', d => {
-            console.log(d);
+            //TODO: Implement this logic.
         })
     })
 
 
-    request.on('error', error => {
-        console.error(error)
+    request.on('error', err => {
+        console.error(`Error: Failed to update user: ${err}`)
     })
 
-    //Write actual data  
     request.write(data)
 
     request.end()
-
 }
 
-//TODO implement this function vvvv
 async function DeleteUser(email, password, authTokens) {
+    console.debug("Function Called: DeleteUser()")
+
     const data = JSON.stringify({
         name: name,
         platform: platform,
@@ -171,9 +166,8 @@ async function DeleteUser(email, password, authTokens) {
         'Authorization': "Bearer " + authTokens.jwt_token
     })
 
-    console.log("Called readcontact");
     let options = {
-        host: hostURL, //Update later
+        host: hostURL,
         path: '/delete',
         port: 3010,
         method: 'POST',
@@ -181,34 +175,32 @@ async function DeleteUser(email, password, authTokens) {
             'Content-Type': 'application/json',
             'Content-Length': data.length
         }
-    };
+    }
 
     const request = http.request(options, response => {
         console.log(`statusCode: ${response.statusCode}`)
         response.on('data', d => {
-            console.log(d);
+            //TODO: Implement this logic.
         })
     })
 
-
-    request.on('error', error => {
-        console.error(error)
+    request.on('error', err => {
+        console.error(`Error: Failed to delete user: ${err}`)
     })
 
-    //Write actual data  
     request.write(data)
 
     request.end()
-
 }
 
-async function GetUserName(userid) {
+async function GetUsername(userid) {
+    console.debug("Function Called: GetUsername()")
+
     const body = JSON.stringify(
         {
             userid:userid
         }
     )
-    console.log(body)
 
     const options = {
         hostname: hostURL,
@@ -224,22 +216,18 @@ async function GetUserName(userid) {
     const request = http.request(options, response => {
         console.log(`statusCode: ${response.statusCode}`)
         response.on('data', d => {
-            console.log(d); //DEBUG
-            //TODO: Return username
+            //TODO: Implement this logic.
         })
     })
 
-    request.on('error', error => {
-        console.error(error)
+    request.on('error', err => {
+        console.error(`Error: Failed to find username: ${err}`)
     })
 
-    //Write actual data  
     request.write(data)
 
     request.end()
-
 }
-
 
 module.exports = {
     RegisterUser,
@@ -248,4 +236,3 @@ module.exports = {
     UpdateUser,
     DeleteUser
 }
-

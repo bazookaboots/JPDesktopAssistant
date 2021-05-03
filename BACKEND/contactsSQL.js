@@ -22,7 +22,7 @@ async function UpdateContacts(requested, callback) {
         request.execute('spContacts_UpdateContacts').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }
@@ -35,7 +35,7 @@ async function GetContacts(requested, callback) {
         request.execute('spContacts_GetContacts').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.debug("Error: SQL operation failed.")
+            console.error(`Error: SQL operation failed: ${err}`)
         })
     })
 }

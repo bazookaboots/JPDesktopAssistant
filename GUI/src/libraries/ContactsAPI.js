@@ -1,16 +1,22 @@
+//TODO: Function to get user information
+//TODO: Function to search for users
 
-async function CreateContact(name, platform, username)
+const fs = require('fs');
+
+async function CreateContact(userid, name, username, contactid)
 {
+  console.log("Called updatecontacts");  //DEBUG
   const data = JSON.stringify({
     name: name,
-    platform: platform,
-    username: username
+    username: username,
+    contactid: contactid
   })
+  
+  //TODO: Logic to add to string of contacts
 
-  console.log("Called readcontact");
   let options = {
-    host: '127.0.0.1', //Update later
-    path: '/account',
+    host: '127.0.0.1',
+    path: '/updatecontacts',
     port: 3010,
     method: 'POST',
     headers: {
@@ -22,28 +28,106 @@ async function CreateContact(name, platform, username)
   const request = http.request(options, response => {
     console.log(`statusCode: ${response.statusCode}`)
     response.on('data', d => {
-      console.log(d);
+      console.log(d); //DEBUG
+
+      //TODO: Save new string
+      
+      const data = JSON.stringify(d, null, 4);
+      fs.writeFile('contacts.json', data, (err))
     })
   })
-
 
   request.on('error', error => {
     console.error(error)
   })
-
-  //Write actual data  
+ 
   request.write(data)
 
   request.end()
-
 }
 
-async function ReadContact(name, platform, username) {
-  console.log("Called readcontact");
+async function DeleteContact(userid, contactid)
+{
+  console.log("Called updatecontacts"); //DEBUG
+
+  //TODO: Logic to delete contact from string of contacts
 
   let options = {
-    host: '127.0.0.1', //Update later
-    path: '/account',
+    host: '127.0.0.1',
+    path: '/updatecontacts',
+    port: 3010,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': data.length
+    }
+  };
+
+  const request = http.request(options, response => {
+    console.log(`statusCode: ${response.statusCode}`)
+    response.on('data', d => {
+      console.log(d); //DEBUG
+      
+      //TODO: Save new string
+
+      const data = JSON.stringify(d, null, 4);
+      fs.writeFile('contacts.json', data, (err))
+    })
+  })
+
+  request.on('error', error => {
+    console.error(error)
+  })
+ 
+  request.write(data)
+
+  request.end()
+}
+
+async function UpdateContact(userid, name, username, contactid)
+{
+  console.log("Called updatecontacts"); //DEBUG
+
+  //TODO: Logic to update string of contacts
+
+  let options = {
+    host: '127.0.0.1',
+    path: '/updatecontacts',
+    port: 3010,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': data.length
+    }
+  };
+
+  const request = http.request(options, response => {
+    console.log(`statusCode: ${response.statusCode}`)
+    response.on('data', d => {
+      console.log(d); //DEBUG
+      
+      //TODO: Save new string
+
+      const data = JSON.stringify(d, null, 4);
+      fs.writeFile('contacts.json', data, (err))
+    })
+  })
+
+  request.on('error', error => {
+    console.error(error)
+  })
+ 
+  request.write(data)
+
+  request.end()
+}
+
+async function GetContacts(userid) {
+  console.log("Called getcontacts");  //DEBUG
+
+  let options = {
+    host: '127.0.0.1',
+    path: '/getcontacts',
     port: 3010,
     method: 'GET'
   };
@@ -51,7 +135,10 @@ async function ReadContact(name, platform, username) {
   const request = http.request(options, response => {
 
     response.on('data', d => {
-      console.log(d);
+      console.log(d); //DEBUG
+
+      const data = JSON.stringify(d, null, 4);
+      fs.writeFile('contacts.json', data, (err))
     })
   })
 
@@ -62,81 +149,11 @@ async function ReadContact(name, platform, username) {
   request.end()
 }
 
-async function UpdateContact(name, platform, username)
-{
-  const data = JSON.stringify({
-    name: name,
-    platform: platform,
-    username: username
-  })
+async function LoadContacts() {
+  console.log("Called loadcontacts");  //DEBUG
 
-  console.log("Called readcontact");
-  let options = {
-    host: '127.0.0.1', //Update later
-    path: '/account',
-    port: 3010,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': data.length
-    }
-  };
+  fs.readFile('contacts.json', 'utf-8', (err, data))
+  const contacts = JSON.parse(data.toString());
 
-  const request = http.request(options, response => {
-    console.log(`statusCode: ${response.statusCode}`)
-    response.on('data', d => {
-      console.log(d);
-    })
-  })
-
-
-  request.on('error', error => {
-    console.error(error)
-  })
-
-  //Write actual data  
-  request.write(data)
-
-  request.end()
-
-
-}
-
-async function DeleteContact(name, platform, username)
-{
-  const data = JSON.stringify({
-    name: name,
-    platform: platform,
-    username: username
-  })
-
-  console.log("Called readcontact");
-  let options = {
-    host: '127.0.0.1', //Update later
-    path: '/account',
-    port: 3010,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': data.length
-    }
-  };
-
-  const request = http.request(options, response => {
-    console.log(`statusCode: ${response.statusCode}`)
-    response.on('data', d => {
-      console.log(d);
-    })
-  })
-
-
-  request.on('error', error => {
-    console.error(error)
-  })
-
-  //Write actual data  
-  request.write(data)
-
-  request.end()
-
+  return contacts;
 }

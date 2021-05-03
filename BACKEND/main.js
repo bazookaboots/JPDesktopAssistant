@@ -36,17 +36,17 @@ app.post('/register', async (req, res) => {
         await FindUserByEmail(req.body.email, async (foundUser) => {
             if (foundUser === undefined) {
                 if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || req.body.email.length < 8 || req.body.email.length > 64) {
-                    console.debug("Error: Email is invalid.")
+                    console.debug("Email is invalid.")
                     return res.status(422).send()
                 }
 
                 if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5 || req.body.username.length > 32) {
-                    console.debug("Error: Username is invalid.")
+                    console.debug("Username is invalid.")
                     return res.status(422).send()
                 }
 
                 if (req.body.password.length < 8 || req.body.password.length > 32) {
-                    console.debug("Error: Password is invalid.")
+                    console.debug("Password is invalid.")
                     return res.status(422).send()
                 }
 
@@ -69,7 +69,7 @@ app.post('/register', async (req, res) => {
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to register user.")
+        console.error(`Error: Failed to register user: ${err}`)
     }
 })
 
@@ -102,7 +102,7 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to log in.")
+        console.error(`Error: Failed to log in: ${err}`)
         res.status(401).send("Error: Failed to log in.")
     }
 })
@@ -113,7 +113,7 @@ app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
         DeleteUser(req.user.id)
     } 
     catch (err) {
-        console.debug("Error: Failed to delete account.")
+        console.error(`Error: Failed to delete account: ${err}`)
     }
 })
 
@@ -122,7 +122,7 @@ app.get('/logout', /*authenticateToken,*/ async(req, res) => {
     try {
         //TODO: Implement logout function
     } catch (err) {
-        console.debug("Error: Failed to log out.")
+        console.error(`Error: Failed to log out: ${err}`)
     }
 })
 
@@ -132,17 +132,17 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
         await FindUserByEmail(req.user.email, async (foundUser) => {
             if (foundUser) {
                 if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || req.body.email.length < 8 || req.body.email.length > 64) {
-                    console.debug("Error: Email is invalid.")
+                    console.debug("Email is invalid.")
                     return res.status(422).send()
                 }
 
                 if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5 || req.body.username.length > 32) {
-                    console.debug("Error: Username is invalid.")
+                    console.debug("Username is invalid.")
                     return res.status(422).send()
                 }
 
                 if (req.body.password.length < 8 || req.body.password.length > 32) {
-                    console.debug("Error: Password is invalid.")
+                    console.debug("Password is invalid.")
                     return res.status(422).send()
                 }
 
@@ -165,7 +165,7 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
 
     } 
     catch (err) {
-        console.debug("Error: Failed to update account.")
+        console.error(`Error: Failed to update account: ${err}`)
     }
 })
 
@@ -181,7 +181,7 @@ app.get('/getusername', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to get username.")
+        console.error(`Error: Failed to get username: ${err}`)
     }
 })
 
@@ -244,7 +244,7 @@ server.on("connection", (socket) => {
             }
         }
         catch (err) {
-            console.debug("Error: Failed to send message.")
+            console.error(`Error: Failed to send message: ${err}`)
         }
     })
 })
@@ -262,7 +262,7 @@ app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
 
     } 
     catch (err) {
-        console.debug("Error: Failed to delete message.")
+        console.error(`Error: Failed to delete message: ${err}`)
     }
 })
     
@@ -279,7 +279,7 @@ app.get('/getusermessages', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to get user messages.")
+        console.error(`Error: Failed to get user messages: ${err}`)
     }
 })
 
@@ -294,7 +294,7 @@ app.get('/getallmessages', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to get all messages.")
+        console.error(`Error: Failed to get all messages: ${err}`)
     }
 })
 
@@ -318,7 +318,7 @@ app.post('/updatecontacts', /*authenticateToken,*/ async(req, res) => {
         })
     }
     catch (err) {
-        console.debug("Error: Failed to update contacts.")
+        console.error(`Error: Failed to update contacts: ${err}`)
     }
 })
 
@@ -334,7 +334,7 @@ app.get('/getcontacts', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to get contacts.")
+        console.error(`Error: Failed to get contacts: ${err}`)
     }
 })
 
@@ -358,7 +358,7 @@ app.post('/updatesettings', /*authenticateToken,*/ async(req, res) => {
         })
     }
     catch (err) {
-        console.debug("Error: Failed to update settings.")
+        console.error(`Error: Failed to update settings: ${err}`)
     }
 })
 
@@ -374,6 +374,6 @@ app.get('/getsettings', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.debug("Error: Failed to get settings.")
+        console.error(`Error: Failed to get settings: ${err}`)
     }
 })
