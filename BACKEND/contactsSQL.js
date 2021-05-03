@@ -14,7 +14,7 @@ const config = {
 }
 
 async function UpdateContacts(requested, callback) {
-    console.log("Fucntion Called> UpdateContact()") //DEBUG
+    console.debug("Function Called: UpdateContacts()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('userid', sql.VarChar(255), requested.userid)
@@ -22,20 +22,20 @@ async function UpdateContacts(requested, callback) {
         request.execute('spContacts_UpdateContacts').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }
 
 async function GetContacts(requested, callback) {
-    console.log("Fucntion Called> GetContacts()") //DEBUG
+    console.debug("Function Called: GetContacts()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('userid', sql.VarChar(255), requested.userid)
         request.execute('spContacts_GetContacts').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }

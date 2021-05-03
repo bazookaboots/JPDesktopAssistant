@@ -14,7 +14,7 @@ const config = {
 }
 
 async function AddMessage(requested, callback) {
-    console.log("Fucntion Called> AddMessage()") //DEBUG
+    console.debug("Fucntion Called: AddMessage()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('messageid', sql.VarChar(255), requested.messageid)
@@ -24,26 +24,26 @@ async function AddMessage(requested, callback) {
         request.execute('spMessages_AddMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }
 
 async function DeleteMessage(requested, callback) {
-    console.log("Fucntion Called> DeleteMessage()")  //DEBUG
+    console.debug("Fucntion Called: DeleteMessage()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('messageid', sql.VarChar(255), requested.messageid)
         request.execute('spMessages_DeleteMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }
 
 async function GetUserMessages(requested, callback) {
-    console.log("Fucntion Called> GetUserMessages()")    //DEBUG
+    console.debug("Fucntion Called: GetUserMessages()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('fromid', sql.VarChar(255), requested.fromid)
@@ -51,20 +51,20 @@ async function GetUserMessages(requested, callback) {
         request.execute('spMessages_GetUserMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }
 
 async function GetAllMessages(requested, callback) {
-    console.log("Fucntion Called> GetAllMessages()")    //DEBUG
+    console.debug("Fucntion Called: GetAllMessages()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('fromid', sql.VarChar(255), requested.fromid)
         request.execute('spMessages_GetAllMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }

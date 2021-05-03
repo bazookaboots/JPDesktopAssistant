@@ -14,7 +14,7 @@ const config = {
 }
 
 async function UpdateSettings(requested, callback) {
-    console.log("Fucntion Called> UpdateSettings()") //DEBUG
+    console.debug("Fucntion Called: UpdateSettings()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('userid', sql.VarChar(255), requested.userid)
@@ -22,20 +22,20 @@ async function UpdateSettings(requested, callback) {
         request.execute('spSettings_UpdateSettings').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }
 
 async function GetSettings(requested, callback) {
-    console.log("Fucntion Called> GetSettings()") //DEBUG
+    console.debug("Fucntion Called: GetSettings()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('userid', sql.VarChar(255), requested.userid)
         request.execute('spSettings_GetSettings').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }

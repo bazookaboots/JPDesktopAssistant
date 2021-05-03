@@ -1,8 +1,4 @@
-//Accounts Database:
-//userid, username, email, passhash, contacts, settings
-
-//Messages database:
-//messageid, message, toid, fromid
+/* Account Logic */
 
 require('dotenv').config()
 const express = require('express')
@@ -15,19 +11,19 @@ const {
     CreateUser,
     FindUserByEmail,
     DeleteUser,
-    UpdateUser
+    UpdateUser,
+    FindUsername
 } = require('./accountSQL')
+
+app.listen(3010, '127.0.0.1')
 
 function authenticateToken(request, response, next) {
     const authHeader = request.headers['authorization']
-
-    console.log("authHeader value = " + authHeader) //DEBUG
     const token = authHeader && authHeader.split(' ')[1]
-    console.log("token value = " + token)   //DEBUG
-    if (token == null) return response.status(401).send("Failed to AuthenticateToken")
+    if (token == null) return response.status(401).send("Error: Failed to AuthenticateToken.")
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return response.status(401).send("Failed to AuthenticateToken")
+        if (err) return response.status(401).send("Error: Failed to AuthenticateToken.")
         request.user = user
         next()
     })
@@ -35,22 +31,22 @@ function authenticateToken(request, response, next) {
 
 
 app.post('/register', async (req, res) => {
-    console.log("/register route called")   //DEBUG
+    console.debug("Route Called: /register")
     try {
         await FindUserByEmail(req.body.email, async (foundUser) => {
             if (foundUser === undefined) {
-                if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-                    console.log("EMAIL IS INVALID") //DEBUG
+                if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || req.body.email.length < 8 || req.body.email.length > 64) {
+                    console.debug("Error: Email is invalid.")
                     return res.status(422).send()
                 }
 
-                if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5) {
-                    console.log("USERNAME IS INVALID") //DEBUG
+                if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5 || req.body.username.length > 32) {
+                    console.debug("Error: Username is invalid.")
                     return res.status(422).send()
                 }
 
-                if (req.body.password.length < 8) {
-                    console.log("PASSWORD IS INVALID") //DEBUG
+                if (req.body.password.length < 8 || req.body.password.length > 32) {
+                    console.debug("Error: Password is invalid.")
                     return res.status(422).send()
                 }
 
@@ -73,14 +69,13 @@ app.post('/register', async (req, res) => {
         })
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to register user.")
     }
 })
 
 app.get('/login', /*authenticateToken,*/ async(req, res) => {
-    console.log("/login route called")  //DEBUG
+    console.debug("Route Called: /login")
     try {
-        console.dir(req.body)
         await FindUserByEmail(req.body.email, async function (foundUser) {
             if (foundUser !== undefined) {
                 let submittedPass = req.body.password
@@ -102,52 +97,52 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
             } else {
                 let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`
                 await bcrypt.compare(req.body.password, fakePass)
-                res.status(401).send("asaas/users/login POST > Could Not Login User")
+                res.status(401).send("Error: Failed to log in.")
             }
         })
     } 
     catch (err) {
-        console.error(err)
-        res.status(401).send("asddas/users/login POST > Could Not Login User")
+        console.debug("Error: Failed to log in.")
+        res.status(401).send("Error: Failed to log in.")
     }
 })
 
 app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
-    console.log("/delete route called") //DEBUG
+    console.debug("Route Called: /delete")
     try {
         DeleteUser(req.user.id)
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to delete account.")
     }
 })
 
 app.get('/logout', /*authenticateToken,*/ async(req, res) => {
-    console.log("/delete route called") //DEBUG
+    console.debug("Route Called: /logout")
     try {
         //TODO: Implement logout function
     } catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to log out.")
     }
 })
 
 app.patch('/update', /*authenticateToken,*/ async(req, res) => {
-    console.log("/update route called") //DEBUG
+    console.debug("Route Called: /update")
     try {
         await FindUserByEmail(req.user.email, async (foundUser) => {
             if (foundUser) {
-                if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-                    console.log("EMAIL IS INVALID") //DEBUG
+                if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || req.body.email.length < 8 || req.body.email.length > 64) {
+                    console.debug("Error: Email is invalid.")
                     return res.status(422).send()
                 }
 
-                if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5) {
-                    console.log("USERNAME IS INVALID") //DEBUG
+                if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5 || req.body.username.length > 32) {
+                    console.debug("Error: Username is invalid.")
                     return res.status(422).send()
                 }
 
-                if (req.body.password.length < 8) {
-                    console.log("PASSWORD IS INVALID") //DEBUG
+                if (req.body.password.length < 8 || req.body.password.length > 32) {
+                    console.debug("Error: Password is invalid.")
                     return res.status(422).send()
                 }
 
@@ -170,7 +165,23 @@ app.patch('/update', /*authenticateToken,*/ async(req, res) => {
 
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to update account.")
+    }
+})
+
+app.get('/getusername', /*authenticateToken,*/ async(req, res) => {
+    console.debug("Route Called: /getusername")
+    try {
+        const request = {
+            userid: req.body.userid
+        }
+
+        await FindUsername(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (err) {
+        console.debug("Error: Failed to get username.")
     }
 })
 
@@ -182,7 +193,7 @@ app.get('/test-tok', async (req, res) => {
             username: "foundUser.username",
             email: "foundUser.email"
         }, process.env.ACCESS_TOKEN_SECRET)
-        console.log("contents of accessToken = " + accessToken) //DEBUG
+        console.log("contents of accessToken = " + accessToken)
         res.status(200).json({ Token: accessToken })
     } 
     catch (err) {
@@ -190,24 +201,8 @@ app.get('/test-tok', async (req, res) => {
     }
 })
 
-app.get('/getusername', /*authenticateToken,*/ async(req, res) => {
-    console.log("/getusername route called") //DEBUG
-    try {
-        const request = {
-            userid: req.body.userid
-        }
 
-        await GetUserMessages(request, async(response) => {
-            res.status(201).send()
-        })
-    } 
-    catch (err) {
-        console.error(err)
-    }
-})
-
-
-// Messaging Logic //
+/* Messaging Logic */
 
 const {
     AddMessage,
@@ -223,16 +218,16 @@ const
 let sequenceNumberByClient = new Map()
 
 server.on("connection", (socket) => {
-   console.info(`Client connected [id=${socket.id}], [userid=${socket.handshake.query.userid}]`)   //DEBUG
+   console.debug(`Client connected: [id=${socket.id}], [userid=${socket.handshake.query.userid}]`)
    sequenceNumberByClient.set(parseInt(socket.handshake.query.userid), socket)
 
    socket.on("disconnect", () => {
        sequenceNumberByClient.delete(socket.handshake.query.userid)
-       console.info(`Client gone [id=${socket.id}]`)    //DEBUG
+       console.debug(`Client disconnected: [id=${socket.id}], [userid=${socket.handshake.query.userid}]`)
    })
 
    socket.on("sendmessage", (request) => {
-        console.info(`Client got message [message=${request.message}], [toid=${request.toid}], [fromid=${request.fromid}]`)    //DEBUG
+        console.debug(`Client sent message: [message=${request.message}], [toid=${request.toid}], [fromid=${request.fromid}]`)
         try {
             const message = {
                 messageid: Date.now(),
@@ -249,17 +244,15 @@ server.on("connection", (socket) => {
             }
         }
         catch (err) {
-            console.error(err)
+            console.debug("Error: Failed to send message.")
         }
     })
 })
 
 app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
-    console.log("/deletemessage route called")  //DEBUG
+    console.debug("Route Called: /deletemessage")
     try {
         const request = {
-            fromid: req.body.fromid,
-            toid: req.body.toid,
             messageid: req.body.messageid
         }
 
@@ -269,12 +262,12 @@ app.delete('/deletemessage', /*authenticateToken,*/ async(req, res) => {
 
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to delete message.")
     }
 })
     
 app.get('/getusermessages', /*authenticateToken,*/ async(req, res) => {
-    console.log("/getusermessages route called") //DEBUG
+    console.debug("Route Called: /getusermessages")
     try {
         const request = {
             toid: req.body.toid,
@@ -286,12 +279,12 @@ app.get('/getusermessages', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to get user messages.")
     }
 })
 
 app.get('/getallmessages', /*authenticateToken,*/ async(req, res) => {
-    console.log("/getallmessages route called") //DEBUG
+    console.debug("Route Called: /getallmessages")
     try {
         const request = {
             fromid: req.body.fromid
@@ -301,11 +294,11 @@ app.get('/getallmessages', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to get all messages.")
     }
 })
 
-// Contacts Logic //
+/* Contacts Logic */
 
 const {
     UpdateContacts,
@@ -313,7 +306,7 @@ const {
 } = require('./contactsSQL')
 
 app.post('/updatecontacts', /*authenticateToken,*/ async(req, res) => {
-    console.log("/updatecontacts route called")   //DEBUG
+    console.debug("Route Called: /updatecontacts")
     try {
         const request = {
             userid: req.body.userid,
@@ -325,12 +318,12 @@ app.post('/updatecontacts', /*authenticateToken,*/ async(req, res) => {
         })
     }
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to update contacts.")
     }
 })
 
 app.get('/getcontacts', /*authenticateToken,*/ async(req, res) => {
-    console.log("/getcontacts route called") //DEBUG
+    console.debug("Route Called: /getcontacts")
     try {
         const request = {
             userid: req.body.userid
@@ -341,11 +334,11 @@ app.get('/getcontacts', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to get contacts.")
     }
 })
 
-// Settings Logic //
+/* Settings Logic */
 
 const {
     UpdateSettings,
@@ -353,7 +346,7 @@ const {
 } = require('./settingsSQL')
 
 app.post('/updatesettings', /*authenticateToken,*/ async(req, res) => {
-    console.log("/updatesettings route called")   //DEBUG
+    console.debug("Route Called: /updatesettings")
     try {
         const request = {
             userid: req.body.userid,
@@ -365,12 +358,12 @@ app.post('/updatesettings', /*authenticateToken,*/ async(req, res) => {
         })
     }
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to update settings.")
     }
 })
 
 app.get('/getsettings', /*authenticateToken,*/ async(req, res) => {
-    console.log("/getsettings route called") //DEBUG
+    console.debug("Route Called: /getsettings")
     try {
         const request = {
             userid: req.body.userid
@@ -381,7 +374,6 @@ app.get('/getsettings', /*authenticateToken,*/ async(req, res) => {
         })
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to get settings.")
     }
 })
-app.listen(3010, '127.0.0.1')

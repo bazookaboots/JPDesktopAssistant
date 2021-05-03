@@ -14,7 +14,7 @@ const config = {
 }
 
 async function CreateUser(requested, callback) {
-    console.log("Fucntion Called> CreateUser()")    //DEBUG
+    console.debug("Function Called: CreateUser()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('id', sql.VarChar(255), requested.id)
@@ -24,14 +24,14 @@ async function CreateUser(requested, callback) {
         request.execute('spPerson_CreateUser').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }
 
 async function FindUserByEmail(requested, callback) {
     try {
-        console.log("Fucntion Called> FindUserByEmail()")    //DEBUG
+        console.debug("Function Called: FindUserByEmail()")
         var conn = new sql.connect(config).then((conn) => {
             var request = new sql.Request(conn)
             request.input('email', sql.VarChar(255), requested.email)
@@ -39,33 +39,34 @@ async function FindUserByEmail(requested, callback) {
                 if (typeof recordsets.recordset !== undefined) callback(recordsets.recordset[0])
                 else callback(undefined)
             }).catch(function(err) {
-                console.error(err)
+                console.debug("Error: SQL operation failed.")
             })
         })
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to find user by email.")
     }
 }
 
 async function DeleteUser(requested, callback) {
     try {
-        console.log("Fucntion Called> DeleteUser()") //DEBUG
+        console.debug("Function Called: DeleteUser()")
         var conn = new sql.connect(config).then((conn) => {
             var request = new sql.Request(conn)
             request.input('id', sql.VarChar(255), requested.id)
-            request.execute('spPerson_DeleteUser').then((recordsets, err) => {}).catch(function(err) {
-                console.error(err)
+            request.execute('spPerson_DeleteUser').then((recordsets, err) => {
+            }).catch(function(err) {
+                console.debug("Error: SQL operation failed.")
             })
         })
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to delete user.")
     }
 }
 
 async function UpdateUser(requested, callback) {
-    console.log("Fucntion Called> UpdateUser()")  //DEBUG
+    console.debug("Function Called: UpdateUser()")
     var conn = new sql.connect(config).then(function(conn) {
         var request = new sql.Request(conn)
         request.input('id', sql.VarChar(255), requested.id)
@@ -75,14 +76,14 @@ async function UpdateUser(requested, callback) {
         request.execute('spPerson_UpdateUser').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(err)
+            console.debug("Error: SQL operation failed.")
         })
     })
 }
 
 async function FindUsername(requested, callback) {
     try {
-        console.log("Fucntion Called> FindUsername()")  //DEBUG
+        console.debug("Function Called: FindUsername()")
         var conn = new sql.connect(config).then((conn) => {
             var request = new sql.Request(conn)
             request.input('userid', sql.VarChar(255), requested.userid)
@@ -90,12 +91,12 @@ async function FindUsername(requested, callback) {
                 if (typeof recordsets.recordset !== undefined) callback(recordsets.recordset[0])
                 else callback(undefined)
             }).catch(function(err) {
-                console.error(err)
+                console.debug("Error: SQL operation failed.")
             })
         })
     } 
     catch (err) {
-        console.error(err)
+        console.debug("Error: Failed to find username.")
     }
 }
 
