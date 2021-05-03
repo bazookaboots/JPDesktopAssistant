@@ -5,6 +5,20 @@ const { LoginPage } = require('./components/page-login/page-login-comp')
 const { RegisterPage } = require('./components/page-register/page-register-comp')
 
 
+//DEBUG START
+const io = require("socket.io-client"),
+ioClient = io.connect("http://localhost:8000", 
+    { 
+        query: {
+        userid: 2222
+    }});
+
+ioClient.on("getmessage", (message) => {
+
+    console.log("Got a message")
+    console.log(message.message);
+})
+
 function killChildren(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.lastChild);
@@ -129,6 +143,13 @@ document.getElementById("page-container").addEventListener("click", (e) => {
  * @memberof Main:main.js
  */
 function toggleMenu() {
+    const request = {
+        message: "This is client 2",
+        toid: 1111,
+        fromid: 2222
+    }
+
+    ioClient.emit("sendmessage", request)
     //console.log("toggleMenu() Called")
     if (document.getElementById("menu").style.display == "none") {
         document.getElementById("menu").style.display = "block";
@@ -191,16 +212,3 @@ function HandleLoginResponse(response) {
 
 }
 
-// //DEBUG START
-// const io = require("socket.io-client"),
-// ioClient = io.connect("http://localhost:8000", 
-//     { 
-//         query: {
-//         userid: 2222
-//     }});
-
-// ioClient.on("getmessage", (message) => {
-
-//     console.log("Got a message")
-//     console.log(message.message);
-// })
