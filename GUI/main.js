@@ -8,25 +8,21 @@ const { LoginUser } = require("./src/libraries/AccountAPI")
 
 //attempt to log in
 const cache = new ValueStore()
-let user = {
-    username: cache.retrieve("username"),
-    email: cache.retrieve("email"),
-    password: cache.retrieve("password")
-}
-if (user.password != null
-    && user.username != null
-    && user.email != null) 
+var user = cache.retrieveUser()
+
+if (user != null) 
 {
-    console.log("attempting to log user in")
+    console.log("user data found attempting login")
     LoginUser(user.email,user.password,
         (authToken)=> {
             console.log(JSON.parse(authToken))
             cache.store("token",authToken,true)
             userState.setState('loggedin')
         })
-    
 }
 else {
+    console.log("user data not found attempting login")
+    console.log("setting user state to loggedout")
     userState.setState('loggedout')
 }
 

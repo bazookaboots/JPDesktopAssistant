@@ -29,7 +29,7 @@ class MainWinController {
         win.setMenuBarVisibility(false)
 
         win.loadFile(path)
-        //win.webContents.openDevTools({ mode: 'detach' })
+        win.webContents.openDevTools({ mode: 'detach' })
         win.once('ready-to-show', () => {
             win.show()
         })

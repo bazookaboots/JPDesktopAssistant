@@ -1,5 +1,8 @@
 const component = `
+<style> @import "../../global-styles.css"</style>
 <style>
+
+
 .PopUpTitle {
     text-align: center;
     padding: 8px;
@@ -24,6 +27,7 @@ const component = `
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.747);
     transition: 0.3s;
 }
+
 .textInput {
     background-color: #0e0e0f;
     color: lightgray;
@@ -33,7 +37,6 @@ const component = `
     border-width: 0px;
 }
 </style>
-
 <!-- LOGIN PAGE  -->
         <div id="login-container" class="loginContainer card">
             <div class="PopUpTitle">

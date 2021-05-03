@@ -15,30 +15,45 @@ function killChildren(parent) {
 ipcRenderer.send('get-state')
 
 ipcRenderer.on('change-state', (event, arg) => {
+    console.log("change state called")
+    let startpal_btn = document.getElementById("startpal-btn")
+    let menu_container = document.getElementById("menu-container")
+    let username_title = document.getElementById("menu-title")
     switch (arg) {
         case 'loggedin':
-            console.log("rendering loggedin component")
-            container = document.getElementById("menu-container")
-            killChildren(container)
+
+            //add class updates to main button
+            startpal_btn.classList.add("loggedin_palbtn")
+            console.log("adding loggedin_palbtn class to startpal-btn")
+
+            //swap menu type
+            killChildren(menu_container)
             menuLoggedIn = document.createElement('menu-logged-in')
-            container.appendChild(menuLoggedIn)
+            menu_container.appendChild(menuLoggedIn)
+
+            //set username title to "Guest User"
+            username_title.innerText = "Logged In"
 
             break;
         case 'loggedout':
-            console.log("rendering loggedin component")
-            container = document.getElementById("menu-container")
-            killChildren(container)
+
+            //remove class to main button
+            startpal_btn.classList.remove("loggedin_palbtn")
+            console.log("removing loggedin_palbtn class to startpal-btn")
+
+            //swap menu type
+            killChildren(menu_container)
             menuLoggedOut = document.createElement('menu-logged-out')
-            container.appendChild(menuLoggedOut)
+            menu_container.appendChild(menuLoggedOut)
+
+            //set username title to "Guest User"
+            username_title.innerText = "Guest User"
 
             break;
 
         default:
             break;
     }
-})
-ipcRenderer.on('login-user', () => {
-
 })
 
 
@@ -63,50 +78,50 @@ window.addEventListener('offline', (e) => { document.getElementById("online-tag"
 
 //Opens menu on menu-btn click event
 document.getElementById("menu-btn").addEventListener("click", async (e) => {
-    //console.log("menu-btn pressed");
-    toggleMenu();
+    console.log("menu-btn pressed");
+    document.getElementById("menu").classList.remove("hidden")
 })
 
 //Closes menu on close-menu-btn click event
 document.getElementById("non-menu-area").addEventListener("click", (e) => {
-    //console.log("non-menu-area function called")
-    toggleMenu();
+    console.log("non-menu-area function called")
+    document.getElementById("menu").classList.add("hidden")
 })
 
 document.getElementById("page-container").addEventListener("click", (e) => {
-    document.getElementById("page-container").style.display = "none"
+    document.getElementById("page-container").classList.add("hidden")
 })
 
-//Blocks clicks on the login page from propagating to the back of the login area
-document.getElementById("login-container").addEventListener("click", (e) => {
-    //console.log("login area clicked");
-    e.stopPropagation();
-})
+// //Blocks clicks on the login page from propagating to the back of the login area
+// document.getElementById("login-container").addEventListener("click", (e) => {
+//     //console.log("login area clicked");
+//     e.stopPropagation();
+// })
 
 
 
-// This registers the functionality for when the register form's submit button is hit
-document.getElementById("btn-register-form").addEventListener("click", (e) => {
-    username = document.getElementById('username-register-input').value
-    email = document.getElementById('email-register-input').value
-    password = document.getElementById('password-register-input').value
-    passwordc = document.getElementById('passwordc-register-input').value
-    if (password === passwordc) {
-        RegisterUser(username, email, password)
-        toggleRegisterPage()
-    } else {
-        document.getElementById('password-register-input').value = ''
-        document.getElementById('passwordc-register-input').value = ''
-        document.getElementById('password-register-input').style.border = '2px solid red'
-        document.getElementById('passwordc-register-input').style.border = '2px solid red'
-    }
-})
-// This registers the functionality for when the login form's submit button is hit
-document.getElementById("btn-login-form").addEventListener("click", (e) => {
-    email = document.getElementById('email-login-input').value
-    password = document.getElementById('password-login-input').value
-    LoginUser(email, password, authTokens, HandleLoginResponse)
-})
+// // This registers the functionality for when the register form's submit button is hit
+// document.getElementById("btn-register-form").addEventListener("click", (e) => {
+//     username = document.getElementById('username-register-input').value
+//     email = document.getElementById('email-register-input').value
+//     password = document.getElementById('password-register-input').value
+//     passwordc = document.getElementById('passwordc-register-input').value
+//     if (password === passwordc) {
+//         RegisterUser(username, email, password)
+//         toggleRegisterPage()
+//     } else {
+//         document.getElementById('password-register-input').value = ''
+//         document.getElementById('passwordc-register-input').value = ''
+//         document.getElementById('password-register-input').style.border = '2px solid red'
+//         document.getElementById('passwordc-register-input').style.border = '2px solid red'
+//     }
+// })
+// // This registers the functionality for when the login form's submit button is hit
+// document.getElementById("btn-login-form").addEventListener("click", (e) => {
+//     email = document.getElementById('email-login-input').value
+//     password = document.getElementById('password-login-input').value
+//     LoginUser(email, password, authTokens, HandleLoginResponse)
+// })
 
 /**
  * Toggles the visibility of the side menu in the HTML document

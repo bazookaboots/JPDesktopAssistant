@@ -70,6 +70,8 @@ button:focus {
     display: inline-block;
 }
 
+
+
 .closeBtn {
     -webkit-app-region: no-drag;
     display: inline-block;
@@ -94,6 +96,13 @@ button:focus {
     width: fit-content;
     border-width: 0px;
 }
+.formBtn:hover {
+    background-color: rgb(213, 255, 149);
+}
+
+.formBtn p{
+    color: black;
+}
 
 .red {
     background-color: red;
@@ -105,4 +114,8 @@ button:focus {
 
 .gray {
     background-color: gray;
+}
+
+.hidden {
+    display: none !important;
 }

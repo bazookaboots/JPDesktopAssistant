@@ -1,0 +1,14 @@
+.menuItem {
+    color: #818181;
+    padding: 8px;
+}
+
+.menuItem:hover {
+    color: #cccccc;
+    background-color: #818181;
+}
+
+.menuItemBtn {
+    color: #818181;
+    padding: 8px;
+}

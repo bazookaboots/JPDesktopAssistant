@@ -1,70 +1,13 @@
 const { ipcRenderer } = require("electron");
 
 const component = `
-<style>
-.menu {
-    -webkit-app-region: no-drag;
-    display: none;
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    overflow-x: hidden;
-    transition: 0.5s;
-}
+<style> @import "../../global-styles.css"</style>
+<style> @import "./components/menu-loggedout/menu-loggedout-comp.css"</style>
 
-.menuContainer {
-    display: flex;
-    float: left;
-    flex-direction: column;
-    height: 100%;
-    width: 50%;
-    justify-content: flex-start;
-    background-color: #111;
-    flex-grow: 1;
-}
-
-.menuItemsContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: flex-start;
-    background-color: #111;
-    flex-grow: 1;
-}
-
-.menuItemsContainer div {
-    padding: 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-}
-
-.menuItemsContainer div:hover {
-    color: #f1f1f1;
-}
-
-.menuTitle {
-    border: 1px solid #111;
-    padding: 6px 16px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-    background-color: #232325;
-}
-
-</style>
-
-<div id="btn-login">Log In</div>
-<div id="btn-settings"> Settings</div>
-<div style="margin-top:auto;padding-bottom:16px;">
-    <button id="btn-create-account" class="formBtn"> Create Account </button>
+<div id="btn-login" class="menuItem"><p>Log In</p></div>
+<div id="btn-settings" class="menuItem"><p> Settings</p></div>
+<div class="menuItemBtn">
+    <button id="btn-create-account" class="formBtn"><p>Create Account</p> </button>
 </div>
 
 <script>
@@ -95,7 +38,7 @@ class LoggedOutMenu extends HTMLElement {
             var pageContainer = document.getElementById('page-container')
             killChildren(pageContainer)
             pageContainer.appendChild(registerPage)
-            pageContainer.style.display = "block"
+            pageContainer.classList.remove("hidden")
         })
 
         this._shadowRoot.getElementById('btn-login').addEventListener('click',()=>{
@@ -103,7 +46,7 @@ class LoggedOutMenu extends HTMLElement {
             var pageContainer = document.getElementById('page-container')
             killChildren(pageContainer)
             pageContainer.appendChild(loginPage)
-            pageContainer.style.display = "block"
+            pageContainer.classList.remove("hidden")
         })
 
         this._shadowRoot.getElementById('btn-settings').addEventListener('click',()=>{

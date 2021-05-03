@@ -1,5 +1,8 @@
 const component = `
+<style> @import "../../global-styles.css"</style>
 <style>
+
+
 .PopUpTitle {
     text-align: center;
     padding: 8px;

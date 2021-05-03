@@ -37,6 +37,20 @@ class ValueStore {
     printContents() {
         console.log(Object.fromEntries(this.values))
     }
+
+    retrieveUser(){
+        let username = this.retrieve("username")
+        let email = this.retrieve("email")
+        let password = this.retrieve("password")
+
+        var user
+        if (password != null || username != null || email != null) 
+        {
+            return null
+        }
+
+        return { username: username, email: email, password: password}
+    }
 }
 
 // let cache = new ValueStore()
