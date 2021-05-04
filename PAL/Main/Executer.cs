@@ -93,8 +93,9 @@ namespace PAL.Core
                     break;
 
                 default:
-                    Console.WriteLine("Cmd N/A");
-                    break;
+                    //Console.WriteLine("0: Cmd N/A");
+                    Exception exception = new Exception("Invalid Command");
+                    throw exception;
             }
         }
     }

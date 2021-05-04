@@ -17,15 +17,14 @@ namespace PAL.Core
     class SpeechListener
     {
         // Very top of the asyncronous call chain. Program begins here.
-        public async Task<object> Start(int seconds)
+        public async Task<object> Start(int seconds, bool vocal, string msg)
         {
             // Set "GoogleKey.json" to API environment variable
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
 
-
             // Send API output to STDout.
-            Console.WriteLine("0:" + "Attempting request.");
-            List<string> results = (List<string>)await StreamingMicRecognizeAsync(seconds);
+            Console.WriteLine("1:" + "Attempting request.");
+            List<string> results = (List<string>)await StreamingMicRecognizeAsync(seconds, vocal, msg);
 
             // "Hey Pal"
             // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
@@ -33,8 +32,11 @@ namespace PAL.Core
             return results;
         }
 
-        public async Task<object> StreamingMicRecognizeAsync(int seconds)
+        public async Task<object> StreamingMicRecognizeAsync(int seconds, bool vocal, string msg)
         {
+            var synthesizer = new SpeechSynthesizer();
+            synthesizer.SetOutputToDefaultAudioDevice();
+            //extra instance b/c what is good OOP design really?
 
             List<string> transcripts = new List<string>();
             // Verifies API credentials.
@@ -109,6 +111,7 @@ namespace PAL.Core
                 };
 
             waveIn.StartRecording();
+            if(vocal) synthesizer.Speak(msg);
             Console.WriteLine("0:" + "Speak now.");
             await Task.Delay(TimeSpan.FromSeconds(seconds));
 

@@ -108,7 +108,7 @@ namespace PAL.Core
             return true;
         }
 
-                /// <summary>
+        /// <summary>
         /// Returns the number of steps required to transform the source string
         /// into the target string.
         /// </summary>

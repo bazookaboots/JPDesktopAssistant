@@ -26,19 +26,35 @@ namespace PAL.Core
         }
         static async Task Main(string[] args)
         {
-            //boolean settings defined here, 
+            //settings defined here, 
             //these can be moved elsewhere to connect/read from gui as long as they can be accessed in this scope
             bool pal = true; //controls whether this process should continue running in background
-            bool vocal = false; //determines whether pal should speak back or not
+            bool vocal = true; //determines whether pal should speak back or not
             bool listenting = true; // controls always-on, always-listening functionality (hey pal)
-            bool active = false; // when true, pal will respond to commands (set in hey Pal scope or hotkey scope)
-            int requestDuration = 3; //how long the user should have to speak (this is changed frequently, not good for settings)
+            bool active = false; // when true, pal will immediately enter cmd prompt on launch
+
+            //Status messages
+            string bootMsg = "Pal is alive."; //plays on launch
+            string listeningMsg = "Just call if you need me."; //plays if passive listening is active
+            string cmdPromptMsg = "Yes Master?"; //plays when "hey pal" is heard
+            string cmdDoneMsg = "It is done"; //plays when a command executes with no exceptions
+            string cmdErrMsg = "I do not understand"; //plays when a command returns an exception
+            string killMsg = "seeya, meatsack."; //plays when pal is kill
+
+            //Command Phrases
+            string cmdPhrase = "hey pal";
+            string killPhrase = "halt";
+
+            //durations for listening
+            int passiveInterval = 3; //interval for catching "hey pal" or "halt"
+            int activeInterval = 8; //interval for speaking full commands 
+            int requestDuration = passiveInterval; //current setting (this is changed frequently, not good for settings)
 
             var synthesizer = new SpeechSynthesizer();
             synthesizer.SetOutputToDefaultAudioDevice();
 
-            if (vocal) synthesizer.Speak("Pal is alive.");
-            if (vocal && listenting) synthesizer.Speak("Just call if you need me.");
+            if (vocal) synthesizer.Speak(bootMsg);
+            if (vocal && listenting) synthesizer.Speak(listeningMsg);
 
             while (pal)
             {
@@ -47,7 +63,7 @@ namespace PAL.Core
                 string results;
                 try
                 {
-                    results = ((List<string>)await PAL.Start(requestDuration)).First();
+                    results = ((List<string>)await PAL.Start(requestDuration, vocal && active, cmdPromptMsg)).First();
                 }
                 catch 
                 {
@@ -59,9 +75,9 @@ namespace PAL.Core
                 string full = results.Where(c => !char.IsPunctuation(c)).Aggregate("", (current, c) => current + c).ToLower();
                 Queue transcript = parser.Tokenize(results);
                 
-                if (parser.calculateSimilarity(full, "stop") > 0.8 )
+                if (parser.calculateSimilarity(full, killPhrase) > 0.8 )
                 {
-                    if (vocal) synthesizer.Speak("seeya meatsack");
+                    if (vocal) synthesizer.Speak(killMsg);
                     pal = false;
                 }
 
@@ -69,17 +85,14 @@ namespace PAL.Core
                 if (!active)
                 {
                     //Console.WriteLine(parser.calculateSimilarity(full, "hey pal"));
-                    if (parser.calculateSimilarity(full, "hey pal") > 0.5) 
+                    if (parser.calculateSimilarity(full, cmdPhrase) > 0.5) 
                     {
                         active = true;
-                        requestDuration = 8; //give user time to speak
+                        requestDuration = activeInterval; //give user time to speak
+                        Console.WriteLine("1: " + "Pal has noticed you!");
                     }
                     
-                    if (active && vocal) 
-                    {
-                        synthesizer.Speak("Yes Master?");
-                        
-                    }
+                    //if (active && vocal) synthesizer.Speak(cmdPromptMsg);
                 }
                 else
                 {
@@ -91,17 +104,18 @@ namespace PAL.Core
                     try
                     {
                         new Executer().ExecuteCommand(cmd).Wait();
-                        if (vocal) synthesizer.Speak("It is done.");
+                        if (vocal) synthesizer.Speak(cmdDoneMsg);
                     }
                     catch (AggregateException e)
                     {
                         foreach (var ex in e.InnerExceptions)
                         {
-                            Console.WriteLine("ERROR: " + ex.Message);
+                            Console.WriteLine("0: " + ex.Message);
                         }
+                        if (vocal) synthesizer.Speak(cmdErrMsg);
                     }
                     active = false;
-                    requestDuration = 3; //go back to short term listening
+                    requestDuration = passiveInterval; //go back to short term listening
                 }
             }
             
