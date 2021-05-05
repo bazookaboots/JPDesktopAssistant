@@ -22,7 +22,23 @@ class PalEngineController {
             console.log("in engine call")
             //Check for PAL engine  on machine
             //spawns the subprocess that stores the engine
-            this.subprocess = spawn('Main.exe', {
+            this.subprocess = spawn('Main.exe', 
+            [
+                "true",
+                "true",
+                "true",
+                "false",
+                "Pal is alive.",
+                "Just call if you need me.",
+                "Yes Master?",
+                "It is done.",
+                "I do not understand.",
+                "seeya meatsack.",
+                "hey pal",
+                "halt",
+                "3",
+                "8"
+            ], {
                 cwd: "..\\PAL\\Main\\bin\\Debug",
                 detached: true,
             });
