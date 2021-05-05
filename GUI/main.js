@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron')
 const { ValueStore } = require("./src/libraries/StorageUtil")
 const { userState } = require("./src/libraries/StateUtil")
-const { mainWin, contactsWin, settingsWin, accountWin, overlayWin } = require("./src/libraries/WindowUtil")
+const { mainWin, contactsWin, settingsWin, accountWin, overlayWin, messagesWin } = require("./src/libraries/WindowUtil")
 const { palEngine } = require("./src/libraries/SpeechEngineUtil")
 const { LoginUser } = require("./src/libraries/AccountAPI")
 
@@ -10,16 +10,18 @@ var user = cache.retrieveUser()
 
 if (user != null) {
     console.debug("User data found, attempting login.")
-    LoginUser(user.email, user.password,
-        (authToken) => {
-            cache.store("token", authToken, true)
-            userState.setState('loggedin')
-        })
+
+    userState.setState('loggedin')
+    // LoginUser(user.email, user.password,
+    //     (authToken) => {
+    //         cache.store("token", authToken, true)
+    //         userState.setState('loggedin')
+    //     })
 }
 else {
     console.debug("User data not found, attempting login.")
     console.debug("Setting user state to logged out.")
-    userState.setState('loggedout')
+    userState.setState('loggedin')
 }
 
 // Toggle off
@@ -123,9 +125,17 @@ ipcMain.on('login-user', (event, arg) => {
     event.reply('change-state', userState.getState())
 })
 
-ipcMain.on('spawn-engine', (event, arg) => {
-    palEngine.start()
+ipcMain.on('toggle-engine', (event, arg) => {
+    if (palEngine.isOn()) {
+        palEngine.stop()
+        event.reply('change-engine', 'off')
+    }
+    else {
+        palEngine.start()
+        event.reply('change-engine', 'on')
+    }
 })
+
 ipcMain.on('open-account-page', (event, arg) => {
     accountWin.start()
 })
@@ -134,4 +144,8 @@ ipcMain.on('open-settings-page', (event, arg) => {
 })
 ipcMain.on('open-contacts-page', (event, arg) => {
     contactsWin.start()
+})
+
+ipcMain.on('open-messages-page', (event, arg) => {
+    messagesWin.start()
 })

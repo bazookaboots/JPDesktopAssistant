@@ -70,6 +70,17 @@ class PalEngineController {
 
     }
 
+    isOn(){
+        if(this.subprocess == null){
+            console.log("isOn function is called false");
+            return false
+        }
+        else {
+            console.log("isOn function is called true");
+            return true
+        }
+    }
+
 }
 
 const palEngine = new PalEngineController()
