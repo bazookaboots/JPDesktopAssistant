@@ -8,26 +8,55 @@
     <link rel="stylesheet" href="../../global-styles.css" />
 
     <!-- LOCAL REFERNCES -->
-    <script src="contacts.js"></script>
-    <link rel="stylesheet" href="contacts.css" />
+    <script src="messages.js"></script>
+    <link rel="stylesheet" href="messages.css" />
 
 </head>
 
-<body onload="init()" style="height: 470px; margin: 0px">
-    <div class="pageContainer">
-        <div class="topNavbar pageBlock">
-            <div class="title">
-                <h2>Contacts</h2>
+<body  style="margin: 0px">
+    <main class="container">
+        <div class="servers">
+            <div class="servers-collection">
+                <div class="server focusable server-friends unread" role="button" aria-label="Friends unread">
+                </div>
+                <div class="server-friends-username">
+                    <p><b>Lehi Briggs</b></p>
+                </div>
             </div>
-            <div id="close-btn" class="closeBtn">
-                <img src="../../assets/icons/close_24px_outlined.svg" />
+
+            <div class="servers-collection">
+                <div class="server focusable unread" role="button" aria-label="Discord Developers unread">
+                </div>
+                <div class="server-friends-username">
+                    <p >Lehi Briggs
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="servers-collection">
+                <div class="server focusable active" role="button" aria-label="My Server" aria-selected="true">
+                </div>
+                <div class="server-friends-username">
+                    <p><b>Lehi Briggs</b></p>
+
+                </div>
             </div>
         </div>
-        <div id="contacts-list" class="contactsList pageBlock"></div>
-        <button id="new-listing-btn" class="addContactBtn green">
-            Add Contact
-        </button>
-    </div>
+
+
+
+        <div class="vert-container">
+            <menu type="toolbar" class="menu">
+                <h2 class="menu-name">general</h2>
+            </menu>
+
+            <section class="chat">
+afsdfasdfasdf
+            </section>
+        </div>
+    </main>
+
 </body>
 
 </html>
