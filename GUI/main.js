@@ -8,6 +8,13 @@ const { LoginUser } = require("./src/libraries/AccountAPI")
 const cache = new ValueStore()
 var user = cache.retrieveUser()
 
+
+// FOR EREN this is how GUI-main will interact with PAL-main
+// ipcMain.on('update-settings',(event, arg) => {
+//     console.debug('Function Called: update-settings')
+//     palEngine.updateSettings()
+// })
+
 if (user != null) {
     console.debug("User data found, attempting login.")
 
@@ -132,6 +139,8 @@ ipcMain.on('toggle-engine', (event, arg) => {
     }
     else {
         palEngine.start()
+        //FOR EREN
+        //palEngine.updateSettings()
         event.reply('change-engine', 'on')
     }
 })

@@ -12,14 +12,19 @@ class PalEngineController {
         }
     }
 
+    //FOR EREN create update settings function
+    //kill engine
+    //restart engine with settings
+
     start() {
+        //TODO: look for existing process named Main
         if (this.subprocess == null) {
             console.log("in engine call")
             //Check for PAL engine  on machine
             //spawns the subprocess that stores the engine
             this.subprocess = spawn('Main.exe', {
                 cwd: "..\\PAL\\Main\\bin\\Debug",
-                detached: true
+                detached: true,
             });
 
             console.log(this.subprocess.pid)
