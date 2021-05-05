@@ -6,7 +6,7 @@ const component = `
 
 <div id="btn-account" class="menuItem"><p>Account</p></div>
 <div id="btn-settings" class="menuItem"><p>Settings</p></div>
-<div id="btn-contacts" class="menuItem"><p>Contacts</p></div>
+<div id="btn-messages" class="menuItem"><p>Messages</p></div>
 <div class="menuItemBtn">
     <button id="btn-logout" class="formBtn red" style="margin-top:auto;"><p> Logout </p> </button>
 </div>
@@ -36,8 +36,8 @@ class LoggedInMenu extends HTMLElement {
             ipcRenderer.send('open-account-page')
         })
 
-        this._shadowRoot.getElementById('btn-contacts').addEventListener('click',()=>{
-            ipcRenderer.send('open-contacts-page')
+        this._shadowRoot.getElementById('btn-messages').addEventListener('click',()=>{
+            ipcRenderer.send('open-messages-page')
         })
 
         this._shadowRoot.getElementById('btn-settings').addEventListener('click',()=>{

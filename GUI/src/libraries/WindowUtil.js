@@ -72,8 +72,12 @@ class ContactsWinController {
     }
 
     close() {
-        console.log("contactsWin close function called")
-        ContactsWinController.instance.win.close()
+        let win = ContactsWinController.instance.win
+        if (win.isDevToolsOpened()) {
+            win.closeDevTools();
+        }
+        console.log("mainWin close function called")
+        win.close()
     }
 }
 
@@ -101,8 +105,12 @@ class SettingsWinController {
     }
 
     close() {
-        console.log("settingsWin close function called")
-        SettingsWinController.instance.win.close()
+        let win = SettingsWinController.instance.win
+        if (win.isDevToolsOpened()) {
+            win.closeDevTools();
+        }
+        console.log("mainWin close function called")
+        win.close()
     }
 }
 
@@ -130,8 +138,45 @@ class AccountWinController {
     }
 
     close() {
-        console.log("accountWin close function called")
-        AccountWinController.instance.win.close()
+        let win = AccountWinController.instance.win
+        if (win.isDevToolsOpened()) {
+            win.closeDevTools();
+        }
+        console.log("mainWin close function called")
+        win.close()
+    }
+}
+
+class MessagesWinController {
+    constructor() {
+        if (!MessagesWinController.instance) {
+            MessagesWinController.instance = this
+        }
+    }
+
+    start() {
+        let path = 'src\\processes\\messages\\messages.html'
+        let options = { width: 1320, height: 705 }
+
+        let mergedOptions = { ...defualtOptions, ...options }
+        let win = new BrowserWindow(mergedOptions)
+        win.setMenuBarVisibility(false)
+
+        win.loadFile(path)
+        win.webContents.openDevTools({ mode: 'detach' })
+        win.once('ready-to-show', () => {
+            win.show()
+        })
+        return win
+    }
+
+    close() {
+        let win = MessagesWinController.instance.win
+        if (win.isDevToolsOpened()) {
+            win.closeDevTools();
+        }
+        console.log("mainWin close function called")
+        win.close()
     }
 }
 
@@ -209,10 +254,14 @@ Object.freeze(accountWin)
 const overlayWin = new OverlayController()
 //Object.freeze(overlayWin)
 
+const messagesWin = new MessagesWinController()
+Object.freeze(messagesWin)
+
 module.exports = {
     mainWin,
     contactsWin,
     settingsWin,
     accountWin,
-    overlayWin
+    overlayWin,
+    messagesWin
 }

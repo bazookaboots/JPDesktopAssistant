@@ -1,3 +1,5 @@
+const { ipcRenderer } = require("electron");
+
 const component = `
 <style> @import "../../global-styles.css"</style>
 <style>
@@ -82,6 +84,9 @@ class LoginPage extends HTMLElement {
         this._shadowRoot.getElementById('login-container').addEventListener("click", (e) => {
             //console.log("login area clicked");
             e.stopPropagation();
+        })
+        this._shadowRoot.getElementById('btn-login-form').addEventListener("click", (e) => {
+            ipcRenderer.send('login-user')
         })
     }
 }

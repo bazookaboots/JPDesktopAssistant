@@ -30,15 +30,10 @@ ipcRenderer.send('get-state')
 
 ipcRenderer.on('change-state', (event, arg) => {
     console.log("change state called")
-    let startpal_btn = document.getElementById("startpal-btn")
     let menu_container = document.getElementById("menu-container")
     let username_title = document.getElementById("menu-title")
     switch (arg) {
         case 'loggedin':
-
-            //add class updates to main button
-            startpal_btn.classList.add("loggedin_palbtn")
-            console.log("adding loggedin_palbtn class to startpal-btn")
 
             //swap menu type
             killChildren(menu_container)
@@ -50,10 +45,6 @@ ipcRenderer.on('change-state', (event, arg) => {
 
             break;
         case 'loggedout':
-
-            //remove class to main button
-            startpal_btn.classList.remove("loggedin_palbtn")
-            console.log("removing loggedin_palbtn class to startpal-btn")
 
             //swap menu type
             killChildren(menu_container)
@@ -70,6 +61,28 @@ ipcRenderer.on('change-state', (event, arg) => {
     }
 })
 
+ipcRenderer.on('change-engine', (event, arg) => {
+    let startpal_btn = document.getElementById("startpal-btn")
+    switch (arg) {
+        case 'off':
+            //remove class to main button
+            startpal_btn.classList.remove("loggedin_palbtn")
+            console.log("removing loggedin_palbtn class to startpal-btn")
+            
+            break;
+
+        case 'on':
+            //remove class to main button
+            startpal_btn.classList.add("loggedin_palbtn")
+            console.log("removing loggedin_palbtn class to startpal-btn")
+            
+            break;
+    
+        default:
+            break;
+    }
+})
+
 
 // EVENT LISTENERS
 //Calls the event to close the GUI
@@ -80,7 +93,7 @@ document.getElementById("close-btn").addEventListener("click", (e) => {
 
 //Calls the IPC event to start the PAL Engine
 document.getElementById("startpal-btn").addEventListener("click", (e) => {
-    ipcRenderer.send('spawn-engine')
+    ipcRenderer.send('toggle-engine')
 })
 
 //initialize and watch online status
