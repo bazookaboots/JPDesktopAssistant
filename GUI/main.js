@@ -32,22 +32,22 @@ else {
 }
 
 // Toggle off
-//app.whenReady().then(() => {
+app.whenReady().then(() => {
 // Register a 'CommandOrControl+Y' shortcut listener.
-//globalShortcut.register('CommandOrControl+Y', () => {
+    globalShortcut.register('CommandOrControl+Y', () => {
 // Do stuff when Y and either Command/Control is pressed.
-//overlayWin.start()
-//})
-//})
+    overlayWin.start()
+})
+})
 
 
-//app.whenReady().then(() => {
+app.whenReady().then(() => {
 // Register a 'CommandOrControl+Y' shortcut listener.
-//globalShortcut.register('CommandOrControl+U', () => {
+    globalShortcut.register('CommandOrControl+U', () => {
 // Do stuff when Y and either Command/Control is pressed.
-//overlayWin.end()
-//})
-//})
+    overlayWin.end()
+})
+})
 
 function closeWindow() {
     win.close()
@@ -89,8 +89,7 @@ app.on('window-all-closed', () => {
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+O', () => {
         if (overlayWin.win != undefined) {
-            //overlayWin.win.minimize()
-            overlayWin.win.setOpacity(0);
+            overlayWin.win.minimize()
         }
     })
 })
@@ -98,7 +97,7 @@ app.whenReady().then(() => {
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+P', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.win.setOpacity(1);
+            overlayWin.win.restore()
         }
     })
 })
