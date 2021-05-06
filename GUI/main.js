@@ -31,24 +31,6 @@ else {
     userState.setState('loggedin')
 }
 
-// Toggle off
-app.whenReady().then(() => {
-// Register a 'CommandOrControl+Y' shortcut listener.
-    globalShortcut.register('CommandOrControl+Y', () => {
-// Do stuff when Y and either Command/Control is pressed.
-    overlayWin.start()
-})
-})
-
-
-app.whenReady().then(() => {
-// Register a 'CommandOrControl+Y' shortcut listener.
-    globalShortcut.register('CommandOrControl+U', () => {
-// Do stuff when Y and either Command/Control is pressed.
-    overlayWin.end()
-})
-})
-
 function closeWindow() {
     win.close()
 }
@@ -84,6 +66,26 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit()
     }
+})
+
+// OVERLAY STUFF FOR BAILEY. YES, I KNOW IT"S BROKEN.
+
+// Toggle off
+app.whenReady().then(() => {
+    // Register a 'CommandOrControl+Y' shortcut listener.
+    globalShortcut.register('CommandOrControl+Y', () => {
+    // Do stuff when Y and either Command/Control is pressed.
+    overlayWin.start()
+})
+})
+
+
+app.whenReady().then(() => {
+    // Register a 'CommandOrControl+Y' shortcut listener.
+    globalShortcut.register('CommandOrControl+U', () => {
+    // Do stuff when Y and either Command/Control is pressed.
+    overlayWin.end()
+})
 })
 
 app.whenReady().then(() => {
