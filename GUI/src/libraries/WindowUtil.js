@@ -180,6 +180,8 @@ class MessagesWinController {
     }
 }
 
+// Overlay here.
+// Comment your code you heathens.
 class OverlayController {
     constructor() {
         if (!OverlayController.instance) {
@@ -211,11 +213,14 @@ class OverlayController {
 
             this.win = new BrowserWindow(options)
             this.win.setMenuBarVisibility(false)
+            this.win.setAlwaysOnTop(true, "floating");
+            this.win.setVisibleOnAllWorkspaces(true);
+            this.win.setFullScreenable(false);
 
             // It's breaking right here.
             // Launching with standard URL.
             // Replace with youtube with path from speech engine.
-            this.win.loadURL("https://www.youtube.com/watch?v=5Qxqz-0wJZ0");
+            this.win.loadURL("https://www.youtube.com/watch?v=hDb-qLA1eeo");
             this.win.setIgnoreMouseEvents(true);
 
             //this.win.webContents.openDevTools({ mode: 'detach' })
