@@ -1,238 +1,185 @@
-const http = require('http')
-const { callbackify } = require('util')
-const { ValueStore } = require('./StorageUtil')
-const hostURL = "127.0.0.1"
+async function Register(username, email, password){
+    //do regex checks
+    //build json (username, email, password)
+    //call /register (request)
+    //store returned userid and stated info in cache
+}
 
-/**
-* Sends an HTTP POST request to the backend asking if it can
-* create a user from the given account information
-* @name CreateUser
-* @memberof account.js
-* @param {string} username - string representing the desired username
-* @param {string} email - string representing the desired email
-* @param {string} password - string representing the desired password
-*/
-async function RegisterUser(username, email, password) {
-    console.debug("Function Called: RegisterUser()")
+async function Login(email, password){
+    //do regex checks
+    //build json (email, password)
+    //call /login (request)
+    //store returned contacts, settings, etc in cache
+}
 
-    const body = JSON.stringify({
-        username: username,
-        email: email,
-        password: password
-    })
+async function Logout(){
+    //delete auth token
+    //clear cache
+}
 
-    const options = {
-        host: hostURL,
-        path: '/register',
-        port: 3010,
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': body.length
-        }
-    }
+async function Delete(userid){
+    //build json (userid)
+    //call /delete (request, authTokens)
+    //clear cache
+}
 
-    const req = http.request(options, res => {
-        let data =''
-        res.on('data', d => {
-            if(d != undefined)
-                data += d
-                //TODO: Implement this logic.
+async function UpdateSettings(userid, key, value){
+    //pull settings from cache
+    //update values
+    //store changes in cache
+    //build json (userid, settings)
+    //call /update-settings (request, authTokens)
+}
+
+async function CreateContacts(userid, contactid, displayname){
+    //pull contacts from cache
+    //update values
+    //store changes in cache
+    //build json (userid, contacts)
+    //call /update-contacts (request, authTokens)
+}
+
+async function ReadContacts(userid){
+    //build json (userid)
+    //call /read-user-data (request, authTokens)
+    //store returned contacts in cache
+}
+
+async function UpdateContacts(userid, contactid, displayname){
+    //pull contacts from cache
+    //update values
+    //store changes in cache
+    //build json (userid, contacts)
+    //call /update-contacts (request, authTokens)
+}
+
+async function DeleteContacts(userid, contactid){
+    //pull contacts from cache
+    //update values
+    //store changes in cache
+    //build json (userid, contacts)
+    //call /update-contacts (request, authTokens) 
+}
+
+
+
+
+
+
+app.post('/register', async (req, res) => {
+    console.debug("Route Called: /register")
+    try {
+        await FindUserByEmail(req.body.email, async (foundUser) => {
+            if (foundUser === undefined) {
+                if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || req.body.email.length < 8 || req.body.email.length > 64) {
+                    console.debug("Email is invalid.")
+                    return res.status(422).send()
+                }
+
+                if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5 || req.body.username.length > 32) {
+                    console.debug("Username is invalid.")
+                    return res.status(422).send()
+                }
+
+                if (req.body.password.length < 8 || req.body.password.length > 32) {
+                    console.debug("Password is invalid.")
+                    return res.status(422).send()
+                }
+
+                const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
+                const request = {
+                    id: Date.now(),
+                    email: req.body.email,
+                    username: req.body.username,
+                    passhash: hashedPassword
+                }
+
+                await CreateUser(request, async(response) => {
+                    res.status(201).send()
+                })
+
+            } else {
+                res.status(422).send()
+            }
         })
-
-        res.on("end", () => {
-            callback(data)
-        })
-    })
-
-    req.on('error', err => {
+    } 
+    catch (err) {
         console.error(`Error: Failed to register user: ${err}`)
-    })
-
-    req.write(body)
-
-    req.end()
-}
-
-/**
- * Sends an HTTP POST request to the backend asking to authorize the user
- * given the email and password
- * @name LoginUser
- * @memberof account.js
- * @param {string} email - string representing the desired email
- * @param {string} password - string representing the desired password
- */
-async function LoginUser(email, password, callback) {
-    console.debug("Function Called: LoginUser()")
-
-    const body = JSON.stringify(
-        {
-            email:email,
-            password: password
-        }
-    )
-
-    const options = {
-        hostname: hostURL,
-        path: '/test-tok',
-        port: 3010,
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': body.length
-        }
     }
+})
 
-    const req = http.request(options, res => {
-        let data =''
-        res.on('data', d => {
-            if(d != undefined)
-                data += d
-                //TODO: Implement this logic.
+app.patch('/update', /*authenticateToken,*/ async(req, res) => {
+    console.debug("Route Called: /update")
+    try {
+        await FindUserByEmail(req.user.email, async (foundUser) => {
+            if (foundUser) {
+                if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || req.body.email.length < 8 || req.body.email.length > 64) {
+                    console.debug("Email is invalid.")
+                    return res.status(422).send()
+                }
+
+                if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5 || req.body.username.length > 32) {
+                    console.debug("Username is invalid.")
+                    return res.status(422).send()
+                }
+
+                if (req.body.password.length < 8 || req.body.password.length > 32) {
+                    console.debug("Password is invalid.")
+                    return res.status(422).send()
+                }
+
+                const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
+                const request = {
+                    id: foundUser.id,
+                    email: req.body.email,
+                    username: req.body.username,
+                    passhash: hashedPassword
+                }
+                await UpdateUser(request, async(response) => {
+                    res.status(201).send()
+                })
+
+            } else {
+                res.status(422).send()
+            }
         })
 
-        res.on("end", () => {
-            callback(data)
-        })
-    })
-
-    req.on('error', err => {
-        console.error(`Error: Failed to log in: ${err}`)
-    })
-
-    req.write(body)
-
-    req.end()
-}
-
-/**
- * Sends an HTTP POST request to the backend asking to authorize the user
- * given the email and password
- * @name LogoutUser
- * @memberof account.js
- * @param {string} email - string representing the desired email
- * @param {string} password - string representing the desired password
- */
-async function LogoutUser(authTokens) {
-    console.debug("Function Called: LogoutUser()")
-
-    jwt_token = ''
-}
-
-async function UpdateUser(email, username, password, authTokens) {
-    console.debug("Function Called: UpdateUser()")
-
-    const data = JSON.stringify({
-        email: email,
-        username: username,
-        password: password
-    })
-
-    let options = {
-        host: hostURL,
-        path: '/update',
-        port: 3010,
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length,
-            'Authorization': 'Bearer ' + authTokens['jwt_token']
-        }
+    } 
+    catch (err) {
+        console.error(`Error: Failed to update account: ${err}`)
     }
+})
 
-    const request = http.request(options, response => {
-        response.on('data', d => {
-            //TODO: Implement this logic.
-        })
-    })
-
-
-    request.on('error', err => {
-        console.error(`Error: Failed to update user: ${err}`)
-    })
-
-    request.write(data)
-
-    request.end()
-}
-
-async function DeleteUser(email, password, authTokens) {
-    console.debug("Function Called: DeleteUser()")
-
-    const data = JSON.stringify({
-        name: name,
-        platform: platform,
-        username: username,
-        'Authorization': "Bearer " + authTokens.jwt_token
-    })
-
-    let options = {
-        host: hostURL,
-        path: '/delete',
-        port: 3010,
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
+app.get('/getusername', /*authenticateToken,*/ async(req, res) => {
+    console.debug("Route Called: /getusername")
+    try {
+        const request = {
+            userid: req.body.userid
         }
+
+        await FindUsername(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (err) {
+        console.error(`Error: Failed to get username: ${err}`)
     }
+})
 
-    const request = http.request(options, response => {
-        console.log(`statusCode: ${response.statusCode}`)
-        response.on('data', d => {
-            //TODO: Implement this logic.
-        })
-    })
-
-    request.on('error', err => {
-        console.error(`Error: Failed to delete user: ${err}`)
-    })
-
-    request.write(data)
-
-    request.end()
-}
-
-async function GetUsername(userid) {
-    console.debug("Function Called: GetUsername()")
-
-    const body = JSON.stringify(
-        {
-            userid:userid
-        }
-    )
-
-    const options = {
-        hostname: hostURL,
-        path: '/getusername',
-        port: 3010,
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': body.length
-        }
+app.get('/test-tok', async (req, res) => {
+    console.log("/test-find route called")
+    try {
+        let accessToken = jwt.sign({
+            id: "foundUser.id",
+            username: "foundUser.username",
+            email: "foundUser.email"
+        }, process.env.ACCESS_TOKEN_SECRET)
+        console.log("contents of accessToken = " + accessToken)
+        res.status(200).json({ Token: accessToken })
+    } 
+    catch (err) {
+        console.error(err)
     }
-
-    const request = http.request(options, response => {
-        console.log(`statusCode: ${response.statusCode}`)
-        response.on('data', d => {
-            //TODO: Implement this logic.
-        })
-    })
-
-    request.on('error', err => {
-        console.error(`Error: Failed to find username: ${err}`)
-    })
-
-    request.write(data)
-
-    request.end()
-}
-
-module.exports = {
-    RegisterUser,
-    LoginUser,
-    LogoutUser,
-    UpdateUser,
-    DeleteUser
-}
+})
