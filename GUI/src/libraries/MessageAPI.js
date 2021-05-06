@@ -1,7 +1,7 @@
 const io = require("socket.io-client"),
 ioClient = NULL
 
-function Startup() {
+async function Startup() {
     //if userid in cahce, connect
     //else, do nothing.
     ioClient = io.connect("http://localhost:8000",

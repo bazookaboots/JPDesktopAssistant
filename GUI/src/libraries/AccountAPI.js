@@ -12,12 +12,7 @@ async function Login(email, password){
     //store returned contacts, settings, etc in cache
 }
 
-async function Logout(){
-    //delete auth token
-    //clear cache
-}
-
-async function Delete(userid){
+async function DeleteUser(userid){
     //build json (userid)
     //call /delete (request, authTokens)
     //clear cache
@@ -31,7 +26,7 @@ async function UpdateSettings(userid, key, value){
     //call /update-settings (request, authTokens)
 }
 
-async function CreateContacts(userid, contactid, displayname){
+async function CreateContact(userid, contactid, displayname){
     //pull contacts from cache
     //update values
     //store changes in cache
@@ -53,7 +48,7 @@ async function UpdateContacts(userid, contactid, displayname){
     //call /update-contacts (request, authTokens)
 }
 
-async function DeleteContacts(userid, contactid){
+async function DeleteContact(userid, contactid){
     //pull contacts from cache
     //update values
     //store changes in cache

@@ -3,25 +3,25 @@ const sql = require('mssql')
 const jwt = require('jsonwebtoken')
 
 const config = {
-    server: process.env.DB_SERVER,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: parseInt(process.env.DB_PORT, 10),
+    server: process.env.MESSAGE_DB_SERVER,
+    user: process.env.MESSAGE_DB_USER,
+    password: process.env.MESSAGE_DB_PASSWORD,
+    database: process.env.MESSAGE_DB_DATABASE,
+    port: parseInt(process.env.MESSAGE_DB_PORT, 10),
     options: {
         enableArithAbort: true
     }
 }
 
-async function AddMessage(requested, callback) {
+async function AddMessage(request, callback) {
     console.debug("Fucntion Called: AddMessage()")
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('messageid', sql.VarChar(255), requested.messageid)
-        request.input('message', sql.VarChar(255), requested.message)
-        request.input('fromid', sql.VarChar(255), requested.fromid)
-        request.input('toid', sql.VarChar(255), requested.toid)
-        request.execute('spMessages_AddMessage').then(function(recordsets, err) {
+        var req = new sql.Request(conn)
+        req.input('message', sql.VarChar(255), request.message)
+        req.input('messageid', sql.VarChar(255), request.messageid)
+        req.input('fromid', sql.VarChar(255), request.fromid)
+        req.input('toid', sql.VarChar(255), request.toid)
+        req.execute('spMessage_AddMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -29,12 +29,26 @@ async function AddMessage(requested, callback) {
     })
 }
 
-async function DeleteMessage(requested, callback) {
+async function ReadMessages(request, callback) {
+    console.debug("Fucntion Called: ReadMessages()")
+    var conn = new sql.connect(config).then(function(conn) {
+        var req = new sql.Request(conn)
+        req.input('fromid', sql.VarChar(255), request.fromid)
+        req.input('toid', sql.VarChar(255), request.toid)
+        req.execute('spMessage_ReadMessages').then(function(recordsets, err) {
+            callback(recordsets)
+        }).catch(function(err) {
+            console.error(`Error: SQL operation failed: ${err}`)
+        })
+    })
+}
+
+async function DeleteMessage(request, callback) {
     console.debug("Fucntion Called: DeleteMessage()")
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('messageid', sql.VarChar(255), requested.messageid)
-        request.execute('spMessages_DeleteMessage').then(function(recordsets, err) {
+        var req = new sql.Request(conn)
+        req.input('messageid', sql.VarChar(255), request.messageid)
+        req.execute('spMessage_DeleteMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -42,31 +56,4 @@ async function DeleteMessage(requested, callback) {
     })
 }
 
-async function GetUserMessages(requested, callback) {
-    console.debug("Fucntion Called: GetUserMessages()")
-    var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('fromid', sql.VarChar(255), requested.fromid)
-        request.input('toid', sql.VarChar(255), requested.toid)
-        request.execute('spMessages_GetUserMessages').then(function(recordsets, err) {
-            callback(recordsets)
-        }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
-        })
-    })
-}
-
-async function GetAllMessages(requested, callback) {
-    console.debug("Fucntion Called: GetAllMessages()")
-    var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('fromid', sql.VarChar(255), requested.fromid)
-        request.execute('spMessages_GetAllMessages').then(function(recordsets, err) {
-            callback(recordsets)
-        }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
-        })
-    })
-}
-
-module.exports = { AddMessage, DeleteMessage, GetUserMessages, GetAllMessages }
+module.exports = { AddMessage, ReadMessages, DeleteMessage }

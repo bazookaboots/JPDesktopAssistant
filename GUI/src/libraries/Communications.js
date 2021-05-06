@@ -3,7 +3,7 @@
 const http = require('http')
 const hostURL = "127.0.0.1"
 
-async function RegisterUser(request) {
+async function Register(request) {
   console.debug("Function Called: RegisterUser()")
 
   const options = {
@@ -32,7 +32,7 @@ async function RegisterUser(request) {
   req.end()
 }
 
-async function LoginUser(email, password, callback) {
+async function Login(email, password, callback) {
   console.debug("Function Called: LoginUser()")
 
   const options = {
@@ -55,84 +55,6 @@ async function LoginUser(email, password, callback) {
 
   req.on('error', err => {
     console.error(`Error: Failed to log in: ${err}`)
-  })
-
-  req.write(request)
-
-  req.end()
-}
-
-async function ReadUserdata(request, authTokens) {
-  console.debug("Function Called: ReadUserdata()")
-
-  let options = {
-    host: hostURL,
-    path: '/read-userdata',
-    port: 3010,
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': request.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
-  }
-}
-
-async function UpdateSettings(request, authTokens) {
-  console.debug("Function Called: UpdateSettings()")
-
-  let options = {
-    host: hostURL,
-    path: '/update-settings',
-    port: 3010,
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': request.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
-  }
-
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
-    })
-
-  })
-
-  req.on('error', err => {
-    console.error(`Error: Failed to update settings: ${err}`)
-  })
-
-  req.write(request)
-
-  req.end()
-}
-
-async function UpdateContacts(request, authTokens) {
-  console.debug("Function Called: UpdateContacts()")
-
-  let options = {
-    host: hostURL,
-    path: '/update-contacts',
-    port: 3010,
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': request.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
-  }
-
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
-    })
-
-  })
-
-  req.on('error', err => {
-    console.error(`Error: Failed to update contacts: ${err}`)
   })
 
   req.write(request)
@@ -186,22 +108,20 @@ async function DeleteUser(request, authTokens) {
   req.end()
 }
 
-/* Message Communication */ 
-
-async function DeleteUserMessages(request, authTokens) {
-  console.debug("Function Called: DeleteUserMessages()")
+async function UpdateSettings(request, authTokens) {
+  console.debug("Function Called: UpdateSettings()")
 
   let options = {
     host: hostURL,
-    path: '/delete-messages',
+    path: '/update-settings',
     port: 3010,
-    method: 'DELETE',
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length': data.length,
+      'Content-Length': request.length,
       'Authorization': 'Bearer ' + authTokens.jwt_token
     }
-  };
+  }
 
   const req = http.request(options, res => {
     res.on('data', d => {
@@ -211,7 +131,7 @@ async function DeleteUserMessages(request, authTokens) {
   })
 
   req.on('error', err => {
-    console.error(`Error: Failed to delete message: ${err}`)
+    console.error(`Error: Failed to update settings: ${err}`)
   })
 
   req.write(request)
@@ -219,7 +139,56 @@ async function DeleteUserMessages(request, authTokens) {
   req.end()
 }
 
-async function ReadUserMessages(request, authTokens) {
+async function ReadContacts(request, authTokens) {
+  console.debug("Function Called: ReadUserdata()")
+
+  let options = {
+    host: hostURL,
+    path: '/read-userdata',
+    port: 3010,
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': request.length,
+      'Authorization': 'Bearer ' + authTokens.jwt_token
+    }
+  }
+}
+
+async function UpdateContacts(request, authTokens) {
+  console.debug("Function Called: UpdateContacts()")
+
+  let options = {
+    host: hostURL,
+    path: '/update-contacts',
+    port: 3010,
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': request.length,
+      'Authorization': 'Bearer ' + authTokens.jwt_token
+    }
+  }
+
+  const req = http.request(options, res => {
+    res.on('data', d => {
+      return d
+    })
+
+  })
+
+  req.on('error', err => {
+    console.error(`Error: Failed to update contacts: ${err}`)
+  })
+
+  req.write(request)
+
+  req.end()
+}
+
+/* Message Communication */ 
+
+async function ReadMessages(request, authTokens) {
   console.debug("Function Called: ReadUserMessages()")
 
   let options = {
@@ -243,6 +212,37 @@ async function ReadUserMessages(request, authTokens) {
 
   req.on('error', err => {
     console.error(`Error: Failed to get messages: ${err}`)
+  })
+
+  req.write(request)
+
+  req.end()
+}
+
+async function DeleteMessage(request, authTokens) {
+  console.debug("Function Called: DeleteUserMessages()")
+
+  let options = {
+    host: hostURL,
+    path: '/delete-messages',
+    port: 3010,
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': data.length,
+      'Authorization': 'Bearer ' + authTokens.jwt_token
+    }
+  };
+
+  const req = http.request(options, res => {
+    res.on('data', d => {
+      return d
+    })
+
+  })
+
+  req.on('error', err => {
+    console.error(`Error: Failed to delete message: ${err}`)
   })
 
   req.write(request)

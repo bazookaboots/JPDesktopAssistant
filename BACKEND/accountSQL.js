@@ -3,25 +3,25 @@ const sql = require('mssql')
 const jwt = require('jsonwebtoken')
 
 const config = {
-    server: process.env.DB_SERVER,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: parseInt(process.env.DB_PORT, 10),
+    server: process.env.ACCOUNT_DB_SERVER,
+    user: process.env.ACCOUNT_DB_USER,
+    password: process.env.ACCOUNT_DB_PASSWORD,
+    database: process.env.ACCOUNT_DB_DATABASE,
+    port: parseInt(process.env.ACCOUNT_DB_PORT, 10),
     options: {
         enableArithAbort: true
     }
 }
 
-async function CreateUser(requested, callback) {
+async function Register(request, callback) {
     console.debug("Function Called: CreateUser()")
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('id', sql.VarChar(255), requested.id)
-        request.input('email', sql.VarChar(255), requested.email)
-        request.input('username', sql.VarChar(255), requested.username)
-        request.input('passhash', sql.VarChar(255), requested.passhash)
-        request.execute('spPerson_CreateUser').then(function(recordsets, err) {
+        var req = new sql.Request(conn)
+        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('email', sql.VarChar(255), request.email)
+        req.input('username', sql.VarChar(255), request.username)
+        req.input('passhash', sql.VarChar(255), request.passhash)
+        req.execute('spAccount_CreateUser').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -29,32 +29,26 @@ async function CreateUser(requested, callback) {
     })
 }
 
-async function FindUserByEmail(requested, callback) {
-    try {
-        console.debug("Function Called: FindUserByEmail()")
-        var conn = new sql.connect(config).then((conn) => {
-            var request = new sql.Request(conn)
-            request.input('email', sql.VarChar(255), requested.email)
-            request.execute('spPerson_FindUserByEmail').then((recordsets, err) => {
-                if (typeof recordsets.recordset !== undefined) callback(recordsets.recordset[0])
-                else callback(undefined)
-            }).catch(function(err) {
-                console.error(`Error: SQL operation failed: ${err}`)
-            })
+async function Login(request, callback) {
+    console.debug("Fucntion Called: ReadUser()")
+    var conn = new sql.connect(config).then(function(conn) {
+        var req = new sql.Request(conn)
+        req.input('userid', sql.VarChar(255), request.userid)
+        req.execute('spAccount_ReadUser').then(function(recordsets, err) {
+            callback(recordsets)
+        }).catch(function(err) {
+            console.error(`Error: SQL operation failed: ${err}`)
         })
-    } 
-    catch (err) {
-        console.error(`Error: Failed to find user by email: ${err}`)
-    }
+    })
 }
 
-async function DeleteUser(requested, callback) {
+async function DeleteUser(request) {
     try {
         console.debug("Function Called: DeleteUser()")
         var conn = new sql.connect(config).then((conn) => {
-            var request = new sql.Request(conn)
-            request.input('id', sql.VarChar(255), requested.id)
-            request.execute('spPerson_DeleteUser').then((recordsets, err) => {
+            var req = new sql.Request(conn)
+            req.input('userid', sql.VarChar(255), request.userid)
+            req.execute('spAccount_DeleteUser').then((recordsets, err) => {
             }).catch(function(err) {
                 console.error(`Error: SQL operation failed: ${err}`)
             })
@@ -65,15 +59,13 @@ async function DeleteUser(requested, callback) {
     }
 }
 
-async function UpdateUser(requested, callback) {
-    console.debug("Function Called: UpdateUser()")
+async function UpdateSettings(request, callback) {
+    console.debug("Function Called: UpdateSettings()")
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('id', sql.VarChar(255), requested.id)
-        request.input('email', sql.VarChar(255), requested.email)
-        request.input('username', sql.VarChar(255), requested.username)
-        request.input('passhash', sql.VarChar(255), requested.passhash)
-        request.execute('spPerson_UpdateUser').then(function(recordsets, err) {
+        var req = new sql.Request(conn)
+        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('settings', sql.VarChar(255), request.settings)
+        req.execute('spAccount_UpdateSettings').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -81,49 +73,12 @@ async function UpdateUser(requested, callback) {
     })
 }
 
-async function FindUsername(requested, callback) {
-    try {
-        console.debug("Function Called: FindUsername()")
-        var conn = new sql.connect(config).then((conn) => {
-            var request = new sql.Request(conn)
-            request.input('userid', sql.VarChar(255), requested.userid)
-            request.execute('spPerson_FindUsername').then((recordsets, err) => {
-                if (typeof recordsets.recordset !== undefined) callback(recordsets.recordset[0])
-                else callback(undefined)
-            }).catch(function(err) {
-                console.error(`Error: SQL operation failed: ${err}`)
-            })
-        })
-    } 
-    catch (err) {
-        console.error(`Error: Failed to find username: ${err}`)
-    }
-}
-
-module.exports = { CreateUser, FindUserByEmail, DeleteUser, UpdateUser, FindUsername }
-
-require('dotenv').config()
-const sql = require('mssql')
-const jwt = require('jsonwebtoken')
-
-const config = {
-    server: process.env.DB_SERVER,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: parseInt(process.env.DB_PORT, 10),
-    options: {
-        enableArithAbort: true
-    }
-}
-
-async function UpdateSettings(requested, callback) {
-    console.debug("Fucntion Called: UpdateSettings()")
+async function ReadContacts(request, callback) {
+    console.debug("Fucntion Called: ReadUser()")
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('userid', sql.VarChar(255), requested.userid)
-        request.input('settingstring', sql.VarChar(255), requested.settingstring)
-        request.execute('spSettings_UpdateSettings').then(function(recordsets, err) {
+        var req = new sql.Request(conn)
+        req.input('userid', sql.VarChar(255), request.userid)
+        req.execute('spAccount_ReadUser').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -131,43 +86,13 @@ async function UpdateSettings(requested, callback) {
     })
 }
 
-async function GetSettings(requested, callback) {
-    console.debug("Fucntion Called: GetSettings()")
-    var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('userid', sql.VarChar(255), requested.userid)
-        request.execute('spSettings_GetSettings').then(function(recordsets, err) {
-            callback(recordsets)
-        }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
-        })
-    })
-}
-
-module.exports = { UpdateSettings, GetSettings }
-
-require('dotenv').config()
-const sql = require('mssql')
-const jwt = require('jsonwebtoken')
-
-const config = {
-    server: process.env.DB_SERVER,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: parseInt(process.env.DB_PORT, 10),
-    options: {
-        enableArithAbort: true
-    }
-}
-
-async function UpdateContacts(requested, callback) {
+async function UpdateContacts(request, callback) {
     console.debug("Function Called: UpdateContacts()")
     var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('userid', sql.VarChar(255), requested.userid)
-        request.input('contactstring', sql.VarChar(255), requested.contactstring)
-        request.execute('spContacts_UpdateContacts').then(function(recordsets, err) {
+        var req = new sql.Request(conn)
+        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('contacts', sql.VarChar(255), request.contacts)
+        req.execute('spAccount_UpdateContacts').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -175,17 +100,4 @@ async function UpdateContacts(requested, callback) {
     })
 }
 
-async function GetContacts(requested, callback) {
-    console.debug("Function Called: GetContacts()")
-    var conn = new sql.connect(config).then(function(conn) {
-        var request = new sql.Request(conn)
-        request.input('userid', sql.VarChar(255), requested.userid)
-        request.execute('spContacts_GetContacts').then(function(recordsets, err) {
-            callback(recordsets)
-        }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
-        })
-    })
-}
-
-module.exports = { UpdateContacts, GetContacts }
+module.exports = { CreateUser, ReadUser, UpdateSettings, UpdateContacts, DeleteUser }

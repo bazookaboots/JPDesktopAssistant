@@ -88,13 +88,13 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
     }
 })
 
-app.patch('/read-userdata', /*authenticateToken,*/ async(req, res) => {
-    console.debug("Route Called: /read-userdata")
+app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
+    console.debug("Route Called: /delete")
     try {
-
+        DeleteUser(req.user.id)
     } 
     catch (err) {
-        console.error(`Error: Failed to read userdata: ${err}`)
+        console.error(`Error: Failed to delete account: ${err}`)
     }
 })
 
@@ -108,6 +108,21 @@ app.patch('/update-settings', /*authenticateToken,*/ async(req, res) => {
     }
 })
 
+app.get('/read-contacts', /*authenticateToken,*/ async(req, res) => {
+    console.debug("Route Called: /getallmessages")
+    try {
+        const request = {
+            fromid: req.body.fromid
+        }
+        await GetAllMessages(request, async(response) => {
+            res.status(201).send()
+        })
+    } 
+    catch (err) {
+        console.error(`Error: Failed to get all messages: ${err}`)
+    }
+})
+
 app.patch('/update-contacts', /*authenticateToken,*/ async(req, res) => {
     console.debug("Route Called: /update-contacts")
     try {
@@ -115,16 +130,6 @@ app.patch('/update-contacts', /*authenticateToken,*/ async(req, res) => {
     } 
     catch (err) {
         console.error(`Error: Failed to update contacts: ${err}`)
-    }
-})
-
-app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
-    console.debug("Route Called: /delete")
-    try {
-        DeleteUser(req.user.id)
-    } 
-    catch (err) {
-        console.error(`Error: Failed to delete account: ${err}`)
     }
 })
 
@@ -152,7 +157,7 @@ server.on("connection", (socket) => {
        console.debug(`Client disconnected: [id=${socket.id}], [userid=${socket.handshake.query.userid}]`)
    })
 
-   socket.on("sendmessage", (request) => {
+   socket.on("client-send-message", (request) => {
         console.debug(`Client sent message: [message=${request.message}], [toid=${request.toid}], [fromid=${request.fromid}]`)
         try {
             const message = {
@@ -166,7 +171,7 @@ server.on("connection", (socket) => {
 
             if (sequenceNumberByClient.get(request.toid))
             {
-                sequenceNumberByClient.get(request.toid).emit("getmessage", message)
+                sequenceNumberByClient.get(request.toid).emit("client-get-message", message)
             }
         }
         catch (err) {
