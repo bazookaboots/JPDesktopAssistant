@@ -89,7 +89,8 @@ app.on('window-all-closed', () => {
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+O', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.win.minimize()
+            //overlayWin.win.minimize()
+            overlayWin.win.setOpacity(0);
         }
     })
 })
@@ -97,7 +98,7 @@ app.whenReady().then(() => {
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+P', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.win.restore()
+            overlayWin.win.setOpacity(1);
         }
     })
 })
