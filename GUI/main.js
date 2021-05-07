@@ -53,7 +53,7 @@ ipcMain.on('close-contactsWin', (event, arg) => {
 
 ipcMain.on('close-settingsWin', (event, arg) => {
     console.debug('Function Called: close-settingsWin')
-    mainWin.close()
+    settingsWin.close()
 })
 
 ipcMain.on('close-accountWin', (event, arg) => {
