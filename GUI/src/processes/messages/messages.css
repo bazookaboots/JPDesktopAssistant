@@ -13,6 +13,75 @@ $menu-bg: #36393E;
 #FFF: #FFF;
 #2E3136: #2E3136;
 lighten(#2E3136, 5%): lighten(#2E3136, 5%); */
+
+
+.contacts
+{
+	height: 100%;
+	background: #111;
+	flex: 0 0 70px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 18px 0 18px 0;
+	-ms-overflow-style: none;
+}
+
+.contact-collection
+{
+    display: flex;
+    flex-direction: row;
+    padding: 0px 9px 0px 9px;
+	margin-bottom: 8px;
+	cursor: pointer;
+}
+
+.contact-image
+{
+    display: block;
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	background-color: #2E3136;
+	background-repeat: no-repeat;
+	position: relative;
+}
+
+.contact-username 
+{
+    display: flex;
+    align-items: center;
+    height: 50px;
+	margin-left: 8px;
+
+}
+
+.chat-inner
+{
+}
+
+.chat-inner
+{
+	overflow-y: scroll;
+	overflow-anchor: none;
+	background: #36393E;
+	flex: 1;
+}
+
+#anchor
+{
+	overflow-anchor: auto;
+	min-height: 1px;
+}
+
+.chat-beginning
+{
+	font-size: xx-large;
+	padding: 25px 100px 25px 100px;
+}
+
+
+
 *
 {
 	box-sizing: border-box;
@@ -24,7 +93,7 @@ lighten(#2E3136, 5%): lighten(#2E3136, 5%); */
 html, body
 {
 	height: 100%;
-	background: #121416;
+	background: #232325;
 	color: #FFF;
 	font-size: 16px;
 	font-family: "Roboto";
@@ -41,17 +110,7 @@ html, body
 	flex: 1;
 	flex-direction: column;
 }
-.servers
-{
-	height: 100%;
-	background: #1E2124;
-	flex: 0 0 70px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 18px 0 18px 0;
-	-ms-overflow-style: none;
-}
+
 .channels
 {
 	background: #2E3136;
@@ -76,39 +135,11 @@ html, body
 	font-weight: 300;
 	color: #8A8E94;
 }
-.chat
-{
-	background: #36393E;
-	flex: 1;
-}
 
-.servers-collection
-{
-    display: flex;
-    flex-direction: row;
-    padding: 0px 9px 0px 9px;
-	margin-bottom: 8px;
-}
 
-.server
-{
-    display: block;
-	width: 50px;
-	height: 50px;
-	border-radius: 25px;
-	background-color: #2E3136;
-	background-repeat: no-repeat;
-	cursor: pointer;
-	position: relative;
-}
 
-.server-friends-username 
-{
-    display: flex;
-    align-items: center;
-	width: 100px;
-    height: 50px;
 
-}
+
+
 
 
