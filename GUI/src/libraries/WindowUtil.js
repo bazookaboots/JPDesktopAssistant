@@ -93,15 +93,15 @@ class SettingsWinController {
         let options = { width: 330, height: 470 }
 
         let mergedOptions = { ...defualtOptions, ...options }
-        let win = new BrowserWindow(mergedOptions)
-        win.setMenuBarVisibility(false)
+        this.win = new BrowserWindow(mergedOptions)
+        this.win.setMenuBarVisibility(false)
 
-        win.loadFile(path)
-        win.webContents.openDevTools({ mode: 'detach' })
-        win.once('ready-to-show', () => {
-            win.show()
+        this.win.loadFile(path)
+        this.win.webContents.openDevTools({ mode: 'detach' })
+        this.win.once('ready-to-show', () => {
+            this.win.show()
         })
-        return win
+        return this.win
     }
 
     close() {
@@ -199,7 +199,7 @@ class OverlayController {
                 maxWidth: 600,
                 maxHeight: 400,
                 transparent: true,
-                opacity: 0.9,
+                opacity: 1,
                 frame: false,
                 alwaysOnTop: true,
                 movable: true,
@@ -209,15 +209,13 @@ class OverlayController {
                 }
             }
 
-            //mergedOptions = { ...defualtOptions, ...options }
-            //mergedOptions = options;
-
             this.win = new BrowserWindow(options)
             this.win.setMenuBarVisibility(false)
 
-            //win.loadFile(path)
-            // Send command strings here
-            this.win.loadURL(path);
+            // It's breaking right here.
+            // Launching with standard URL.
+            // Replace with youtube with path from speech engine.
+            this.win.loadURL("https://www.youtube.com/watch?v=5Qxqz-0wJZ0");
             this.win.setIgnoreMouseEvents(true);
 
             //this.win.webContents.openDevTools({ mode: 'detach' })
@@ -228,7 +226,7 @@ class OverlayController {
             return this.win
         }
         else {
-            this.win.loadURL(data);
+            //this.win.loadURL(data);
         }
     }
 
@@ -246,7 +244,7 @@ const contactsWin = new ContactsWinController()
 Object.freeze(contactsWin)
 
 const settingsWin = new SettingsWinController()
-Object.freeze(settingsWin)
+//Object.freeze(settingsWin)
 
 const accountWin = new AccountWinController()
 Object.freeze(accountWin)
