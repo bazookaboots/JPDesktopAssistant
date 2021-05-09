@@ -109,7 +109,7 @@ class SettingsWinController {
         if (win.isDevToolsOpened()) {
             win.closeDevTools();
         }
-        console.log("mainWin close function called")
+        console.log("settingsWin close function called")
         win.close()
     }
 }
@@ -159,15 +159,15 @@ class MessagesWinController {
         let options = { width: 1320, height: 705 }
 
         let mergedOptions = { ...defualtOptions, ...options }
-        let win = new BrowserWindow(mergedOptions)
-        win.setMenuBarVisibility(false)
+        this.win = new BrowserWindow(mergedOptions)
+        this.win.setMenuBarVisibility(false)
 
-        win.loadFile(path)
-        win.webContents.openDevTools({ mode: 'detach' })
-        win.once('ready-to-show', () => {
-            win.show()
+        this.win.loadFile(path)
+        this.win.webContents.openDevTools({ mode: 'detach' })
+        this.win.once('ready-to-show', () => {
+            this.win.show()
         })
-        return win
+        return this.win
     }
 
     close() {
@@ -253,7 +253,7 @@ const overlayWin = new OverlayController()
 //Object.freeze(overlayWin)
 
 const messagesWin = new MessagesWinController()
-Object.freeze(messagesWin)
+//Object.freeze(messagesWin)
 
 module.exports = {
     mainWin,

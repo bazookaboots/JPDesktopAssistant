@@ -22,7 +22,6 @@ lighten(#2E3136, 5%): lighten(#2E3136, 5%); */
 	flex: 0 0 70px;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	padding: 18px 0 18px 0;
 	-ms-overflow-style: none;
 }
@@ -47,30 +46,25 @@ lighten(#2E3136, 5%): lighten(#2E3136, 5%); */
 	position: relative;
 }
 
+
 .contact-username 
 {
+	white-space: nowrap;
     display: flex;
     align-items: center;
     height: 50px;
 	margin-left: 8px;
-
-}
-
-.chat-inner
-{
 }
 
 .chat-inner
 {
 	overflow-y: scroll;
-	overflow-anchor: none;
 	background: #36393E;
 	flex: 1;
 }
 
 #anchor
 {
-	overflow-anchor: auto;
 	min-height: 1px;
 }
 
@@ -80,6 +74,52 @@ lighten(#2E3136, 5%): lighten(#2E3136, 5%); */
 	padding: 25px 100px 25px 100px;
 }
 
+.menu
+{
+	flex: 0 0 57px;
+	padding: 0 20px 0 20px;
+	background: #000000b7;
+	border-bottom: 1px solid darken(#36393E, 2.5%);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.message-collection
+{
+	display:flex;
+	flex-direction: row;
+	padding-left: 16px;
+	padding-right: 16px;
+	padding-bottom: 16px;
+}
+
+.message-block
+{
+	padding-left: 16px;
+}
+
+.message-image
+{
+    display: block;
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	background-color: #2E3136;
+	background-repeat: no-repeat;
+	position: relative;
+}
+
+.message-timestamp
+{
+	display: block;
+	font-size: small;
+	color: lightgray;
+}
+.message-username
+{
+	display: block;
+}
 
 
 *
@@ -118,15 +158,7 @@ html, body
 	flex-direction: column;
 	flex: 0 0 240px;
 }
-.menu
-{
-	flex: 0 0 57px;
-	padding: 0 20px 0 20px;
-	background: #000000b7;
-	border-bottom: 1px solid darken(#36393E, 2.5%);
-	display: flex;
-	align-items: center;
-}
+
 
 .hash-before::before
 {

@@ -61,6 +61,11 @@ ipcMain.on('close-accountWin', (event, arg) => {
     mainWin.close()
 })
 
+ipcMain.on('close-messagesWin', (event, arg) => {
+    console.debug('Function Called: close-messagesWin')
+    messagesWin.close()
+})
+
 app.on('window-all-closed', () => {
     console.debug('Function Called: all windows closed event')
     if (process.platform !== 'darwin') {
