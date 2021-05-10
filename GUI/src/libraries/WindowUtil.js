@@ -201,7 +201,7 @@ class OverlayController {
                 maxWidth: 600,
                 maxHeight: 400,
                 transparent: true,
-                opacity: 1,
+                opacity: 0,
                 frame: false,
                 alwaysOnTop: true,
                 movable: true,
