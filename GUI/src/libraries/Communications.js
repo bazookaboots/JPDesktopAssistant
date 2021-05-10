@@ -1,10 +1,12 @@
 /* Account Communication */ 
-
+const { callback } = require('util')
 const http = require('http')
 const hostURL = "127.0.0.1"
 
-async function Register(request) {
-  console.debug("Function Called: RegisterUser()")
+async function RegisterRoute(request) {
+  console.debug(`Function called: RegisterRoute(${JSON.stringify(request)})\n`)
+
+  const body = JSON.stringify(request)
 
   const options = {
     host: hostURL,
@@ -12,28 +14,38 @@ async function Register(request) {
     port: 3010,
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': request.length
+        'Content-Type': 'application/json',
+        'Content-Length': body.length
     }
-  }
-
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
-    })
-  })
-
-  req.on('error', err => {
-    console.error(`Error: Failed to register user: ${err}`)
-  })
-
-  req.write(request)
-
-  req.end()
 }
 
-async function Login(email, password, callback) {
-  console.debug("Function Called: LoginUser()")
+const req = http.request(options, res => {
+    let data =''
+    res.on('data', d => {
+      console.debug(`DATA: Register(${d})\n`)
+        if(d != undefined)
+            data += d
+    })
+
+    res.on("end", () => {
+      console.debug(`DATA: Register(${data})\n`)
+        return data
+    })
+})
+
+req.on('error', err => {
+    console.error(`Error: Failed to register user: ${err}\n`)
+})
+
+req.write(body)
+
+req.end()
+}
+
+async function LoginRoute(request) {
+  console.debug(`Function called: LoginRoute(${JSON.stringify(request)})\n`)
+
+  const body = JSON.stringify(request)
 
   const options = {
     hostname: hostURL,
@@ -41,74 +53,71 @@ async function Login(email, password, callback) {
     port: 3010,
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': request.length
+        'Content-Type': 'application/json',
+        'Content-Length': body.length
     }
-  }
-
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
-    })
-
-  })
-
-  req.on('error', err => {
-    console.error(`Error: Failed to log in: ${err}`)
-  })
-
-  req.write(request)
-
-  req.end()
 }
 
-async function DeleteUser(request, authTokens) {
-  console.debug("Function Called: DeleteUser()")
+const req = http.request(options, res => {
+    let data =''
+    res.on('data', d => {
+        if(d != undefined)
+            data += d
+    })
+
+    res.on("end", () => {
+        return data
+    })
+})
+
+req.on('error', err => {
+    console.error(`Error: Failed to log in: ${err}\n`)
+})
+
+req.write(body)
+
+req.end()
+}
+
+async function DeleteUserRoute(request) {
+  console.debug(`Function Called: DeleteUserRoute(${JSON.stringify(request)})\n`)
+
+  const body = JSON.stringify(request)
 
   let options = {
     host: hostURL,
-    path: '/delete',
+    path: '/delete-user',
     port: 3010,
-    method: 'POST',
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'Content-Length': data.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
+      'Content-Length': body.length
+      //'Authorization': 'Bearer ' + authTokens.jwt_token
     }
   }
 
   const req = http.request(options, res => {
+    let data =''
     res.on('data', d => {
-      return d
+        if(d != undefined)
+            data += d
     })
 
-  })
-
-  req.on('error', err => {
-    console.error(`Error: Failed to delete user: ${err}`)
-  })
-
-  req.write(request)
-
-  req.end()
-
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
+    res.on("end", () => {
+        return data
     })
+})
 
-  })
+req.on('error', err => {
+    console.error(`Error: Failed to delete account: ${err}\n`)
+})
 
-  req.on('error', err => {
-    console.error(`Error: Failed to get userdata: ${err}`)
-  })
+req.write(body)
 
-  req.write(request)
-
-  req.end()
+req.end()
 }
 
-async function UpdateSettings(request, authTokens) {
+async function UpdateSettingsRoute(request, authTokens) {
   console.debug("Function Called: UpdateSettings()")
 
   let options = {
@@ -139,12 +148,12 @@ async function UpdateSettings(request, authTokens) {
   req.end()
 }
 
-async function ReadContacts(request, authTokens) {
-  console.debug("Function Called: ReadUserdata()")
+async function ReadContactsRoute(request, authTokens) {
+  console.debug("Function Called: ReadContacts()")
 
   let options = {
     host: hostURL,
-    path: '/read-userdata',
+    path: '/read-contacts',
     port: 3010,
     method: 'GET',
     headers: {
@@ -155,7 +164,7 @@ async function ReadContacts(request, authTokens) {
   }
 }
 
-async function UpdateContacts(request, authTokens) {
+async function UpdateContactsRoute(request, authTokens) {
   console.debug("Function Called: UpdateContacts()")
 
   let options = {
@@ -188,7 +197,7 @@ async function UpdateContacts(request, authTokens) {
 
 /* Message Communication */ 
 
-async function ReadMessages(request, authTokens) {
+async function ReadMessagesRoute(request, authTokens) {
   console.debug("Function Called: ReadUserMessages()")
 
   let options = {
@@ -219,7 +228,7 @@ async function ReadMessages(request, authTokens) {
   req.end()
 }
 
-async function DeleteMessage(request, authTokens) {
+async function DeleteMessageRoute(request, authTokens) {
   console.debug("Function Called: DeleteUserMessages()")
 
   let options = {
@@ -251,12 +260,12 @@ async function DeleteMessage(request, authTokens) {
 }
 
 module.exports = {
-  RegisterUser,
-  LoginUser,
-  ReadUserdata,
-  UpdateSettings,
-  UpdateContacts,
-  DeleteUser,
-  DeleteUserMessages,
-  ReadUserMessages
+  RegisterRoute,
+  LoginRoute,
+  DeleteUserRoute,
+  UpdateSettingsRoute,
+  ReadContactsRoute,
+  UpdateContactsRoute,
+  ReadMessagesRoute,
+  DeleteMessageRoute
 }

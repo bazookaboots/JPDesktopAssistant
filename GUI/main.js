@@ -3,24 +3,28 @@ const { ValueStore } = require("./src/libraries/StorageUtil")
 const { userState } = require("./src/libraries/StateUtil")
 const { mainWin, contactsWin, settingsWin, accountWin, overlayWin } = require("./src/libraries/WindowUtil")
 const { palEngine } = require("./src/libraries/SpeechEngineUtil")
-const { LoginUser } = require("./src/libraries/AccountAPI")
+const { Login, Register, DeleteUser } = require("./src/libraries/AccountAPI")
 
 const cache = new ValueStore()
 var user = cache.retrieveUser()
 
-if (user != null) {
-    console.debug("User data found, attempting login.")
-    LoginUser(user.email, user.password,
-        (authToken) => {
-            cache.store("token", authToken, true)
-            userState.setState('loggedin')
-        })
-}
-else {
-    console.debug("User data not found, attempting login.")
-    console.debug("Setting user state to logged out.")
-    userState.setState('loggedout')
-}
+Login("test@test.com", "yeetingyeet")
+Register("test13", "test@test.com", "yeetingyeet")
+DeleteUser(1234)
+
+// if (user != null) {
+//     console.debug("User data found, attempting login.")
+//     Login(user.email, user.password,
+//         (authToken) => {
+//             cache.store("token", authToken, true)
+//             userState.setState('loggedin')
+//         })
+// }
+// else {
+//     console.debug("User data not found, attempting login.")
+//     console.debug("Setting user state to logged out.")
+//     userState.setState('loggedout')
+// }
 
 // Toggle off
 //app.whenReady().then(() => {

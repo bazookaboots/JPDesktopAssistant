@@ -8,11 +8,12 @@ const app = express()
 app.use(express.json())
 
 const {
-    CreateUser,
-    FindUserByEmail,
+    Register,
+    Login,
     DeleteUser,
-    UpdateUser,
-    FindUsername
+    UpdateSettings,
+    ReadContacts,
+    UpdateContacts
 } = require('./accountSQL')
 
 app.listen(3010, '127.0.0.1')
@@ -35,66 +36,50 @@ function authenticateToken(request, response, next) {
         next()
     })
 }
-
 app.post('/register', async (req, res) => {
-    console.debug("Route Called: /register")
+    console.debug(`Route Called: /register (${req})\n`)
     try {
-        await FindUserByEmail(req.body.email, async (foundUser) => {
-            if (foundUser === undefined) {
-                await CreateUser(request, async(response) => {
-                    res.status(201).send()
-                })
-            } else {
-                res.status(422).send()
-            }
-        })
+        const request = {
+            userid: req.body.userid,
+            username: req.body.username,
+            email: req.body.email,
+            passhash: req.body.passhash,
+            settings: req.body.settings,
+            contacts: req.body.contacts
+        }
+
+        res.status(201).send("This is a test from register")
+
+        //check for existing email
+        //call register
+        //return result
     } 
     catch (err) {
-        console.error(`Error: Failed to register user: ${err}`)
+        console.error(`Error: Failed to register user: ${err}\n`)
     }
 })
 
 app.get('/login', /*authenticateToken,*/ async(req, res) => {
-    console.debug("Route Called: /login")
+    console.debug(`Route Called: /login (${req})\n`)
     try {
-        await FindUserByEmail(req.body.email, async function (foundUser) {
-            if (foundUser !== undefined) {
-                let submittedPass = req.body.password
-                let storedPassHash = foundUser.passhash
-                await bcrypt.compare(submittedPass, storedPassHash, function(err, passMatch) {
-                    if (passMatch) {
-                        let userSig = {
-                            username: foundUser.username,
-                            email: foundUser.email,
-                            id: foundUser.id
-                        }
-                        let accessToken = jwt.sign(userSig, process.env.ACCESS_TOKEN_SECRET)
-                        res.status(200).json({ token: accessToken })
-
-                    } else {
-
-                    }
-                })
-            } else {
-                let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`
-                await bcrypt.compare(req.body.password, fakePass)
-                res.status(401).send("Error: Failed to log in.")
-            }
-        })
+        //Check if account exists
+        //check if password is valid
+        //call login
+        res.status(201).send("This is a test from login ")
     } 
     catch (err) {
-        console.error(`Error: Failed to log in: ${err}`)
-        res.status(401).send("Error: Failed to log in.")
+        console.error(`Error: Failed to log in: ${err}\n`)
     }
 })
 
-app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
-    console.debug("Route Called: /delete")
+app.delete('/delete-user', /*authenticateToken,*/ async(req, res) => {
+    console.debug(`Route Called: /delete (${req})\n`)
     try {
-        DeleteUser(req.user.id)
+        //call deleteuser
+        res.status(201).send("This is a test from delete")
     } 
     catch (err) {
-        console.error(`Error: Failed to delete account: ${err}`)
+        console.error(`Error: Failed to delete account: ${err}\n`)
     }
 })
 
@@ -141,6 +126,7 @@ const {
     GetUserMessages,
     GetAllMessages
 } = require('./messageSQL')
+const { request } = require('express')
 
 const
     {Server} = require("socket.io"),
@@ -180,7 +166,7 @@ server.on("connection", (socket) => {
     })
 })
 
-app.delete('/delete-messages', /*authenticateToken,*/ async(req, res) => {
+app.delete('/delete-message', /*authenticateToken,*/ async(req, res) => {
     console.debug("Route Called: /deletemessage")
     try {
         const request = {

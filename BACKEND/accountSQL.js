@@ -14,7 +14,7 @@ const config = {
 }
 
 async function Register(request, callback) {
-    console.debug("Function Called: CreateUser()")
+    console.debug("Function Called: Register()")
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('userid', sql.VarChar(255), request.userid)
@@ -100,4 +100,4 @@ async function UpdateContacts(request, callback) {
     })
 }
 
-module.exports = { CreateUser, ReadUser, UpdateSettings, UpdateContacts, DeleteUser }
+module.exports = { Register, Login, DeleteUser, UpdateSettings, ReadContacts, UpdateContacts }
