@@ -220,7 +220,7 @@ class OverlayController {
             // It's breaking right here.
             // Launching with standard URL.
             // Replace with youtube with path from speech engine.
-            this.win.loadURL("https://www.youtube.com/watch?v=hDb-qLA1eeo");
+            this.win.loadURL("https://www.google.com/");
             this.win.setIgnoreMouseEvents(true);
 
             //this.win.webContents.openDevTools({ mode: 'detach' })
