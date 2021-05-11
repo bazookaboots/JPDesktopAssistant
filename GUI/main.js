@@ -3,16 +3,91 @@ const { ValueStore } = require("./src/libraries/StorageUtil")
 const { userState } = require("./src/libraries/StateUtil")
 const { mainWin, contactsWin, settingsWin, accountWin, overlayWin } = require("./src/libraries/WindowUtil")
 const { palEngine } = require("./src/libraries/SpeechEngineUtil")
-const { Login, Register, DeleteUser } = require("./src/libraries/AccountAPI")
+const { Login, Register, Delete, UpdateSettings } = require("./src/libraries/AccountAPI")
+const { CreateContact, ReadContacts, UpdateContact, DeleteContact } = require('./src/libraries/ContactAPI')
+const { StartMessager, SendMessage, ReadMessages, DeleteMessage } = require('./src/libraries/MessageAPI')
 
 const cache = new ValueStore()
 var user = cache.retrieveUser()
 
-//Login("test@test.com", "yeetingyeet")
-Register("test13", "test@test.com", "yeetingyeet", (data) => {
-    console.debug(`Got data: ${data}`)
-})
-//DeleteUser(1234)
+Register("test13", "test@test.com", "yeetingyeet"
+    , (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+Login("test@test.com", "yeetingyeet"
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+Delete(2222
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+UpdateSettings(2222, "theme", "dark"
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+
+
+
+CreateContact(2222, 1111, "YEETER"
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+ReadContacts(2222
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+UpdateContact(2222, 1111, "YEETER2"
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+DeleteContact(2222, 1111
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+
+
+    
+
+StartMessager(2222)
+SendMessage("MESSAGE SENT!!!", 2222, 2222)
+
+ReadMessages(2222
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+DeleteMessage(2222, 2222
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+    
 
 // if (user != null) {
 //     console.debug("User data found, attempting login.")

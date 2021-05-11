@@ -1,258 +1,164 @@
-/* Account Communication */ 
-const { callback } = require('util')
-const http = require('http')
+const http = require('http');
 const hostURL = "127.0.0.1"
 
-async function RegisterRoute(request) {
-  console.debug(`Function called: RegisterRoute(${JSON.stringify(request)})\n`)
+async function CreateContact(userid, contactid, displayname, authToken, callback){
+  console.debug(`Function called: CreateContact(${userid}, ${contactid}, ${displayname}, ${authToken}, ${callback})\n`)
+
+  const request = {
+      userid: userid,
+      contactid: contactid,
+      displayname, displayname
+  }
 
   const body = JSON.stringify(request)
 
-  const options = {
-    host: hostURL,
-    path: '/register',
-    port: 3010,
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': body.length
-    }
+  const headers = {
+      'Content-Type': 'application/json',
+      'Content-Length': body.length,
+      'Authorization': 'Bearer ' + authToken['jwt_token']
+  }
+
+  function onData(datas){
+      let data =''
+      datas.on('data', d => {
+          if(d != undefined)
+              data += d
+      })
+
+      datas.on("end", () => {
+          callback(data)
+      })
+  }
+  
+  function onError(error){
+      console.error(`Error: Failed to create contact (${error})\n`)
+  }
+
+  Communicate(body, "/create-contact", "POST", headers, onData, onError )
 }
 
-const req = http.request(options, res => {
-    let data =''
-    res.on('data', d => {
-      console.debug(`DATA: Register(${d})\n`)
-        if(d != undefined)
-            data += d
-    })
+async function ReadContacts(userid, authToken, callback){
+  console.debug(`Function called: ReadContacts(${userid}, ${authToken}, ${callback})\n`)
 
-    res.on("end", () => {
-      console.debug(`DATA: Register(${data})\n`)
-        return data
-    })
-})
-
-req.on('error', err => {
-    console.error(`Error: Failed to register user: ${err}\n`)
-})
-
-req.write(body)
-
-req.end()
-}
-
-async function LoginRoute(request) {
-  console.debug(`Function called: LoginRoute(${JSON.stringify(request)})\n`)
+  const request = {
+      userid: userid,
+  }
 
   const body = JSON.stringify(request)
 
-  const options = {
-    hostname: hostURL,
-    path: '/login',
-    port: 3010,
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': body.length
-    }
+  const headers = {
+      'Content-Type': 'application/json',
+      'Content-Length': body.length,
+      'Authorization': 'Bearer ' + authToken['jwt_token']
+  }
+
+  function onData(datas){
+      let data =''
+      datas.on('data', d => {
+          if(d != undefined)
+              data += d
+      })
+
+      datas.on("end", () => {
+          callback(data)
+      })
+  }
+  
+  function onError(error){
+      console.error(`Error: Failed to read contacts (${error})\n`)
+  }
+
+  Communicate(body, "/read-contacts", "GET", headers, onData, onError )
 }
 
-const req = http.request(options, res => {
-    let data =''
-    res.on('data', d => {
-        if(d != undefined)
-            data += d
-    })
+async function UpdateContact(userid, contactid, displayname, authToken, callback){
+  console.debug(`Function called: UpdateContact(${userid}, ${contactid}, ${displayname}, ${authToken}, ${callback})\n`)
 
-    res.on("end", () => {
-        return data
-    })
-})
-
-req.on('error', err => {
-    console.error(`Error: Failed to log in: ${err}\n`)
-})
-
-req.write(body)
-
-req.end()
-}
-
-async function DeleteUserRoute(request) {
-  console.debug(`Function Called: DeleteUserRoute(${JSON.stringify(request)})\n`)
+  const request = {
+      userid: userid,
+      contactid: contactid,
+      displayname, displayname
+  }
 
   const body = JSON.stringify(request)
 
-  let options = {
-    host: hostURL,
-    path: '/delete-user',
-    port: 3010,
-    method: 'DELETE',
-    headers: {
+  const headers = {
       'Content-Type': 'application/json',
-      'Content-Length': body.length
-      //'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
+      'Content-Length': body.length,
+      'Authorization': 'Bearer ' + authToken['jwt_token']
   }
 
-  const req = http.request(options, res => {
-    let data =''
-    res.on('data', d => {
-        if(d != undefined)
-            data += d
-    })
+  function onData(datas){
+      let data =''
+      datas.on('data', d => {
+          if(d != undefined)
+              data += d
+      })
 
-    res.on("end", () => {
-        return data
-    })
-})
-
-req.on('error', err => {
-    console.error(`Error: Failed to delete account: ${err}\n`)
-})
-
-req.write(body)
-
-req.end()
-}
-
-async function UpdateSettingsRoute(request, authTokens) {
-  console.debug("Function Called: UpdateSettings()")
-
-  let options = {
-    host: hostURL,
-    path: '/update-settings',
-    port: 3010,
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': request.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
+      datas.on("end", () => {
+          callback(data)
+      })
+  }
+  
+  function onError(error){
+      console.error(`Error: Failed to update contact (${error})\n`)
   }
 
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
-    })
-
-  })
-
-  req.on('error', err => {
-    console.error(`Error: Failed to update settings: ${err}`)
-  })
-
-  req.write(request)
-
-  req.end()
+  Communicate(body, "/update-contact", "PATCH", headers, onData, onError )
 }
 
-async function ReadContactsRoute(request, authTokens) {
-  console.debug("Function Called: ReadContacts()")
+async function DeleteContact(userid, contactid, authToken, callback){
+  console.debug(`Function called: ReadContacts(${userid}, ${contactid}, ${authToken}, ${callback})\n`)
 
-  let options = {
-    host: hostURL,
-    path: '/read-contacts',
-    port: 3010,
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': request.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
-  }
-}
-
-async function UpdateContactsRoute(request, authTokens) {
-  console.debug("Function Called: UpdateContacts()")
-
-  let options = {
-    host: hostURL,
-    path: '/update-contacts',
-    port: 3010,
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': request.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
+  const request = {
+      userid: userid,
+      contactid: contactid
   }
 
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
-    })
+  const body = JSON.stringify(request)
 
-  })
+  const headers = {
+      'Content-Type': 'application/json',
+      'Content-Length': body.length,
+      'Authorization': 'Bearer ' + authToken['jwt_token']
+  }
 
-  req.on('error', err => {
-    console.error(`Error: Failed to update contacts: ${err}`)
-  })
+  function onData(datas){
+      let data =''
+      datas.on('data', d => {
+          if(d != undefined)
+              data += d
+      })
 
-  req.write(request)
+      datas.on("end", () => {
+          callback(data)
+      })
+  }
+  
+  function onError(error){
+      console.error(`Error: Failed to delete contact (${error})\n`)
+  }
 
-  req.end()
+  Communicate(body, "/delete-contact", "DELETE", headers, onData, onError )
 }
 
-/* Message Communication */ 
-
-async function ReadMessagesRoute(request, authTokens) {
-  console.debug("Function Called: ReadUserMessages()")
+async function Communicate(request, path, method, headers, onData, onError) {
+  console.debug(`Function called: Communicate(${JSON.stringify(request)}, ${path},
+  ${method}, ${JSON.stringify(headers)}, ${onData}, ${onError})\n`);
 
   let options = {
-    host: hostURL,
-    path: '/read-messages',
-    port: 3010,
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': data.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
+      host: hostURL,
+      path: path,
+      port: 3010,
+      method: method,
+      headers: headers
   };
 
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
-    })
+  const req = http.request(options, onData)
 
-  })
+  req.on('error', onError)
 
-  req.on('error', err => {
-    console.error(`Error: Failed to get messages: ${err}`)
-  })
-
-  req.write(request)
-
-  req.end()
-}
-
-async function DeleteMessageRoute(request, authTokens) {
-  console.debug("Function Called: DeleteUserMessages()")
-
-  let options = {
-    host: hostURL,
-    path: '/delete-messages',
-    port: 3010,
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': data.length,
-      'Authorization': 'Bearer ' + authTokens.jwt_token
-    }
-  };
-
-  const req = http.request(options, res => {
-    res.on('data', d => {
-      return d
-    })
-
-  })
-
-  req.on('error', err => {
-    console.error(`Error: Failed to delete message: ${err}`)
-  })
+  console.log(request)
 
   req.write(request)
 
@@ -260,12 +166,8 @@ async function DeleteMessageRoute(request, authTokens) {
 }
 
 module.exports = {
-  RegisterRoute,
-  LoginRoute,
-  DeleteUserRoute,
-  UpdateSettingsRoute,
-  ReadContactsRoute,
-  UpdateContactsRoute,
-  ReadMessagesRoute,
-  DeleteMessageRoute
+  CreateContact,
+  ReadContacts,
+  UpdateContact,
+  DeleteContact
 }

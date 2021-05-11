@@ -39,35 +39,17 @@ function authenticateToken(request, response, next) {
 app.post('/register', async (req, res) => {
     console.debug(`Route Called: /register (${JSON.stringify(req.body)})\n`)
 
-    //const hashedPassword = await bcrypt.hash(password, 10)
-
     try {
-        const request = {
-            userid: req.body.userid,
-            username: req.body.username,
-            email: req.body.email,
-            passhash: req.body.passhash,
-            settings: req.body.settings,
-            contacts: req.body.contacts
-        }
-
         res.send("This is a test from register")
-
-        //check for existing email
-        //call register
-        //return result
     } 
     catch (err) {
-        console.error(`Error: Failed to register user: ${err}\n`)
+        console.error(`Error: Failed to register user ${err}\n`)
     }
 })
 
 app.get('/login', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /login (${req})\n`)
+    console.debug(`Route Called: /login (${JSON.stringify(req.body)})\n`)
     try {
-        //Check if account exists
-        //check if password is valid
-        //call login
         res.status(201).send("This is a test from login ")
     } 
     catch (err) {
@@ -75,49 +57,63 @@ app.get('/login', /*authenticateToken,*/ async(req, res) => {
     }
 })
 
-app.delete('/delete-user', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /delete (${req})\n`)
+app.delete('/delete', /*authenticateToken,*/ async(req, res) => {
+    console.debug(`Route Called: /delete (${JSON.stringify(req.body)})\n`)
     try {
-        //call deleteuser
         res.status(201).send("This is a test from delete")
     } 
     catch (err) {
-        console.error(`Error: Failed to delete account: ${err}\n`)
+        console.error(`Error: Failed to delete account ${err}\n`)
     }
 })
 
 app.patch('/update-settings', /*authenticateToken,*/ async(req, res) => {
-    console.debug("Route Called: /update-settings")
+    console.debug(`Route Called: /update-settings (${JSON.stringify(req.body)})\n`)
     try {
-
+        res.status(201).send("This is a test from update settings")
     } 
     catch (err) {
-        console.error(`Error: Failed to update settings: ${err}`)
+        console.error(`Error: Failed to update settings ${err}\n`)
+    }
+})
+
+app.post('/create-contact', /*authenticateToken,*/ async(req, res) => {
+    console.debug(`Route Called: /create-contact (${JSON.stringify(req.body)})\n`)
+    try {
+        res.status(201).send("This is a test from create contact")
+    } 
+    catch (err) {
+        console.error(`Error: Failed to create contact ${err}\n`)
     }
 })
 
 app.get('/read-contacts', /*authenticateToken,*/ async(req, res) => {
-    console.debug("Route Called: /getallmessages")
+    console.debug(`Route Called: /read-contacts (${JSON.stringify(req.body)})\n`)
     try {
-        const request = {
-            fromid: req.body.fromid
-        }
-        await GetAllMessages(request, async(response) => {
-            res.status(201).send()
-        })
+        res.status(201).send("This is a test from read contacts")
     } 
     catch (err) {
-        console.error(`Error: Failed to get all messages: ${err}`)
+        console.error(`Error: Failed to read contacts ${err}\n`)
     }
 })
 
-app.patch('/update-contacts', /*authenticateToken,*/ async(req, res) => {
-    console.debug("Route Called: /update-contacts")
+app.patch('/update-contact', /*authenticateToken,*/ async(req, res) => {
+    console.debug(`Route Called: /update-contact (${JSON.stringify(req.body)})\n`)
     try {
-
+        res.status(201).send("This is a test from update contact")
     } 
     catch (err) {
-        console.error(`Error: Failed to update contacts: ${err}`)
+        console.error(`Error: Failed to update contact ${err}\n`)
+    }
+})
+
+app.delete('/delete-contact', /*authenticateToken,*/ async(req, res) => {
+    console.debug(`Route Called: /delete-contact (${JSON.stringify(req.body)})\n`)
+    try {
+        res.status(201).send("This is a test from delete contact")
+    } 
+    catch (err) {
+        console.error(`Error: Failed to delete contact ${err}\n`)
     }
 })
 
@@ -155,8 +151,6 @@ server.on("connection", (socket) => {
                 toid: request.toid,
                 fromid: request.fromid
             }
-
-            AddMessage(message)
 
             if (sequenceNumberByClient.get(request.toid))
             {
