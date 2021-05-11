@@ -9,7 +9,9 @@ const cache = new ValueStore()
 var user = cache.retrieveUser()
 
 //Login("test@test.com", "yeetingyeet")
-Register("test13", "test@test.com", "yeetingyeet")
+Register("test13", "test@test.com", "yeetingyeet", (data) => {
+    console.debug(`Got data: ${data}`)
+})
 //DeleteUser(1234)
 
 // if (user != null) {

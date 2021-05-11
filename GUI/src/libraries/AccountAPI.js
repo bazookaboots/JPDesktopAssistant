@@ -1,9 +1,8 @@
 const bcrypt = require('bcrypt');
-const { on } = require('events');
 const http = require('http');
 const hostURL = "127.0.0.1"
 
-async function Register(username, email, password){
+async function Register(username, email, password, callback){
     console.debug(`Function called: Register(${username}, ${email}, ${password})\n`)
 
     if (!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || email.length < 8 || email.length > 64) {
@@ -21,35 +20,42 @@ async function Register(username, email, password){
         return -300
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-
     const request = {
         userid: Date.now(),
         email: email,
         username: username,
-        passhash: hashedPassword
+        passhash: password
     }
+
+    const body = JSON.stringify(request)
 
     const headers = {
         'Content-Type': 'application/json',
-        'Content-Length': 'data.length'
+        'Content-Length': body.length
     }
 
-    function onData(data){
-        console.debug(`Register returned: ${data.statusCode}\n`)
+    function onData(datas){
+        let data =''
+        datas.on('data', d => {
+            if(d != undefined)
+                data += d
+        })
+
+        datas.on("end", () => {
+            callback(data)
+        })
     }
     
     function onError(error){
-        console.error(`Error: Failed to register ${error}\n`)
+        console.error(`Error: Failed to register (${error})\n`)
     }
 
-    let result = Communicate(request, "/register", "POST", headers, onData, onError )
+    let result = Communicate(body, "/register", "POST", headers, onData, onError )
 
     if (result == -400){
         console.debug("Failed to register on the server.\n")
     }
     else{
-        //TODO: Store generated data in cache
         return 0
     }
 }
@@ -143,8 +149,6 @@ async function Communicate(request, path, method, headers, onData, onError) {
     console.debug(`Function called: Communicate(${JSON.stringify(request)}, ${path},
     ${method}, ${JSON.stringify(headers)}, ${onData}, ${onError})\n`);
 
-    const data = JSON.stringify({request})
-
     let options = {
         host: hostURL,
         path: path,
@@ -157,7 +161,9 @@ async function Communicate(request, path, method, headers, onData, onError) {
 
     req.on('error', onError)
   
-    req.write(data)
+    console.log(request)
+
+    req.write(request)
 
     req.end()
 }

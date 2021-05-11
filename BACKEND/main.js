@@ -37,7 +37,10 @@ function authenticateToken(request, response, next) {
     })
 }
 app.post('/register', async (req, res) => {
-    console.debug(`Route Called: /register (${req})\n`)
+    console.debug(`Route Called: /register (${JSON.stringify(req.body)})\n`)
+
+    //const hashedPassword = await bcrypt.hash(password, 10)
+
     try {
         const request = {
             userid: req.body.userid,
@@ -48,7 +51,7 @@ app.post('/register', async (req, res) => {
             contacts: req.body.contacts
         }
 
-        res.status(201).send("This is a test from register")
+        res.send("This is a test from register")
 
         //check for existing email
         //call register
