@@ -14,7 +14,7 @@ const {
     UpdateSettings,
     ReadContacts,
     UpdateContacts
-} = require('./accountSQL')
+} = require('./AccountAPI')
 
 app.listen(3010, '127.0.0.1')
 
@@ -125,7 +125,7 @@ const {
     DeleteMessage,
     GetUserMessages,
     GetAllMessages
-} = require('./messageSQL')
+} = require('./MessageAPI')
 const { request } = require('express')
 
 const

@@ -8,9 +8,9 @@ const { Login, Register, DeleteUser } = require("./src/libraries/AccountAPI")
 const cache = new ValueStore()
 var user = cache.retrieveUser()
 
-Login("test@test.com", "yeetingyeet")
+//Login("test@test.com", "yeetingyeet")
 Register("test13", "test@test.com", "yeetingyeet")
-DeleteUser(1234)
+//DeleteUser(1234)
 
 // if (user != null) {
 //     console.debug("User data found, attempting login.")

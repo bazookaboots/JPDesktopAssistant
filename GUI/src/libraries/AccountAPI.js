@@ -1,19 +1,7 @@
-const bcrypt = require('bcrypt')
-
-const {
-    RegisterRoute,
-    LoginRoute,
-    DeleteUserRoute,
-    UpdateSettingsRoute,
-    ReadContactsRoute,
-    UpdateContactsRoute
-} = require('./Communications')
-
-const default_contacts = {
-}
-
-const default_settings = {
-}
+const bcrypt = require('bcrypt');
+const { on } = require('events');
+const http = require('http');
+const hostURL = "127.0.0.1"
 
 async function Register(username, email, password){
     console.debug(`Function called: Register(${username}, ${email}, ${password})\n`)
@@ -39,12 +27,23 @@ async function Register(username, email, password){
         userid: Date.now(),
         email: email,
         username: username,
-        passhash: hashedPassword,
-        settings: default_settings,
-        contacts: default_contacts
+        passhash: hashedPassword
     }
 
-    let result = RegisterRoute(request)
+    const headers = {
+        'Content-Type': 'application/json',
+        'Content-Length': 'data.length'
+    }
+
+    function onData(data){
+        console.debug(`Register returned: ${data.statusCode}\n`)
+    }
+    
+    function onError(error){
+        console.error(`Error: Failed to register ${error}\n`)
+    }
+
+    let result = Communicate(request, "/register", "POST", headers, onData, onError )
 
     if (result == -400){
         console.debug("Failed to register on the server.\n")
@@ -140,6 +139,30 @@ async function DeleteContact(userid, contactid){
     UpdateContactsRoute(request)
 }
 
+async function Communicate(request, path, method, headers, onData, onError) {
+    console.debug(`Function called: Communicate(${JSON.stringify(request)}, ${path},
+    ${method}, ${JSON.stringify(headers)}, ${onData}, ${onError})\n`);
+
+    const data = JSON.stringify({request})
+
+    let options = {
+        host: hostURL,
+        path: path,
+        port: 3010,
+        method: method,
+        headers: headers
+    };
+
+    const req = http.request(options, onData)
+
+    req.on('error', onError)
+  
+    req.write(data)
+
+    req.end()
+}
+
+
 module.exports = {
     Register,
     Login,
@@ -149,125 +172,4 @@ module.exports = {
     ReadContacts,
     UpdateContacts,
     DeleteContact
-  }
-
-
-
-
-// app.post('/register', async (req, res) => {
-//     console.debug("Route Called: /register")
-//     try {
-//         await FindUserByEmail(req.body.email, async (foundUser) => {
-//             if (foundUser === undefined) {
-//                 if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || req.body.email.length < 8 || req.body.email.length > 64) {
-//                     console.debug("Email is invalid.")
-//                     return res.status(422).send()
-//                 }
-
-//                 if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5 || req.body.username.length > 32) {
-//                     console.debug("Username is invalid.")
-//                     return res.status(422).send()
-//                 }
-
-//                 if (req.body.password.length < 8 || req.body.password.length > 32) {
-//                     console.debug("Password is invalid.")
-//                     return res.status(422).send()
-//                 }
-
-//                 const hashedPassword = await bcrypt.hash(req.body.password, 10)
-
-//                 const request = {
-//                     id: Date.now(),
-//                     email: req.body.email,
-//                     username: req.body.username,
-//                     passhash: hashedPassword
-//                 }
-
-//                 await CreateUser(request, async(response) => {
-//                     res.status(201).send()
-//                 })
-
-//             } else {
-//                 res.status(422).send()
-//             }
-//         })
-//     } 
-//     catch (err) {
-//         console.error(`Error: Failed to register user: ${err}`)
-//     }
-// })
-
-// app.patch('/update', /*authenticateToken,*/ async(req, res) => {
-//     console.debug("Route Called: /update")
-//     try {
-//         await FindUserByEmail(req.user.email, async (foundUser) => {
-//             if (foundUser) {
-//                 if (!req.body.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) || req.body.email.length < 8 || req.body.email.length > 64) {
-//                     console.debug("Email is invalid.")
-//                     return res.status(422).send()
-//                 }
-
-//                 if (!req.body.username.match(/^[a-zA-Z0-9]+$/) || req.body.username.length < 5 || req.body.username.length > 32) {
-//                     console.debug("Username is invalid.")
-//                     return res.status(422).send()
-//                 }
-
-//                 if (req.body.password.length < 8 || req.body.password.length > 32) {
-//                     console.debug("Password is invalid.")
-//                     return res.status(422).send()
-//                 }
-
-//                 const hashedPassword = await bcrypt.hash(req.body.password, 10)
-
-//                 const request = {
-//                     id: foundUser.id,
-//                     email: req.body.email,
-//                     username: req.body.username,
-//                     passhash: hashedPassword
-//                 }
-//                 await UpdateUser(request, async(response) => {
-//                     res.status(201).send()
-//                 })
-
-//             } else {
-//                 res.status(422).send()
-//             }
-//         })
-
-//     } 
-//     catch (err) {
-//         console.error(`Error: Failed to update account: ${err}`)
-//     }
-// })
-
-// app.get('/getusername', /*authenticateToken,*/ async(req, res) => {
-//     console.debug("Route Called: /getusername")
-//     try {
-//         const request = {
-//             userid: req.body.userid
-//         }
-
-//         await FindUsername(request, async(response) => {
-//             res.status(201).send()
-//         })
-//     } 
-//     catch (err) {
-//         console.error(`Error: Failed to get username: ${err}`)
-//     }
-// })
-
-// app.get('/test-tok', async (req, res) => {
-//     console.log("/test-find route called")
-//     try {
-//         let accessToken = jwt.sign({
-//             id: "foundUser.id",
-//             username: "foundUser.username",
-//             email: "foundUser.email"
-//         }, process.env.ACCESS_TOKEN_SECRET)
-//         console.log("contents of accessToken = " + accessToken)
-//         res.status(200).json({ Token: accessToken })
-//     } 
-//     catch (err) {
-//         console.error(err)
-//     }
-// })
+}

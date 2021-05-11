@@ -20,7 +20,7 @@ async function Register(request, callback) {
         req.input('userid', sql.VarChar(255), request.userid)
         req.input('email', sql.VarChar(255), request.email)
         req.input('username', sql.VarChar(255), request.username)
-        req.input('passhash', sql.VarChar(255), request.passhash)
+        req.input('passhash', sql.VarChar(255), request.pa+sshash)
         req.execute('spAccount_CreateUser').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
