@@ -29,69 +29,86 @@ function authenticateToken(request, response, next) {
 }
 
 contact.post('/create', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /create-contact (${JSON.stringify(req.body)})\n`)
+    console.debug(`Route Called: /create (${JSON.stringify(req.body)})\n`)
     try {
         res.status(201).send("This is a test from create contact")
-        //CreateContact()
+        
+        await CreateContact(req.body, async(response) => {
+            res.status(201).send()
+        });
     } 
     catch (err) {
         console.error(`Error: Failed to create contact ${err}\n`)
+        res.status(422).send(err)
     }
 })
 
 contact.get('/read', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /read-contacts (${JSON.stringify(req.body)})\n`)
+    console.debug(`Route Called: /read (${JSON.stringify(req.body)})\n`)
     try {
         res.status(201).send("This is a test from read contacts")
-        //ReadContacts()
+        
+        await ReadContacts(req.body, async(response) => {
+            res.status(201).send()
+        });
     } 
     catch (err) {
         console.error(`Error: Failed to read contacts ${err}\n`)
+        res.status(422).send(err)
     }
 })
 
 contact.patch('/update', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /update-contact (${JSON.stringify(req.body)})\n`)
+    console.debug(`Route Called: /update (${JSON.stringify(req.body)})\n`)
     try {
         res.status(201).send("This is a test from update contact")
-        //UpdateContact()
+        
+        await UpdateContact(req.body, async(response) => {
+            res.status(201).send()
+        });
     } 
     catch (err) {
         console.error(`Error: Failed to update contact ${err}\n`)
+        res.status(422).send(err)
     }
 })
 
 contact.delete('/delete', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /delete-contact (${JSON.stringify(req.body)})\n`)
+    console.debug(`Route Called: /delete (${JSON.stringify(req.body)})\n`)
     try {
         res.status(201).send("This is a test from delete contact")
-        //DeleteContact()
+        
+        await DeleteContact(req.body, async(response) => {
+            res.status(201).send()
+        });
     } 
     catch (err) {
         console.error(`Error: Failed to delete contact ${err}\n`)
+        res.status(422).send(err)
     }
 })
 
 
 const config = {
-    server: process.env.CONTACT_DB_SERVER,
-    user: process.env.CONTACT_DB_USER,
-    password: process.env.CONTACT_DB_PASSWORD,
-    database: process.env.CONTACT_DB_DATABASE,
-    port: parseInt(process.env.CONTACT_DB_PORT, 10),
+    server: process.env.DB_SERVER,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: parseInt(process.env.DB_PORT, 10),
     options: {
         enableArithAbort: true
     }
 }
 
 async function CreateContact(request, callback) {
-    console.debug("Fucntion Called: ReadUser()")
+    console.debug(`Function Called: CreateContact(${JSON.stringify(request)})\n`)
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('userid', sql.VarChar(255), request.userid)
-        req.input('contactid', sql.VarChar(255), request.userid)
-        req.input('userid', sql.VarChar(255), request.userid)
-        req.execute('spAccount_ReadUser').then(function(recordsets, err) {
+        req.input('contactid', sql.VarChar(255), request.contactid)
+        req.input('displayname', sql.VarChar(255), request.displayname)
+        req.execute('spContact_CreateContact').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -100,11 +117,12 @@ async function CreateContact(request, callback) {
 }
 
 async function ReadContacts(request, callback) {
-    console.debug("Fucntion Called: ReadUser()")
+    console.debug(`Function Called: ReadContacts(${JSON.stringify(request)})\n`)
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('userid', sql.VarChar(255), request.userid)
-        req.execute('spAccount_ReadUser').then(function(recordsets, err) {
+        req.execute('spContact_ReadContacts').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -113,12 +131,14 @@ async function ReadContacts(request, callback) {
 }
 
 async function UpdateContact(request, callback) {
-    console.debug("Function Called: UpdateContacts()")
+    console.debug(`Function Called: UpdateContact(${JSON.stringify(request)})\n`)
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('userid', sql.VarChar(255), request.userid)
-        req.input('contacts', sql.VarChar(255), request.contacts)
-        req.execute('spAccount_UpdateContacts').then(function(recordsets, err) {
+        req.input('contactid', sql.VarChar(255), request.contactid)
+        req.input('displayname', sql.VarChar(255), request.displayname)
+        req.execute('spContact_UpdateContact').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -127,12 +147,13 @@ async function UpdateContact(request, callback) {
 }
 
 async function DeleteContact(request, callback) {
-    console.debug("Function Called: UpdateContacts()")
+    console.debug(`Function Called: DeleteContact(${JSON.stringify(request)})\n`)
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('userid', sql.VarChar(255), request.userid)
-        req.input('contacts', sql.VarChar(255), request.contacts)
-        req.execute('spAccount_UpdateContacts').then(function(recordsets, err) {
+        req.input('contactid', sql.VarChar(255), request.contactid)
+        req.execute('spContact_DeleteContact').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)

@@ -1,6 +1,7 @@
 var express = require('express')
 const account = express.Router()
 const sql = require('mssql')
+const bcrypt = require('bcrypt')
 require('dotenv').config()
 account.use(express.json())
 
@@ -33,11 +34,14 @@ account.post('/register', async (req, res) => {
 
     try {
         res.send("This is a test from register")
-        //Register()
-        
+
+        await Register(req.body, async(response) => {
+            res.status(201).send()
+        });
     } 
     catch (err) {
         console.error(`Error: Failed to register user ${err}\n`)
+        res.status(422).send(err)
     }
 })
 
@@ -45,21 +49,29 @@ account.get('/login', /*authenticateToken,*/ async(req, res) => {
     console.debug(`Route Called: /login (${JSON.stringify(req.body)})\n`)
     try {
         res.status(201).send("This is a test from login ")
-        //Login()
+       
+        await Login(req.body, async(response) => {
+            res.status(201).send()
+        });
     } 
     catch (err) {
         console.error(`Error: Failed to log in: ${err}\n`)
+        res.status(422).send(err)
     }
 })
 
 account.patch('/update', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /update-settings (${JSON.stringify(req.body)})\n`)
+    console.debug(`Route Called: /update (${JSON.stringify(req.body)})\n`)
     try {
-        res.status(201).send("This is a test from update settings")
-        //UpdateSettings()
+        res.status(201).send("This is a test from update account")
+        
+        await UpdateAccount(req.body, async(response) => {
+            res.status(201).send()
+        });
     } 
     catch (err) {
         console.error(`Error: Failed to update settings ${err}\n`)
+        res.status(422).send(err)
     }
 })
 
@@ -67,20 +79,24 @@ account.delete('/delete', /*authenticateToken,*/ async(req, res) => {
     console.debug(`Route Called: /delete (${JSON.stringify(req.body)})\n`)
     try {
         res.status(201).send("This is a test from delete")
-        ///Delete()
+        
+        await DeleteAccount(req.body, async(response) => {
+            res.status(201).send()
+        });
     } 
     catch (err) {
         console.error(`Error: Failed to delete account ${err}\n`)
+        res.status(422).send(err)
     }
 })
 
 
 const config = {
-    server: process.env.ACCOUNT_DB_SERVER,
-    user: process.env.ACCOUNT_DB_USER,
-    password: process.env.ACCOUNT_DB_PASSWORD,
-    database: process.env.ACCOUNT_DB_DATABASE,
-    port: parseInt(process.env.ACCOUNT_DB_PORT, 10),
+    server: process.env.DB_SERVER,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: parseInt(process.env.DB_PORT, 10),
     options: {
         enableArithAbort: true
     }
@@ -89,14 +105,16 @@ const config = {
 async function Register(request, callback) {
     console.debug(`Function Called: Register(${JSON.stringify(request)})\n`)
     //if email exists, return error code
-    //hash password
+
+    const passhash = "temp" /*await bcrypt.hash(request.password, 10);*/
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('userid', sql.VarChar(255), request.userid)
         req.input('email', sql.VarChar(255), request.email)
         req.input('username', sql.VarChar(255), request.username)
         req.input('passhash', sql.VarChar(255), passhash)
-        req.execute('spAccount_CreateUser').then(function(recordsets, err) {
+        req.execute('spAccount_Register').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -106,12 +124,14 @@ async function Register(request, callback) {
 
 async function Login(request, callback) {
     console.debug(`Function Called: Login(${JSON.stringify(request)})\n`)
-    //check for email, if does not exist, return error code
-    //hash password and compare to database, if fails, return error code
+
+    const passhash = "temp" /*await bcrypt.hash(request.password, 10);*/
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
-        req.execute('spAccount_ReadUser').then(function(recordsets, err) {
+        req.input('email', sql.VarChar(255), request.email)
+        req.input('passhash', sql.VarChar(255), passhash)
+        req.execute('spAccount_Login').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -119,13 +139,30 @@ async function Login(request, callback) {
     })
 }
 
-async function Delete(request) {
+async function UpdateAccount(request, callback) {
+    console.debug(`Function Called: UpdateAccount(${JSON.stringify(request)})\n`)
+
+    var conn = new sql.connect(config).then(function(conn) {
+        var req = new sql.Request(conn)
+        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('key', sql.VarChar(255), request.key)
+        req.input('value', sql.VarChar(255), request.value)
+        req.execute('spAccount_UpdateAccount').then(function(recordsets, err) {
+            callback(recordsets)
+        }).catch(function(err) {
+            console.error(`Error: SQL operation failed: ${err}`)
+        })
+    })
+}
+
+async function DeleteAccount(request) {
     try {
-        console.debug(`Function Called: Delete(${JSON.stringify(request)})\n`)
+        console.debug(`Function Called: DeleteAccount(${JSON.stringify(request)})\n`)
+
         var conn = new sql.connect(config).then((conn) => {
             var req = new sql.Request(conn)
             req.input('userid', sql.VarChar(255), request.userid)
-            req.execute('spAccount_DeleteUser').then((recordsets, err) => {
+            req.execute('spAccount_DeleteAccount').then((recordsets, err) => {
             }).catch(function(err) {
                 console.error(`Error: SQL operation failed: ${err}`)
             })
@@ -136,19 +173,5 @@ async function Delete(request) {
     }
 }
 
-async function UpdateSettings(request, callback) {
-    console.debug(`Function Called: UpdateSettings(${JSON.stringify(request)})\n`)
-    var conn = new sql.connect(config).then(function(conn) {
-        var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
-        req.input('key', sql.VarChar(255), request.key)
-        req.input('value', sql.VarChar(255), request.value)
-        req.execute('spAccount_UpdateSettings').then(function(recordsets, err) {
-            callback(recordsets)
-        }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
-        })
-    })
-}
 
 module.exports = account

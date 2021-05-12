@@ -59,7 +59,7 @@ server.on("connection", (socket) => {
                  sequenceNumberByClient.get(request.toid).emit("client-get-message", message)
              }
  
-             //AddMessage()
+             CreateMessage(message)
          }
          catch (err) {
              console.error(`Error: Failed to send message: ${err}`)
@@ -68,13 +68,17 @@ server.on("connection", (socket) => {
  })
  
  message.get('/read', /*authenticateToken,*/ async(req, res) => {
-     console.debug(`Route Called: /read-messages (${JSON.stringify(req.body)})\n`)
+     console.debug(`Route Called: /read (${JSON.stringify(req.body)})\n`)
      try {
          res.status(201).send("This is a test from read messages")
-         //DeleteContact()
+         
+         await ReadMessages(req.body, async(response) => {
+            res.status(201).send()
+        });
      } 
      catch (err) {
          console.error(`Error: Failed to read messages ${err}\n`)
+         res.status(422).send(err)
      }
  })
  
@@ -82,34 +86,39 @@ server.on("connection", (socket) => {
      console.debug(`Route Called: /delete-message (${JSON.stringify(req.body)})\n`)
      try {
          res.status(201).send("This is a test from delete message")
-         //DeleteContact()
+        
+         await DeleteMessage(req.body, async(response) => {
+            res.status(201).send()
+        });
      } 
      catch (err) {
          console.error(`Error: Failed to delete message ${err}\n`)
+         res.status(422).send(err)
      }
  })
 
 
 const config = {
-    server: process.env.MESSAGE_DB_SERVER,
-    user: process.env.MESSAGE_DB_USER,
-    password: process.env.MESSAGE_DB_PASSWORD,
-    database: process.env.MESSAGE_DB_DATABASE,
-    port: parseInt(process.env.MESSAGE_DB_PORT, 10),
+    server: process.env.DB_SERVER,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: parseInt(process.env.DB_PORT, 10),
     options: {
         enableArithAbort: true
     }
 }
 
-async function AddMessage(request, callback) {
-    console.debug("Fucntion Called: AddMessage()")
+async function CreateMessage(request, callback) {
+    console.debug(`Function Called: CreateMessage(${JSON.stringify(request)})\n`)
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('message', sql.VarChar(255), request.message)
         req.input('messageid', sql.VarChar(255), request.messageid)
+        req.input('message', sql.VarChar(255), request.message)
         req.input('fromid', sql.VarChar(255), request.fromid)
         req.input('toid', sql.VarChar(255), request.toid)
-        req.execute('spMessage_AddMessage').then(function(recordsets, err) {
+        req.execute('spMessage_CreateMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
             console.error(`Error: SQL operation failed: ${err}`)
@@ -118,11 +127,11 @@ async function AddMessage(request, callback) {
 }
 
 async function ReadMessages(request, callback) {
-    console.debug("Fucntion Called: ReadMessages()")
+    console.debug(`Function Called: ReadMessages(${JSON.stringify(request)})\n`)
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('fromid', sql.VarChar(255), request.fromid)
-        req.input('toid', sql.VarChar(255), request.toid)
+        req.input('userid', sql.VarChar(255), request.userid)
         req.execute('spMessage_ReadMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
@@ -132,7 +141,8 @@ async function ReadMessages(request, callback) {
 }
 
 async function DeleteMessage(request, callback) {
-    console.debug("Fucntion Called: DeleteMessage()")
+    console.debug(`Function Called: DeleteMessage(${JSON.stringify(request)})\n`)
+
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('messageid', sql.VarChar(255), request.messageid)
