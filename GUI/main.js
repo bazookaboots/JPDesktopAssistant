@@ -10,7 +10,6 @@ const { StartMessager, SendMessage, ReadMessages, DeleteMessage } = require('./s
 const cache = new ValueStore()
 var user = cache.retrieveUser()
 
-<<<<<<< HEAD
 
 // FOR EREN this is how GUI-main will interact with PAL-main
 // ipcMain.on('update-settings',(event, arg) => {
@@ -33,7 +32,6 @@ else {
     console.debug("Setting user state to logged out.")
     userState.setState('loggedin')
 }
-=======
 Register("test13", "test@test.com", "yeetingyeet"
     , (data) => {
         console.debug(`Got data: ${data}`)
@@ -126,7 +124,6 @@ DeleteMessage(2222, 2222
 //     console.debug("Setting user state to logged out.")
 //     userState.setState('loggedout')
 // }
->>>>>>> cleanup
 
 function closeWindow() {
     win.close()
