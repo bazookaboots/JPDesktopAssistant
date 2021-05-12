@@ -87,6 +87,14 @@ app.whenReady().then(() => {
 })
 
 app.whenReady().then(() => {
+    globalShortcut.register('CommandOrControl+I', () => {
+        if (overlayWin.win != undefined) {
+            overlayWin.win.setIgnoreMouseEvents(true);
+        }
+    })
+})
+
+app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+O', () => {
         if (overlayWin.win != undefined) {
             //overlayWin.win.minimize()
@@ -104,13 +112,7 @@ app.whenReady().then(() => {
     })
 })
 
-app.whenReady().then(() => {
-    globalShortcut.register('CommandOrControl+I', () => {
-        if (overlayWin.win != undefined) {
-            overlayWin.win.setIgnoreMouseEvents(true);
-        }
-    })
-})
+
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
