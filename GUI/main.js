@@ -82,7 +82,7 @@ app.whenReady().then(() => {
     // Register a 'CommandOrControl+Y' shortcut listener.
     globalShortcut.register('CommandOrControl+U', () => {
     // Do stuff when Y and either Command/Control is pressed.
-    overlayWin.win.close()
+    overlayWin.win.setIgnoreMouseEvents(false);
 })
 })
 
@@ -107,7 +107,7 @@ app.whenReady().then(() => {
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+I', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.win.close()
+            overlayWin.win.setIgnoreMouseEvents(true);
         }
     })
 })
