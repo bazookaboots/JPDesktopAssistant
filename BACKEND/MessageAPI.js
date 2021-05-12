@@ -1,8 +1,94 @@
 var express = require('express')
-const app = express()
+const message = express.Router()
 const sql = require('mssql')
+const {Server} = require("socket.io")
 require('dotenv').config()
-app.use(express.json())
+message.use(express.json())
+
+let server = new Server(8000)
+
+let sequenceNumberByClient = new Map()
+
+message.use(function middle (req, res, next) {
+    console.debug(`Reached message route.\n`)
+    next()
+  })
+
+function authenticateToken(request, response, next) {
+    const authHeader = request.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+
+    if (token == null){
+        return response.status(401).send("Error: Failed to AuthenticateToken.")
+    } 
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err){
+            return response.status(401).send("Error: Failed to AuthenticateToken.")
+        } 
+
+        request.user = user
+
+        next()
+    })
+}
+
+server.on("connection", (socket) => {
+    console.debug(`Client connected: (${socket.id}, ${socket.handshake.query.userid})\n`)
+ 
+    sequenceNumberByClient.set(parseInt(socket.handshake.query.userid), socket)
+ 
+    socket.on("disconnect", () => {
+        console.debug(`Client disconnected: (${socket.id}, ${socket.handshake.query.userid})\n`)
+ 
+        sequenceNumberByClient.delete(socket.handshake.query.userid)
+    })
+ 
+    socket.on("client-send-message", (request) => {
+         console.debug(`Client sent message: (${request.messageid}, ${request.message}, ${request.toid},${request.fromid})\n`)
+         try {
+             const message = {
+                 messageid: request.messageid,
+                 message: request.message,
+                 toid: request.toid,
+                 fromid: request.fromid
+             }
+ 
+             if (sequenceNumberByClient.get(request.toid))
+             {
+                 sequenceNumberByClient.get(request.toid).emit("client-get-message", message)
+             }
+ 
+             //AddMessage()
+         }
+         catch (err) {
+             console.error(`Error: Failed to send message: ${err}`)
+         }
+     })
+ })
+ 
+ message.get('/read', /*authenticateToken,*/ async(req, res) => {
+     console.debug(`Route Called: /read-messages (${JSON.stringify(req.body)})\n`)
+     try {
+         res.status(201).send("This is a test from read messages")
+         //DeleteContact()
+     } 
+     catch (err) {
+         console.error(`Error: Failed to read messages ${err}\n`)
+     }
+ })
+ 
+ message.delete('/delete', /*authenticateToken,*/ async(req, res) => {
+     console.debug(`Route Called: /delete-message (${JSON.stringify(req.body)})\n`)
+     try {
+         res.status(201).send("This is a test from delete message")
+         //DeleteContact()
+     } 
+     catch (err) {
+         console.error(`Error: Failed to delete message ${err}\n`)
+     }
+ })
+
 
 const config = {
     server: process.env.MESSAGE_DB_SERVER,
@@ -58,8 +144,4 @@ async function DeleteMessage(request, callback) {
     })
 }
 
-module.exports = {
-    AddMessage,
-    ReadMessages,
-    DeleteMessage
-}
+module.exports = message

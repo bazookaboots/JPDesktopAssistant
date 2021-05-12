@@ -20,6 +20,7 @@ async function StartMessager(userid) {
 }
 
 async function StopMessanger() {
+    ioClient.disconnect()
     ioClient = null
 }
 
@@ -67,7 +68,7 @@ async function ReadMessages(userid, authToken, callback) {
         console.error(`Error: Failed to read messages (${error})\n`)
     }
 
-    Communicate(body, "/read-messages", "GET", headers, onData, onError)
+    Communicate(body, "/message/read", "GET", headers, onData, onError)
 }
   
 async function DeleteMessage(userid, messageid, authToken, callback) {
@@ -102,7 +103,7 @@ async function DeleteMessage(userid, messageid, authToken, callback) {
         console.error(`Error: Failed to delete message (${error})\n`)
     }
 
-    Communicate(body, "/delete-message", "DELETE", headers, onData, onError)
+    Communicate(body, "/message/delete", "DELETE", headers, onData, onError)
 }
   
 async function Communicate(request, path, method, headers, onData, onError) {

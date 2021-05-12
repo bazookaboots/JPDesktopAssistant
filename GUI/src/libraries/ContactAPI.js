@@ -34,7 +34,7 @@ async function CreateContact(userid, contactid, displayname, authToken, callback
       console.error(`Error: Failed to create contact (${error})\n`)
   }
 
-  Communicate(body, "/create-contact", "POST", headers, onData, onError )
+  Communicate(body, "/contact/create", "POST", headers, onData, onError )
 }
 
 async function ReadContacts(userid, authToken, callback){
@@ -68,7 +68,7 @@ async function ReadContacts(userid, authToken, callback){
       console.error(`Error: Failed to read contacts (${error})\n`)
   }
 
-  Communicate(body, "/read-contacts", "GET", headers, onData, onError )
+  Communicate(body, "/contact/read", "GET", headers, onData, onError )
 }
 
 async function UpdateContact(userid, contactid, displayname, authToken, callback){
@@ -104,7 +104,7 @@ async function UpdateContact(userid, contactid, displayname, authToken, callback
       console.error(`Error: Failed to update contact (${error})\n`)
   }
 
-  Communicate(body, "/update-contact", "PATCH", headers, onData, onError )
+  Communicate(body, "/contact/update", "PATCH", headers, onData, onError )
 }
 
 async function DeleteContact(userid, contactid, authToken, callback){
@@ -139,7 +139,7 @@ async function DeleteContact(userid, contactid, authToken, callback){
       console.error(`Error: Failed to delete contact (${error})\n`)
   }
 
-  Communicate(body, "/delete-contact", "DELETE", headers, onData, onError )
+  Communicate(body, "/contact/delete", "DELETE", headers, onData, onError )
 }
 
 async function Communicate(request, path, method, headers, onData, onError) {

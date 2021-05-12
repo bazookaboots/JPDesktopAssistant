@@ -3,9 +3,9 @@ const { ValueStore } = require("./src/libraries/StorageUtil")
 const { userState } = require("./src/libraries/StateUtil")
 const { mainWin, contactsWin, settingsWin, accountWin, overlayWin } = require("./src/libraries/WindowUtil")
 const { palEngine } = require("./src/libraries/SpeechEngineUtil")
-const { Login, Register, Delete, UpdateSettings } = require("./src/libraries/AccountAPI")
+const { Login, Register, UpdateAccount, DeleteAccount } = require("./src/libraries/AccountAPI")
 const { CreateContact, ReadContacts, UpdateContact, DeleteContact } = require('./src/libraries/ContactAPI')
-const { StartMessager, SendMessage, ReadMessages, DeleteMessage } = require('./src/libraries/MessageAPI')
+const { StartMessager, SendMessage, ReadMessages, DeleteMessage, StopMessanger } = require('./src/libraries/MessageAPI')
 
 const cache = new ValueStore()
 var user = cache.retrieveUser()
@@ -22,19 +22,20 @@ Login("test@test.com", "yeetingyeet"
         console.debug(`Got data: ${data}`)
     })
 
-Delete(2222
+UpdateAccount(2222, "theme", "dark"
     , (authToken) => {
 
     }, (data) => {
         console.debug(`Got data: ${data}`)
     })
 
-UpdateSettings(2222, "theme", "dark"
+DeleteAccount(2222
     , (authToken) => {
 
     }, (data) => {
         console.debug(`Got data: ${data}`)
     })
+
 
 
 
@@ -72,6 +73,11 @@ DeleteContact(2222, 1111
     
 
 StartMessager(2222)
+
+StopMessanger()
+
+StartMessager(2222)
+
 SendMessage("MESSAGE SENT!!!", 2222, 2222)
 
 ReadMessages(2222
@@ -87,7 +93,6 @@ DeleteMessage(2222, 2222
     }, (data) => {
         console.debug(`Got data: ${data}`)
     })
-    
 
 // if (user != null) {
 //     console.debug("User data found, attempting login.")

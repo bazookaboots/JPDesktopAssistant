@@ -34,7 +34,7 @@ async function Register(username, email, password, callback){
         console.error(`Error: Failed to register (${error})\n`)
     }
 
-    Communicate(body, "/register", "POST", headers, onData, onError)
+    Communicate(body, "/account/register", "POST", headers, onData, onError)
 }
 
 async function Login(email, password, authToken, callback){
@@ -69,11 +69,11 @@ async function Login(email, password, authToken, callback){
         console.error(`Error: Failed to log in (${error})\n`)
     }
 
-    Communicate(body, "/login", "GET", headers, onData, onError)
+    Communicate(body, "/account/login", "GET", headers, onData, onError)
 }
 
-async function UpdateSettings(userid, key, value, authToken, callback){
-    console.debug(`Function called: UpdateSettings(${userid}, ${key}, ${value}, ${authToken}, ${callback})\n`)
+async function UpdateAccount(userid, key, value, authToken, callback){
+    console.debug(`Function called: Update(${userid}, ${key}, ${value}, ${authToken}, ${callback})\n`)
 
     const request = {
         userid: userid,
@@ -105,10 +105,10 @@ async function UpdateSettings(userid, key, value, authToken, callback){
         console.error(`Error: Failed to update settings (${error})\n`)
     }
 
-    Communicate(body, "/update-settings", "PATCH", headers, onData, onError )
+    Communicate(body, "/account/update", "PATCH", headers, onData, onError )
 }
 
-async function Delete(userid, authToken, callback){
+async function DeleteAccount(userid, authToken, callback){
     console.debug(`Function called: DeleteUser(${userid}, ${authToken}, ${callback})\n`)
 
     const request = {
@@ -139,7 +139,7 @@ async function Delete(userid, authToken, callback){
         console.error(`Error: Failed to delete account (${error})\n`)
     }
 
-    Communicate(body, "/delete", "DELETE", headers, onData, onError )
+    Communicate(body, "/account/delete", "DELETE", headers, onData, onError )
 }
 
 async function Communicate(request, path, method, headers, onData, onError) {
@@ -168,6 +168,6 @@ async function Communicate(request, path, method, headers, onData, onError) {
 module.exports = {
     Register,
     Login,
-    Delete,
-    UpdateSettings
+    UpdateAccount,
+    DeleteAccount
 }
