@@ -1,70 +1,19 @@
+var express = require('express')
+const app = express()
 const sql = require('mssql')
 require('dotenv').config()
-const express = require('express')
-const jwt = require('jsonwebtoken')
-const app = express()
 app.use(express.json())
 
-function authenticateToken(request, response, next) {
-    const authHeader = request.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-
-    if (token == null){
-        return response.status(401).send("Error: Failed to AuthenticateToken.")
-    } 
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err){
-            return response.status(401).send("Error: Failed to AuthenticateToken.")
-        } 
-
-        request.user = user
-
-        next()
-    })
+const config = {
+    server: process.env.CONTACT_DB_SERVER,
+    user: process.env.CONTACT_DB_USER,
+    password: process.env.CONTACT_DB_PASSWORD,
+    database: process.env.CONTACT_DB_DATABASE,
+    port: parseInt(process.env.CONTACT_DB_PORT, 10),
+    options: {
+        enableArithAbort: true
+    }
 }
-
-app.post('/create-contact', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /create-contact (${JSON.stringify(req.body)})\n`)
-    try {
-        res.status(201).send("This is a test from create contact")
-    } 
-    catch (err) {
-        console.error(`Error: Failed to create contact ${err}\n`)
-    }
-})
-
-app.get('/read-contacts', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /read-contacts (${JSON.stringify(req.body)})\n`)
-    try {
-        res.status(201).send("This is a test from read contacts")
-    } 
-    catch (err) {
-        console.error(`Error: Failed to read contacts ${err}\n`)
-    }
-})
-
-app.patch('/update-contact', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /update-contact (${JSON.stringify(req.body)})\n`)
-    try {
-        res.status(201).send("This is a test from update contact")
-    } 
-    catch (err) {
-        console.error(`Error: Failed to update contact ${err}\n`)
-    }
-})
-
-app.delete('/delete-contact', /*authenticateToken,*/ async(req, res) => {
-    console.debug(`Route Called: /delete-contact (${JSON.stringify(req.body)})\n`)
-    try {
-        res.status(201).send("This is a test from delete contact")
-    } 
-    catch (err) {
-        console.error(`Error: Failed to delete contact ${err}\n`)
-    }
-})
-
-
 
 async function CreateContact(request, callback) {
     console.debug("Fucntion Called: ReadUser()")
@@ -118,4 +67,11 @@ async function DeleteContact(request, callback) {
             console.error(`Error: SQL operation failed: ${err}`)
         })
     })
+}
+
+module.exports = {
+    CreateContact,
+    ReadContacts,
+    UpdateContact,
+    DeleteContact
 }
