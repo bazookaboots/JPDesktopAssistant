@@ -4,21 +4,6 @@ const { LoggedOutMenu } = require('./components/menu-loggedout/menu-loggedout-co
 const { LoginPage } = require('./components/page-login/page-login-comp')
 const { RegisterPage } = require('./components/page-register/page-register-comp')
 
-
-//DEBUG START
-const io = require("socket.io-client"),
-ioClient = io.connect("http://localhost:8000", 
-    { 
-        query: {
-        userid: 2222
-    }});
-
-ioClient.on("getmessage", (message) => {
-
-    console.log("Got a message")
-    console.log(message.message);
-})
-
 function killChildren(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.lastChild);

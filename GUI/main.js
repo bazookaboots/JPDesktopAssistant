@@ -3,11 +3,14 @@ const { ValueStore } = require("./src/libraries/StorageUtil")
 const { userState } = require("./src/libraries/StateUtil")
 const { mainWin, contactsWin, settingsWin, accountWin, overlayWin, messagesWin } = require("./src/libraries/WindowUtil")
 const { palEngine } = require("./src/libraries/SpeechEngineUtil")
-const { LoginUser } = require("./src/libraries/AccountAPI")
+const { Login, Register, Delete, UpdateSettings } = require("./src/libraries/AccountAPI")
+const { CreateContact, ReadContacts, UpdateContact, DeleteContact } = require('./src/libraries/ContactAPI')
+const { StartMessager, SendMessage, ReadMessages, DeleteMessage } = require('./src/libraries/MessageAPI')
 
 const cache = new ValueStore()
 var user = cache.retrieveUser()
 
+<<<<<<< HEAD
 
 // FOR EREN this is how GUI-main will interact with PAL-main
 // ipcMain.on('update-settings',(event, arg) => {
@@ -30,6 +33,100 @@ else {
     console.debug("Setting user state to logged out.")
     userState.setState('loggedin')
 }
+=======
+Register("test13", "test@test.com", "yeetingyeet"
+    , (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+Login("test@test.com", "yeetingyeet"
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+Delete(2222
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+UpdateSettings(2222, "theme", "dark"
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+
+
+
+CreateContact(2222, 1111, "YEETER"
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+ReadContacts(2222
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+UpdateContact(2222, 1111, "YEETER2"
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+DeleteContact(2222, 1111
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+
+
+    
+
+StartMessager(2222)
+SendMessage("MESSAGE SENT!!!", 2222, 2222)
+
+ReadMessages(2222
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+
+DeleteMessage(2222, 2222
+    , (authToken) => {
+
+    }, (data) => {
+        console.debug(`Got data: ${data}`)
+    })
+    
+
+// if (user != null) {
+//     console.debug("User data found, attempting login.")
+//     Login(user.email, user.password,
+//         (authToken) => {
+//             cache.store("token", authToken, true)
+//             userState.setState('loggedin')
+//         })
+// }
+// else {
+//     console.debug("User data not found, attempting login.")
+//     console.debug("Setting user state to logged out.")
+//     userState.setState('loggedout')
+// }
+>>>>>>> cleanup
 
 function closeWindow() {
     win.close()
