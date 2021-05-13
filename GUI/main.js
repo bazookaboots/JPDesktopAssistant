@@ -80,7 +80,7 @@ app.whenReady().then(() => {
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+O', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.win.minimizeOverlay()
+            overlayWin.minimizeOverlay()
         }
     })
 })
