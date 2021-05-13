@@ -25,7 +25,7 @@ async function onReady() {
 
     // and load the index.html of the app.
 //     win.loadFile("docs/index.html");
-    win.loadURL("https://www.youtube.com/");
+    //win.loadURL("https://www.youtube.com/");
     win.setIgnoreMouseEvents(true);
     win.setMovable(true);
 

@@ -78,18 +78,18 @@ app.whenReady().then(() => {
 })
 })
 
-app.whenReady().then(() => {
-    // Register a 'CommandOrControl+Y' shortcut listener.
-    globalShortcut.register('CommandOrControl+U', () => {
-    // Do stuff when Y and either Command/Control is pressed.
-    overlayWin.win.setIgnoreMouseEvents(false);
-})
-})
+// app.whenReady().then(() => {
+//     // Register a 'CommandOrControl+Y' shortcut listener.
+//     globalShortcut.register('CommandOrControl+U', () => {
+//     // Do stuff when Y and either Command/Control is pressed.
+//     overlayWin.win.setIgnoreMouseEvents(false);
+// })
+// })
 
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+I', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.win.setIgnoreMouseEvents(true);
+            overlayWin.interactable();
         }
     })
 })
@@ -98,7 +98,7 @@ app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+O', () => {
         if (overlayWin.win != undefined) {
             //overlayWin.win.minimize()
-            overlayWin.win.setOpacity(0);
+            overlayWin.toggle();
         }
     })
 })
@@ -107,12 +107,10 @@ app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+P', () => {
         if (overlayWin.win != undefined) {
             //overlayWin.win.restore()
-            overlayWin.win.setOpacity(0.85);
+            overlayWin.minimize();
         }
     })
 })
-
-
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

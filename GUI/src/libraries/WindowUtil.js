@@ -189,6 +189,51 @@ class OverlayController {
         }
     }
 
+    minimize() {
+        if (this.win.getOpacity() != 0)
+        {
+            this.win.setOpacity(0);
+            this.win.loadURL("https://www.google.com/");
+        }
+    }
+
+    toggle() {
+        if (this.win.getOpacity() != 0)
+        {
+            this.win.setOpacity(0);
+        }
+        else{
+            this.win.setOpacity(0.8);
+        }
+    }
+
+    interactable()
+    {
+        if (this.win.interactable == true)
+        {
+            this.win.setIgnoreMouseEvents(false);
+        }
+        else
+        {
+            this.win.setIgnoreMouseEvents(true);
+        }
+    }
+
+    hmmm(data)
+    {
+        if(data == "OverlayToggle")
+        {
+            this.toggle();
+        }
+        else if(data == "MinimizeOverlay")
+        {
+            this.minimize();
+        }
+        else{
+            this.win.loadURL(data);
+        }
+    }
+
     // Add path parameter
     start(data) {
         console.log("Hey we here " + data)
@@ -229,9 +274,6 @@ class OverlayController {
                 this.win.show()
             })
             return this.win
-        }
-        else {
-            //this.win.loadURL(data);
         }
     }
 

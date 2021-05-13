@@ -58,7 +58,7 @@ class PalEngineController {
 
                             // URL or Overlay Commands (toggle/minimize)
                             console.log("overlay url was: " + data);
-                            overlayWin.start(data.toString())
+                            overlayWin.hmmm(data.toString())
                             
                             break;
                         default:
