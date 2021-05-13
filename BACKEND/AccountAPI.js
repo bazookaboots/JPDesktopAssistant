@@ -103,9 +103,7 @@ async function Register(request, callback) {
     console.debug(`Function Called: Register(${JSON.stringify(request)})\n`)
 
     await CheckEmail(request, async(foundUser) => {
-        console.debug(`FIND RETURNED: (${foundUser})\n`)
         if (foundUser === undefined) {
-            console.debug("IN HERE!!!!!!\n")
             const passhash = "temp" /*await bcrypt.hash(request.password, 10);*/
 
             var conn = new sql.connect(config).then(function(conn) {
@@ -129,36 +127,37 @@ async function Register(request, callback) {
 async function CheckEmail(request, callback) {
     console.debug(`Function Called: CheckEmail(${JSON.stringify(request)})\n`)
 
-    var conn = new sql.connect(config).then((conn) => {
-        var request = new sql.Request(conn);
-        request.input('email', sql.VarChar(255), request.email);
-        request.execute('spAccount_CheckEmail').then((recordsets, err) => {
-            console.debug(`RECORDSET: (${recordsets/recordset})`)
-            if (typeof recordsets.recordset !== undefined) callback(recordsets.recordset[0]);
-            else callback(undefined)
+    var conn = new sql.connect(config).then(function(conn) {
+        var req = new sql.Request(conn)
+        req.input('email', sql.VarChar(255), request.email)
+        req.execute('spAccount_CheckEmail').then(function(recordsets, err) {
+            if (typeof recordsets.recordset !== undefined){
+                callback(recordsets.recordset[0])
+            }
+            else{
+                callback(undefined)
+            } 
         }).catch(function(err) {
-            console.error(`Error: Email already exists.\n`)
-        });
+            console.error(`Error: CheckEmail SQL operation failed: (${err})\n`)
+        })
     })
 }
 
 async function Login(request, callback) {
     console.debug(`Function Called: Login(${JSON.stringify(request)})\n`)
 
-    await CheckEmail(request.body, async(foundUser) => {
+    await CheckEmail(request, async(foundUser) => {
         if (foundUser !== undefined) {
             const passhash = "temp" /*await bcrypt.hash(request.password, 10);*/
             //TODO: Password check
             var conn = new sql.connect(config).then(function(conn) {
                 var req = new sql.Request(conn)
-                req.input('userid', sql.VarChar(255), request.userid)
-                req.input('email', sql.VarChar(255), request.email)
-                req.input('username', sql.VarChar(255), request.username)
+                req.input('email', sql.VarChar(255), request.emaik)
                 req.input('passhash', sql.VarChar(255), passhash)
-                req.execute('spAccount_Register').then(function(recordsets, err) {
+                req.execute('spAccount_Login').then(function(recordsets, err) {
                     callback(recordsets)
                 }).catch(function(err) {
-                    console.error(`Error: Register SQL operation failed: (${err})\n`)
+                    console.error(`Error: Login SQL operation failed: (${err})\n`)
                 })
             })
         } else {
@@ -172,7 +171,7 @@ async function UpdateAccount(request, callback) {
 
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('email', sql.VarChar(255), request.email)
         req.input('key', sql.VarChar(255), request.key)
         req.input('value', sql.VarChar(255), request.value)
         req.execute('spAccount_UpdateAccount').then(function(recordsets, err) {
@@ -188,7 +187,7 @@ async function DeleteAccount(request, callback) {
 
     var conn = new sql.connect(config).then((conn) => {
         var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('email', sql.VarChar(255), request.email)
         req.execute('spAccount_DeleteAccount').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {

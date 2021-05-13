@@ -1,12 +1,12 @@
 const http = require('http');
 const hostURL = "127.0.0.1"
 
-async function CreateContact(userid, contactid, displayname, authToken, callback){
-  console.debug(`Function called: CreateContact(${userid}, ${contactid}, ${displayname}, ${authToken}, ${callback})\n`)
+async function CreateContact(useremail, contactemail, displayname, authToken, callback){
+  console.debug(`Function called: CreateContact(${useremail}, ${contactemail}, ${displayname}, ${authToken}, ${callback})\n`)
 
   const request = {
-      userid: userid,
-      contactid: contactid,
+      useremail: useremail,
+      contactemail: contactemail,
       displayname, displayname
   }
 
@@ -37,11 +37,11 @@ async function CreateContact(userid, contactid, displayname, authToken, callback
   Communicate(body, "/contact/create", "POST", headers, onData, onError )
 }
 
-async function ReadContacts(userid, authToken, callback){
-  console.debug(`Function called: ReadContacts(${userid}, ${authToken}, ${callback})\n`)
+async function ReadContacts(useremail, authToken, callback){
+  console.debug(`Function called: ReadContacts(${useremail}, ${authToken}, ${callback})\n`)
 
   const request = {
-      userid: userid,
+      useremail: useremail
   }
 
   const body = JSON.stringify(request)
@@ -71,12 +71,12 @@ async function ReadContacts(userid, authToken, callback){
   Communicate(body, "/contact/read", "GET", headers, onData, onError )
 }
 
-async function UpdateContact(userid, contactid, displayname, authToken, callback){
-  console.debug(`Function called: UpdateContact(${userid}, ${contactid}, ${displayname}, ${authToken}, ${callback})\n`)
+async function UpdateContact(useremail, contactemail, displayname, authToken, callback){
+  console.debug(`Function called: UpdateContact(${useremail}, ${contactemail}, ${displayname}, ${authToken}, ${callback})\n`)
 
   const request = {
-      userid: userid,
-      contactid: contactid,
+      useremail: useremail,
+      contactemail: contactemail,
       displayname, displayname
   }
 
@@ -107,12 +107,12 @@ async function UpdateContact(userid, contactid, displayname, authToken, callback
   Communicate(body, "/contact/update", "PATCH", headers, onData, onError )
 }
 
-async function DeleteContact(userid, contactid, authToken, callback){
-  console.debug(`Function called: ReadContacts(${userid}, ${contactid}, ${authToken}, ${callback})\n`)
+async function DeleteContact(useremail, contactemail, authToken, callback){
+  console.debug(`Function called: ReadContacts(${useremail}, ${contactemail}, ${authToken}, ${callback})\n`)
 
   const request = {
-      userid: userid,
-      contactid: contactid
+      useremail: useremail,
+      contactemail: contactemail
   }
 
   const body = JSON.stringify(request)

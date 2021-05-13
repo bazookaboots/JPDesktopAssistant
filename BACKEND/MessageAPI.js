@@ -34,29 +34,35 @@ function authenticateToken(request, response, next) {
 }
 
 server.on("connection", (socket) => {
-    console.debug(`Client connected: (${socket.id}, ${socket.handshake.query.userid})\n`)
+    console.debug(`Client connected: (${socket.id}, ${socket.handshake.query.useremail})\n`)
  
-    sequenceNumberByClient.set(parseInt(socket.handshake.query.userid), socket)
+    sequenceNumberByClient.set(socket.handshake.query.useremail, socket)
  
     socket.on("disconnect", () => {
-        console.debug(`Client disconnected: (${socket.id}, ${socket.handshake.query.userid})\n`)
+        console.debug(`Client disconnected: (${socket.id}, ${socket.handshake.query.useremail})\n`)
  
-        sequenceNumberByClient.delete(socket.handshake.query.userid)
+        sequenceNumberByClient.delete(socket.handshake.query.useremail)
     })
  
     socket.on("client-send-message", (request) => {
-         console.debug(`Client sent message: (${request.messageid}, ${request.message}, ${request.toid},${request.fromid})\n`)
+         console.debug(`Client sent message: (${request.messageid}, ${request.message}, ${request.toemail},${request.fromemail})\n`)
          try {
              const message = {
                  messageid: request.messageid,
                  message: request.message,
-                 toid: request.toid,
-                 fromid: request.fromid
+                 toemail: request.toemail,
+                 fromemail: request.fromemail
              }
+
+             console.debug(`MAP: ${JSON.stringify(sequenceNumberByClient)}\n`)
  
-             if (sequenceNumberByClient.get(request.toid))
-             {
-                 sequenceNumberByClient.get(request.toid).emit("client-get-message", message)
+             if (sequenceNumberByClient.get(request.toemail)){
+                console.debug("ONLINE")
+                sequenceNumberByClient.get(request.toemail).emit("client-get-message", message)
+             }
+             else{
+                console.debug("NOT ONLINE")
+                
              }
 
              function callback(recordsets){
@@ -88,8 +94,6 @@ server.on("connection", (socket) => {
  message.delete('/delete', /*authenticateToken,*/ async(req, res) => {
      console.debug(`Route Called: /delete (${JSON.stringify(req.body)})\n`)
      try {
-         res.status(201).send("This is a test from delete message")
-        
          await DeleteMessage(req.body, async(response) => {
             console.debug(`/delete callback: (${JSON.stringify(response)})\n`)
             res.status(201).send(response)
@@ -101,7 +105,7 @@ server.on("connection", (socket) => {
      }
  })
 
- 
+
 
 const config = {
     server: process.env.DB_SERVER,
@@ -121,8 +125,8 @@ async function CreateMessage(request, callback) {
         var req = new sql.Request(conn)
         req.input('messageid', sql.VarChar(255), request.messageid)
         req.input('message', sql.VarChar(255), request.message)
-        req.input('fromid', sql.VarChar(255), request.fromid)
-        req.input('toid', sql.VarChar(255), request.toid)
+        req.input('fromemail', sql.VarChar(255), request.fromemail)
+        req.input('toemail', sql.VarChar(255), request.toemail)
         req.execute('spMessage_CreateMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
@@ -136,7 +140,7 @@ async function ReadMessages(request, callback) {
 
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('useremail', sql.VarChar(255), request.useremail)
         req.execute('spMessage_ReadMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
@@ -151,7 +155,7 @@ async function DeleteMessage(request, callback) {
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('messageid', sql.VarChar(255), request.messageid)
-        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('useremail', sql.VarChar(255), request.useremail)
         req.execute('spMessage_DeleteMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {

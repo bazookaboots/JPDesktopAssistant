@@ -72,11 +72,11 @@ async function Login(email, password, authToken, callback){
     Communicate(body, "/account/login", "GET", headers, onData, onError)
 }
 
-async function UpdateAccount(userid, key, value, authToken, callback){
-    console.debug(`Function called: Update(${userid}, ${key}, ${value}, ${authToken}, ${callback})\n`)
+async function UpdateAccount(email, key, value, authToken, callback){
+    console.debug(`Function called: Update(${email}, ${key}, ${value}, ${authToken}, ${callback})\n`)
 
     const request = {
-        userid: userid,
+        email: email,
         key: key,
         value: value
     }
@@ -108,11 +108,11 @@ async function UpdateAccount(userid, key, value, authToken, callback){
     Communicate(body, "/account/update", "PATCH", headers, onData, onError )
 }
 
-async function DeleteAccount(userid, authToken, callback){
-    console.debug(`Function called: DeleteUser(${userid}, ${authToken}, ${callback})\n`)
+async function DeleteAccount(email, authToken, callback){
+    console.debug(`Function called: DeleteUser(${email}, ${authToken}, ${callback})\n`)
 
     const request = {
-        userid: userid
+        email: email
     }
 
     const body = JSON.stringify(request)

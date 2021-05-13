@@ -106,8 +106,8 @@ async function CreateContact(request, callback) {
 
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
-        req.input('contactid', sql.VarChar(255), request.contactid)
+        req.input('useremail', sql.VarChar(255), request.useremail)
+        req.input('contactemail', sql.VarChar(255), request.contactemail)
         req.input('displayname', sql.VarChar(255), request.displayname)
         req.execute('spContact_CreateContact').then(function(recordsets, err) {
             callback(recordsets)
@@ -122,7 +122,7 @@ async function ReadContacts(request, callback) {
 
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
+        req.input('useremail', sql.VarChar(255), request.useremail)
         req.execute('spContact_ReadContacts').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
@@ -136,8 +136,8 @@ async function UpdateContact(request, callback) {
 
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
-        req.input('contactid', sql.VarChar(255), request.contactid)
+        req.input('useremail', sql.VarChar(255), request.useremail)
+        req.input('contactemail', sql.VarChar(255), request.contactemail)
         req.input('displayname', sql.VarChar(255), request.displayname)
         req.execute('spContact_UpdateContact').then(function(recordsets, err) {
             callback(recordsets)
@@ -152,8 +152,8 @@ async function DeleteContact(request, callback) {
 
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
-        req.input('userid', sql.VarChar(255), request.userid)
-        req.input('contactid', sql.VarChar(255), request.contactid)
+        req.input('useremail', sql.VarChar(255), request.useremail)
+        req.input('contactemail', sql.VarChar(255), request.contactemail)
         req.execute('spContact_DeleteContact').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {

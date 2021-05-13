@@ -10,10 +10,10 @@ const { StartMessager, SendMessage, ReadMessages, DeleteMessage, StopMessanger }
 const cache = new ValueStore()
 var user = cache.retrieveUser()
 
-Register("test13", "test@test.com", "yeetingyeet"
-    , (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+// Register("test13", "test@test.com", "yeetingyeet"
+//     , (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
 // Login("test@test.com", "yeetingyeet"
 //     , (authToken) => {
@@ -22,14 +22,14 @@ Register("test13", "test@test.com", "yeetingyeet"
 //         console.debug(`Got data: ${data}`)
 //     })
 
-// UpdateAccount(2222, "theme", "dark"
+// UpdateAccount("test@test.com", "theme", "dark"
 //     , (authToken) => {
 
 //     }, (data) => {
 //         console.debug(`Got data: ${data}`)
 //     })
 
-// DeleteAccount(2222
+// DeleteAccount("test@test.com"
 //     , (authToken) => {
 
 //     }, (data) => {
@@ -38,30 +38,28 @@ Register("test13", "test@test.com", "yeetingyeet"
 
 
 
-
-
-// CreateContact(2222, 1111, "YEETER"
+// CreateContact("test@test.com", "test2@test.com", "YEETER"
 //     , (authToken) => {
 
 //     }, (data) => {
 //         console.debug(`Got data: ${data}`)
 //     })
 
-// ReadContacts(2222
+// ReadContacts("test@test.com"
 //     , (authToken) => {
 
 //     }, (data) => {
 //         console.debug(`Got data: ${data}`)
 //     })
 
-// UpdateContact(2222, 1111, "YEETER2"
+// UpdateContact("test@test.com", "test2@test.com", "YEETER2"
 //     , (authToken) => {
 
 //     }, (data) => {
 //         console.debug(`Got data: ${data}`)
 //     })
 
-// DeleteContact(2222, 1111
+// DeleteContact("test@test.com", "test2@test.com"
 //     , (authToken) => {
 
 //     }, (data) => {
@@ -76,18 +74,18 @@ Register("test13", "test@test.com", "yeetingyeet"
 
 // StopMessanger()
 
-// StartMessager(2222)
+//StartMessager("test@test.com")
 
-// SendMessage("MESSAGE SENT!!!", 2222, 2222)
+//SendMessage("MESSAGE SENT!!!", "test@test.com", "test@test.com")
 
-// ReadMessages(2222
+// ReadMessages("test@test.com"
 //     , (authToken) => {
 
 //     }, (data) => {
 //         console.debug(`Got data: ${data}`)
 //     })
 
-// DeleteMessage(2222, 2222
+// DeleteMessage("test@test.com", 1620886395414
 //     , (authToken) => {
 
 //     }, (data) => {
