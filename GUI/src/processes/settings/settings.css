@@ -4,7 +4,42 @@
     margin:auto;
   }
 
-  .listingTextInputs{
+label {
+    font: Arial;
+    color: lightgray;
+    margin: 0px;
+    text-align: left;
+}
+
+input {
+  font: Arial;
+  margin: 0px;
+  text-align: left;
+}
+
+p {
+  font: Arial;
+  color: lightgray;
+  margin: 0px;
+  text-align: left;
+}
+
+h3 {
+  font: Arial;
+  color: lightgray;
+  margin: 0px;
+  text-align: left;
+}
+
+.boolcheck {
+  font: Arial;
+  color: lightgray;
+  margin: 0px;
+  text-align: left;
+  align-content: left;
+}
+
+.listingTextInputs{
     display:block;
 
   }

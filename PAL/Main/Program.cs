@@ -43,6 +43,8 @@ namespace PAL.Core
             //Command Phrases
             string cmdPhrase = args[10];
             string killPhrase = args[11];
+            string OverlayOpenPhrase = "Toggle Overlay";
+            string OverlayMinimizePhrase = "Minimize overlay";
 
             //durations for listening
             int passiveInterval = Convert.ToInt32(args[12]); //interval for catching "hey pal" or "halt"
@@ -80,6 +82,15 @@ namespace PAL.Core
                     pal = false;
                 }
 
+                if (parser.calculateSimilarity(full, OverlayOpenPhrase) > 0.8)
+                {
+                    Console.WriteLine("2: " + "OverlayToggle");
+                }
+
+                if (parser.calculateSimilarity(full, OverlayMinimizePhrase) > 0.8)
+                {
+                    Console.WriteLine("2: " + "MinimizeOverlay");
+                }
 
                 if (!active)
                 {

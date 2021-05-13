@@ -71,7 +71,7 @@ class PalEngineController {
                         case 2:
                             //NOTES FOR EREN
                             //overlayController.open("https://youtube.com")
-                            console.log("overlay url was: " + data);
+                            console.log("overlay arg was: " + data);
                             overlayWin.start(data.toString())
                             
                             break;
