@@ -21,11 +21,40 @@
                 <img src="../../assets/icons/close_24px_outlined.svg" />
             </div>
         </div>
-        <div id="settings-list" class="settingsList pageBlock">
-            <label> Boot Message </label>
-            <input></input>
-            <label> Listening Message </label>
-            <input></input>
+
+        <div id="settings-list" class="settingsList pageBlock" align-content="left">
+            <h3>Toggles</h3>
+            <input type="checkbox" class="boolcheck"><label>Persistenece</label></input><br>  
+            <input type="checkbox" class="boolcheck"><label>Vocal Feedback</label></input><br>  
+            <input type="checkbox" class="boolcheck"><label>"Hey Pal" Functionality</label></input><br>  
+            <input type="checkbox" class="boolcheck"><label>Start in Command Prompt</label></input><br>  
+
+            <h3>Voice Messages</h3>
+            <label>Waking up</label>
+            <input placeholder="Pal is Alive" ></input><br>
+            <label>Listening</label>
+            <input placeholder="Just call if you need me."></input><br>
+            <label>Notice</label>
+            <input placeholder="Yes Master?"></input><br>
+            <label>Complete</label>
+            <input placeholder="It is done."></input><br>
+            <label>Confusion</label>
+            <input placeholder="I do not understand"></input><br>
+            <label>Goodbye</label>
+            <input placeholder="seeya meatsack"></input><br>
+
+            <h3>Command Phrases </h3>
+            <label> Wake-Up Phrase </label>
+            <input placeholder="hey pal"></input><br>
+            <label> KillPhrase </label>
+            <input placeholder="halt"></input><br>
+
+            <h3>Wait Times</h3>
+            <label>Passive Waiting Period:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="10"> <br>
+            <label>Active Wating Period:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="10"> <br>
+
         </div>
 
 </body>

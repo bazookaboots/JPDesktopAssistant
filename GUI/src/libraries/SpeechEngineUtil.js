@@ -22,7 +22,23 @@ class PalEngineController {
             console.log("in engine call")
             //Check for PAL engine  on machine
             //spawns the subprocess that stores the engine
-            this.subprocess = spawn('Main.exe', {
+            this.subprocess = spawn('Main.exe', 
+            [
+                "true", //controls whether this process should continue running in background
+                "true", //determines whether pal should speak back or not
+                "true", // controls always-on, always-listening functionality (hey pal)
+                "false", // when true, pal will immediately enter cmd prompt on launch
+                "Pal is alive.", //plays on launch
+                "Just call if you need me.", //plays if passive listening is active
+                "Yes Master?", //plays when "hey pal" is heard
+                "It is done.", //plays when a command executes with no exceptions
+                "I do not understand.", //plays when a command returns an exception
+                "seeya meatsack.", //plays when pal is kill
+                "hey pal", //parse term for voice activation
+                "halt", //parse term for voice shutdown
+                "3", //interval for catching "hey pal" or "halt"
+                "8" //interval for speaking full commands 
+            ], {
                 cwd: "..\\PAL\\Main\\bin\\Debug",
                 detached: true,
             });

@@ -26,28 +26,29 @@ namespace PAL.Core
         }
         static async Task Main(string[] args)
         {
-            //settings defined here, 
-            //these can be moved elsewhere to connect/read from gui as long as they can be accessed in this scope
+            //settings defined and loaded from args here
             bool pal = true; //controls whether this process should continue running in background
             bool vocal = true; //determines whether pal should speak back or not
             bool listenting = true; // controls always-on, always-listening functionality (hey pal)
             bool active = false; // when true, pal will immediately enter cmd prompt on launch
 
             //Status messages
-            string bootMsg = "Pal is alive."; //plays on launch
-            string listeningMsg = "Just call if you need me."; //plays if passive listening is active
-            string cmdPromptMsg = "Yes Master?"; //plays when "hey pal" is heard
-            string cmdDoneMsg = "It is done"; //plays when a command executes with no exceptions
-            string cmdErrMsg = "I do not understand"; //plays when a command returns an exception
-            string killMsg = "seeya, meatsack."; //plays when pal is kill
+            string bootMsg = args[4]; //plays on launch
+            string listeningMsg = args[5]; //plays if passive listening is active
+            string cmdPromptMsg = args[6]; //plays when "hey pal" is heard
+            string cmdDoneMsg = args[7]; //plays when a command executes with no exceptions
+            string cmdErrMsg = args[8]; //plays when a command returns an exception
+            string killMsg = args[9]; //plays when pal is kill
 
             //Command Phrases
-            string cmdPhrase = "hey pal";
-            string killPhrase = "halt";
+            string cmdPhrase = args[10];
+            string killPhrase = args[11];
+            string OverlayOpenPhrase = "Toggle Overlay";
+            string OverlayMinimizePhrase = "Minimize overlay";
 
             //durations for listening
-            int passiveInterval = 3; //interval for catching "hey pal" or "halt"
-            int activeInterval = 8; //interval for speaking full commands 
+            int passiveInterval = Convert.ToInt32(args[12]); //interval for catching "hey pal" or "halt"
+            int activeInterval = Convert.ToInt32(args[13]); //interval for speaking full commands 
             int requestDuration = passiveInterval; //current setting (this is changed frequently, not good for settings)
 
             var synthesizer = new SpeechSynthesizer();
@@ -81,6 +82,15 @@ namespace PAL.Core
                     pal = false;
                 }
 
+                if (parser.calculateSimilarity(full, OverlayOpenPhrase) > 0.8)
+                {
+                    Console.WriteLine("2: " + "OverlayToggle");
+                }
+
+                if (parser.calculateSimilarity(full, OverlayMinimizePhrase) > 0.8)
+                {
+                    Console.WriteLine("2: " + "MinimizeOverlay");
+                }
 
                 if (!active)
                 {
