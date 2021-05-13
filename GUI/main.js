@@ -79,19 +79,10 @@ app.whenReady().then(() => {
 })
 })
 
-
-app.whenReady().then(() => {
-    // Register a 'CommandOrControl+Y' shortcut listener.
-    globalShortcut.register('CommandOrControl+U', () => {
-    // Do stuff when Y and either Command/Control is pressed.
-    overlayWin.end()
-})
-})
-
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+O', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.win.minimize()
+            overlayWin.win.minimizeOverlay()
         }
     })
 })
@@ -99,15 +90,7 @@ app.whenReady().then(() => {
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+P', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.win.restore()
-        }
-    })
-})
-
-app.whenReady().then(() => {
-    globalShortcut.register('CommandOrControl+I', () => {
-        if (overlayWin.win != undefined) {
-            overlayWin.win.close()
+            overlayWin.toggle()
         }
     })
 })

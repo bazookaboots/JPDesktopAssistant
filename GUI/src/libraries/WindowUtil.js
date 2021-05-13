@@ -180,10 +180,57 @@ class MessagesWinController {
     }
 }
 
+// Overlay here.
+// Comment your code you heathens.
 class OverlayController {
     constructor() {
         if (!OverlayController.instance) {
             OverlayController.instance = this
+        }
+    }
+
+    minimizeOverlay() {
+        if (this.win.getOpacity() != 0)
+        {
+            this.win.setOpacity(0);
+            this.win.loadURL("https://www.google.com/");
+        }
+    }
+
+    toggle() {
+        if (this.win.getOpacity() != 0)
+        {
+            this.win.setOpacity(0);
+        }
+        else{
+            this.win.setOpacity(0.8);
+        }
+    }
+
+    interactable()
+    {
+        if (this.win.interactable == true)
+        {
+            this.win.setIgnoreMouseEvents(false);
+        }
+        else
+        {
+            this.win.setIgnoreMouseEvents(true);
+        }
+    }
+
+    hmmm(data)
+    {
+        if(data == "OverlayToggle")
+        {
+            this.toggle();
+        }
+        else if(data == "MinimizeOverlay")
+        {
+            this.minimize();
+        }
+        else {
+            this.win.loadURL(data);
         }
     }
 
@@ -199,7 +246,7 @@ class OverlayController {
                 maxWidth: 600,
                 maxHeight: 400,
                 transparent: true,
-                opacity: 1,
+                opacity: 0,
                 frame: false,
                 alwaysOnTop: true,
                 movable: true,
@@ -211,12 +258,11 @@ class OverlayController {
 
             this.win = new BrowserWindow(options)
             this.win.setMenuBarVisibility(false)
-
-            // It's breaking right here.
-            // Launching with standard URL.
-            // Replace with youtube with path from speech engine.
-            this.win.loadURL("https://www.youtube.com/watch?v=5Qxqz-0wJZ0");
+            this.win.setAlwaysOnTop(true, "floating");
+            this.win.setVisibleOnAllWorkspaces(true);
+            this.win.setFullScreenable(false);
             this.win.setIgnoreMouseEvents(true);
+            this.win.loadURL("https://www.google.com/");
 
             //this.win.webContents.openDevTools({ mode: 'detach' })
 
@@ -224,9 +270,6 @@ class OverlayController {
                 this.win.show()
             })
             return this.win
-        }
-        else {
-            //this.win.loadURL(data);
         }
     }
 

@@ -37,7 +37,7 @@ class PalEngineController {
                 "hey pal", //parse term for voice activation
                 "halt", //parse term for voice shutdown
                 "3", //interval for catching "hey pal" or "halt"
-                "8" //interval for speaking full commands 
+                "10" //interval for speaking full commands 
             ], {
                 cwd: "..\\PAL\\Main\\bin\\Debug",
                 detached: true,
@@ -103,7 +103,6 @@ class PalEngineController {
             return true
         }
     }
-
 }
 
 const palEngine = new PalEngineController()
