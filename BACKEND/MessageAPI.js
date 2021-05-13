@@ -58,45 +58,50 @@ server.on("connection", (socket) => {
              {
                  sequenceNumberByClient.get(request.toid).emit("client-get-message", message)
              }
+
+             function callback(recordsets){
+             }
  
-             CreateMessage(message)
+             CreateMessage(message, callback)
          }
          catch (err) {
-             console.error(`Error: Failed to send message: ${err}`)
+             console.error(`Error: Failed to send message: (${err})\n`)
          }
      })
  })
  
  message.get('/read', /*authenticateToken,*/ async(req, res) => {
      console.debug(`Route Called: /read (${JSON.stringify(req.body)})\n`)
+
      try {
-         res.status(201).send("This is a test from read messages")
-         
          await ReadMessages(req.body, async(response) => {
-            res.status(201).send()
+            console.debug(`/read callback: (${JSON.stringify(response)})\n`)
+            res.status(201).send(response)
         });
      } 
      catch (err) {
-         console.error(`Error: Failed to read messages ${err}\n`)
+         console.error(`Error: Failed to read messages: (${err})\n`)
          res.status(422).send(err)
      }
  })
  
  message.delete('/delete', /*authenticateToken,*/ async(req, res) => {
-     console.debug(`Route Called: /delete-message (${JSON.stringify(req.body)})\n`)
+     console.debug(`Route Called: /delete (${JSON.stringify(req.body)})\n`)
      try {
          res.status(201).send("This is a test from delete message")
         
          await DeleteMessage(req.body, async(response) => {
-            res.status(201).send()
+            console.debug(`/delete callback: (${JSON.stringify(response)})\n`)
+            res.status(201).send(response)
         });
      } 
      catch (err) {
-         console.error(`Error: Failed to delete message ${err}\n`)
+         console.error(`Error: Failed to delete message: (${err})\n`)
          res.status(422).send(err)
      }
  })
 
+ 
 
 const config = {
     server: process.env.DB_SERVER,
@@ -121,7 +126,7 @@ async function CreateMessage(request, callback) {
         req.execute('spMessage_CreateMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
+            console.error(`Error: CreateMessage SQL operation failed: (${err})\n`)
         })
     })
 }
@@ -135,7 +140,7 @@ async function ReadMessages(request, callback) {
         req.execute('spMessage_ReadMessages').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
+            console.error(`Error: ReadMessages SQL operation failed: (${err})\n`)
         })
     })
 }
@@ -146,10 +151,11 @@ async function DeleteMessage(request, callback) {
     var conn = new sql.connect(config).then(function(conn) {
         var req = new sql.Request(conn)
         req.input('messageid', sql.VarChar(255), request.messageid)
+        req.input('userid', sql.VarChar(255), request.userid)
         req.execute('spMessage_DeleteMessage').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
+            console.error(`Error: DeleteMessage SQL operation failed: (${err})\n`)
         })
     })
 }

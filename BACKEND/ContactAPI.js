@@ -30,63 +30,64 @@ function authenticateToken(request, response, next) {
 
 contact.post('/create', /*authenticateToken,*/ async(req, res) => {
     console.debug(`Route Called: /create (${JSON.stringify(req.body)})\n`)
+    
     try {
-        res.status(201).send("This is a test from create contact")
-        
         await CreateContact(req.body, async(response) => {
-            res.status(201).send()
+            console.debug(`/create callback: (${JSON.stringify(response)})\n`)
+            res.status(201).send(response)
         });
     } 
     catch (err) {
-        console.error(`Error: Failed to create contact ${err}\n`)
+        console.error(`Error: Failed to create contact: (${err})\n`)
         res.status(422).send(err)
     }
 })
 
 contact.get('/read', /*authenticateToken,*/ async(req, res) => {
     console.debug(`Route Called: /read (${JSON.stringify(req.body)})\n`)
+
     try {
-        res.status(201).send("This is a test from read contacts")
-        
         await ReadContacts(req.body, async(response) => {
-            res.status(201).send()
+            console.debug(`/read callback: (${JSON.stringify(response)})\n`)
+            res.status(201).send(response)
         });
     } 
     catch (err) {
-        console.error(`Error: Failed to read contacts ${err}\n`)
+        console.error(`Error: Failed to read contacts: (${err})\n`)
         res.status(422).send(err)
     }
 })
 
 contact.patch('/update', /*authenticateToken,*/ async(req, res) => {
     console.debug(`Route Called: /update (${JSON.stringify(req.body)})\n`)
-    try {
-        res.status(201).send("This is a test from update contact")
-        
+
+    try {    
         await UpdateContact(req.body, async(response) => {
-            res.status(201).send()
+            console.debug(`/update callback: (${JSON.stringify(response)})\n`)
+            res.status(201).send(response)
         });
     } 
     catch (err) {
-        console.error(`Error: Failed to update contact ${err}\n`)
+        console.error(`Error: Failed to update contact: (${err})\n`)
         res.status(422).send(err)
     }
 })
 
 contact.delete('/delete', /*authenticateToken,*/ async(req, res) => {
     console.debug(`Route Called: /delete (${JSON.stringify(req.body)})\n`)
-    try {
-        res.status(201).send("This is a test from delete contact")
-        
+    
+    try {   
         await DeleteContact(req.body, async(response) => {
-            res.status(201).send()
+            console.debug(`/register callback: (${JSON.stringify(response)})\n`)
+            res.status(201).send(response)
         });
     } 
     catch (err) {
-        console.error(`Error: Failed to delete contact ${err}\n`)
+        console.error(`Error: Failed to delete contact: (${err})\n`)
         res.status(422).send(err)
     }
 })
+
 
 
 const config = {
@@ -111,7 +112,7 @@ async function CreateContact(request, callback) {
         req.execute('spContact_CreateContact').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
+            console.error(`Error: CreateContact SQL operation failed: (${err})\n`)
         })
     })
 }
@@ -125,7 +126,7 @@ async function ReadContacts(request, callback) {
         req.execute('spContact_ReadContacts').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
+            console.error(`Error: ReadContacts SQL operation failed: (${err})\n`)
         })
     })
 }
@@ -141,7 +142,7 @@ async function UpdateContact(request, callback) {
         req.execute('spContact_UpdateContact').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
+            console.error(`Error: UpdateContact SQL operation failed: (${err})\n`)
         })
     })
 }
@@ -156,7 +157,7 @@ async function DeleteContact(request, callback) {
         req.execute('spContact_DeleteContact').then(function(recordsets, err) {
             callback(recordsets)
         }).catch(function(err) {
-            console.error(`Error: SQL operation failed: ${err}`)
+            console.error(`Error: DeleteContact SQL operation failed: (${err})\n`)
         })
     })
 }

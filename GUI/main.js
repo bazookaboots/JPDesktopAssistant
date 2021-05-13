@@ -15,84 +15,84 @@ Register("test13", "test@test.com", "yeetingyeet"
         console.debug(`Got data: ${data}`)
     })
 
-Login("test@test.com", "yeetingyeet"
-    , (authToken) => {
+// Login("test@test.com", "yeetingyeet"
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
-UpdateAccount(2222, "theme", "dark"
-    , (authToken) => {
+// UpdateAccount(2222, "theme", "dark"
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
-DeleteAccount(2222
-    , (authToken) => {
+// DeleteAccount(2222
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
-
-
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
 
 
-CreateContact(2222, 1111, "YEETER"
-    , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
 
-ReadContacts(2222
-    , (authToken) => {
+// CreateContact(2222, 1111, "YEETER"
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
-UpdateContact(2222, 1111, "YEETER2"
-    , (authToken) => {
+// ReadContacts(2222
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
-DeleteContact(2222, 1111
-    , (authToken) => {
+// UpdateContact(2222, 1111, "YEETER2"
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
+
+// DeleteContact(2222, 1111
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
 
 
     
 
-StartMessager(2222)
+// StartMessager(2222)
 
-StopMessanger()
+// StopMessanger()
 
-StartMessager(2222)
+// StartMessager(2222)
 
-SendMessage("MESSAGE SENT!!!", 2222, 2222)
+// SendMessage("MESSAGE SENT!!!", 2222, 2222)
 
-ReadMessages(2222
-    , (authToken) => {
+// ReadMessages(2222
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
-DeleteMessage(2222, 2222
-    , (authToken) => {
+// DeleteMessage(2222, 2222
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
 // if (user != null) {
 //     console.debug("User data found, attempting login.")
