@@ -55,6 +55,8 @@ class PalEngineController {
                         case 2:
                             //NOTES FOR EREN
                             //overlayController.open("https://youtube.com")
+
+                            // URL or Overlay Commands (toggle/minimize)
                             console.log("overlay url was: " + data);
                             overlayWin.start(data.toString())
                             
