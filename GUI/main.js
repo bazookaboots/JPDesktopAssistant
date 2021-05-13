@@ -8,107 +8,136 @@ const { CreateContact, ReadContacts, UpdateContact, DeleteContact } = require('.
 const { StartMessager, SendMessage, ReadMessages, DeleteMessage } = require('./src/libraries/MessageAPI')
 
 const cache = new ValueStore()
-var user = cache.retrieveUser()
+if(cache.isValid())
+{
+    let storedData = cache.retrieveStoredData()
+    Login(storedData.email,storedData.password, (request) =>{
+        let data
+        request.on('reponse',(response)=>{
+            response.on('data',(dataRead) => {
+                if(dataRead != undefined)
+                    data += dataRead
+            })
+            response.on('end', () => {
+                console.log(" stream data ended")
+                //Do Loggin stuff
+                cache.updateUserData(data)
+                state.setState('loggedin')
+            })
 
-
-// FOR EREN this is how GUI-main will interact with PAL-main
-// ipcMain.on('update-settings',(event, arg) => {
-//     console.debug('Function Called: update-settings')
-//     palEngine.updateSettings()
-// })
-
-if (user != null) {
-    console.debug("User data found, attempting login.")
-
-    userState.setState('loggedin')
-    // LoginUser(user.email, user.password,
-    //     (authToken) => {
-    //         cache.store("token", authToken, true)
-    //         userState.setState('loggedin')
-    //     })
+            response.on('close', () => {console.error("ERROR: server response prematurely closed")})
+            response.on('aborted', () => {console.error("ERROR: server response prematurely aborted")})
+            response.on('error', (error) => {console.error("ERROR: server response threw an error: "+ error)})
+        })
+        request.on('abort',()=> {console.error("ERROR: server request prematurely closed")})
+        request.on('timeout', () => {console.error("ERROR: client request timed out waiting for response")})
+    })
 }
-else {
-    console.debug("User data not found, attempting login.")
-    console.debug("Setting user state to logged out.")
-    userState.setState('loggedin')
+else
+{
+    //Do not loggedin stuff
+    state.setState('loggedout')
 }
-Register("test13", "test@test.com", "yeetingyeet"
-    , (data) => {
-        console.debug(`Got data: ${data}`)
-    })
-
-Login("test@test.com", "yeetingyeet"
-    , (authToken) => {
-
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
-
-Delete(2222
-    , (authToken) => {
-
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
-
-UpdateSettings(2222, "theme", "dark"
-    , (authToken) => {
-
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
 
 
+// // FOR EREN this is how GUI-main will interact with PAL-main
+// // ipcMain.on('update-settings',(event, arg) => {
+// //     console.debug('Function Called: update-settings')
+// //     palEngine.updateSettings()
+// // })
+
+// if (user != null) {
+//     console.debug("User data found, attempting login.")
+
+//     userState.setState('loggedin')
+//     // LoginUser(user.email, user.password,
+//     //     (authToken) => {
+//     //         cache.store("token", authToken, true)
+//     //         userState.setState('loggedin')
+//     //     })
+// }
+// else {
+//     console.debug("User data not found, attempting login.")
+//     console.debug("Setting user state to logged out.")
+//     userState.setState('loggedin')
+// }
+// Register("test13", "test@test.com", "yeetingyeet"
+//     , (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
+
+// Login("test@test.com", "yeetingyeet"
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
+
+// Delete(2222
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
+
+// UpdateSettings(2222, "theme", "dark"
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
 
-CreateContact(2222, 1111, "YEETER"
-    , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
 
-ReadContacts(2222
-    , (authToken) => {
+// CreateContact(2222, 1111, "YEETER"
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
-UpdateContact(2222, 1111, "YEETER2"
-    , (authToken) => {
+// ReadContacts(2222
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
-DeleteContact(2222, 1111
-    , (authToken) => {
+// UpdateContact(2222, 1111, "YEETER2"
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
+
+// DeleteContact(2222, 1111
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
 
 
     
 
-StartMessager(2222)
-SendMessage("MESSAGE SENT!!!", 2222, 2222)
+// StartMessager(2222)
+// SendMessage("MESSAGE SENT!!!", 2222, 2222)
 
-ReadMessages(2222
-    , (authToken) => {
+// ReadMessages(2222
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
-DeleteMessage(2222, 2222
-    , (authToken) => {
+// DeleteMessage(2222, 2222
+//     , (authToken) => {
 
-    }, (data) => {
-        console.debug(`Got data: ${data}`)
-    })
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
     
 
 // if (user != null) {
@@ -259,3 +288,143 @@ ipcMain.on('open-contacts-page', (event, arg) => {
 ipcMain.on('open-messages-page', (event, arg) => {
     messagesWin.start()
 })
+
+
+var testData = [
+    {
+        username: "Morgan Anderson#1473",
+        lastTimeStamp:"",
+        messages: [
+            {
+                timeStamp:"",
+                user: "Morgan Anderson#1473",
+                time: "6:08 PM",
+                date: "04/18/2021",
+                text: "ok",
+            },
+            {
+                timeStamp:"",
+                user: "Bazookaboots#9013",
+                time: "6:07 PM",
+                date: "04/18/2021",
+                text: "Morgan im gonna have to rain check on meeting tonight im completely out of it today",
+            },
+            {
+                timeStamp:"",
+                user: "Morgan Anderson#1473",
+                time: "6:05 PM",
+                date: "04/18/2021",
+                text: "When do you want to meet tonight?",
+            },
+            {
+                timeStamp:"",
+                user: "Morgan Anderson#1473",
+                time: "8:27 PM",
+                date: "04/07/2021",
+                text: "ok",
+            },
+            {
+                timeStamp:"",
+                user: "Bazookaboots#9013",
+                time: "8:26 PM",
+                date: "04/07/2021",
+                text: "Hey give me one sec im finishing up marking dinner",
+            }
+        ]
+    },
+    {
+        username: "Friendly Sven#4527",
+        lastTimeStamp:"",
+        messages: [
+            {
+                timeStamp:"",
+
+                user: "Bazookaboots#9013",
+                time: "2:54 PM",
+                date: "05/08/2021",
+                text: "yeah I would not do that the print just gets too massive. put prints in the OS code to see what it hits and what it doesn't",
+            },
+            {
+                timeStamp:"",
+                user: "Friendly Sven#4527",
+                time: "2:52 PM",
+                date: "05/08/2021",
+                text: "still stuck. what's odd is that the loop has a print to run  but it doesn't print it i.e.",
+            },
+            {
+                timeStamp:"",
+                user: "Bazookaboots#9013",
+                time: "2:49 PM",
+                date: "05/08/2021",
+                text: "yeah try without",
+            },
+            {
+                timeStamp:"",
+                user: "Friendly Sven#4527",
+                time: "2:49 PM",
+                date: "05/08/2021",
+                text: "lmao I assumed i should and my loop has been stuck",
+            },
+            {
+                timeStamp:"",
+                user: "Bazookaboots#9013",
+                time: "2:49 PM",
+                date: "05/08/2021",
+                text: "thats the weird thing, I feel like I would need to but I didn't and it still works",
+            }
+        ]
+    },
+    {
+        username: "baygoo#0151",
+        lastTimeStamp:"",
+        messages: [
+            {
+                timeStamp:"",
+                user: "Bazookaboots#9013",
+                time: "3:43 PM",
+                date: "02/08/2021",
+                text: "im pretty sure its nicklmore but I can't remember awesome thanks!",
+            },
+            {
+                timeStamp:"",
+                user: "baygoo#0151",
+                time: "3:43 PM",
+                date: "02/08/2021",
+                text: "Nicklmore#1390",
+            },
+            {
+                timeStamp:"",
+                user: "Bazookaboots#9013",
+                time: "3:42 PM",
+                date: "02/08/2021",
+                text: "Hey do you know what nick springer's discord @ is?",
+            },
+            {
+                timeStamp:"",
+                user: "baygoo#0151",
+                time: "1:42 PM",
+                date: "12/27/2020",
+                text: "Hey, I'm having some trouble getting the new GUI demo to listen to me when I click the mic button. Do I need to do anything differently to get it to work? I ran the speech engine on its own and it's working fine.",
+            },
+            {
+                timeStamp:"",
+                user: "baygoo#0151",
+                time: "1:22 PM",
+                date: "12/27/2020",
+                text: "Right.",
+            }
+        ]
+    }
+]
+
+ipcMain.on('init-messages', (event, arg) => {
+    let pageData = {
+        username:"Bazookaboots#9013",
+        logged: true,
+        conversations: testData
+    }
+    event.reply('messages-init-response',pageData)
+})
+
+
+
