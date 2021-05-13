@@ -229,7 +229,7 @@ class OverlayController {
         {
             this.minimize();
         }
-        else{
+        else if (this.win != undefined) {
             this.win.loadURL(data);
         }
     }
