@@ -49,7 +49,9 @@ class ConversationsManager {
     }
 
     getMessages(contactId) {
-        return this.conversations.find(obj => obj.username == contactId).messages
+        console.log(contactId)
+        console.log(this.conversations.find(obj => obj.username == contactId))
+        return 1
     }
 
     getContacts() {

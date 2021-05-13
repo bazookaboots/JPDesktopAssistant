@@ -8,33 +8,28 @@ const { CreateContact, ReadContacts, UpdateContact, DeleteContact } = require('.
 const { StartMessager, SendMessage, ReadMessages, DeleteMessage, StopMessanger } = require('./src/libraries/MessageAPI')
 
 const cache = new ValueStore()
-if(cache.isValid())
-{
+if (cache.isValid()) {
     let storedData = cache.retrieveStoredData()
-    Login(storedData.email,storedData.password, (request) =>{
-        let data
-        request.on('reponse',(response)=>{
-            response.on('data',(dataRead) => {
-                if(dataRead != undefined)
-                    data += dataRead
-            })
-            response.on('end', () => {
-                console.log(" stream data ended")
-                //Do Loggin stuff
-                cache.updateUserData(data)
-                state.setState('loggedin')
-            })
-
-            response.on('close', () => {console.error("ERROR: server response prematurely closed")})
-            response.on('aborted', () => {console.error("ERROR: server response prematurely aborted")})
-            response.on('error', (error) => {console.error("ERROR: server response threw an error: "+ error)})
+    Login(storedData.email, storedData.password, (response) => {
+        let data =''
+        console.log("callback called")
+        response.on('data', (dataRead) => {
+            if (dataRead != undefined)
+                data += dataRead
         })
-        request.on('abort',()=> {console.error("ERROR: server request prematurely closed")})
-        request.on('timeout', () => {console.error("ERROR: client request timed out waiting for response")})
+        response.on('end', () => {
+            console.log("stream data ended Data: ",JSON.parse(data))
+            //Do Loggin stuff
+            cache.updateUserData(JSON.parse(data),true)
+            userState.setState('loggedin')
+        })
+
+        response.on('close', () => { console.log("server response closed") })
+        response.on('aborted', () => { console.error("ERROR: server response prematurely aborted") })
+        response.on('error', (error) => { console.error("ERROR: server response threw an error: " + error) })
     })
 }
-else
-{
+else {
     //Do not loggedin stuff
     state.setState('loggedout')
 }
@@ -138,7 +133,7 @@ else
 
 
 
-    
+
 
 // StartMessager(2222)
 // SendMessage("MESSAGE SENT!!!", 2222, 2222)
@@ -156,7 +151,7 @@ else
 //     }, (data) => {
 //         console.debug(`Got data: ${data}`)
 //     })
-    
+
 
 // StopMessanger()
 
@@ -240,18 +235,18 @@ app.on('window-all-closed', () => {
 app.whenReady().then(() => {
     // Register a 'CommandOrControl+Y' shortcut listener.
     globalShortcut.register('CommandOrControl+Y', () => {
-    // Do stuff when Y and either Command/Control is pressed.
-    overlayWin.start()
-})
+        // Do stuff when Y and either Command/Control is pressed.
+        overlayWin.start()
+    })
 })
 
 
 app.whenReady().then(() => {
     // Register a 'CommandOrControl+Y' shortcut listener.
     globalShortcut.register('CommandOrControl+U', () => {
-    // Do stuff when Y and either Command/Control is pressed.
-    overlayWin.end()
-})
+        // Do stuff when Y and either Command/Control is pressed.
+        overlayWin.end()
+    })
 })
 
 app.whenReady().then(() => {
@@ -331,38 +326,38 @@ ipcMain.on('open-messages-page', (event, arg) => {
 var testData = [
     {
         username: "Morgan Anderson#1473",
-        lastTimeStamp:"",
+        lastTimeStamp: "",
         messages: [
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Morgan Anderson#1473",
                 time: "6:08 PM",
                 date: "04/18/2021",
                 text: "ok",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Bazookaboots#9013",
                 time: "6:07 PM",
                 date: "04/18/2021",
                 text: "Morgan im gonna have to rain check on meeting tonight im completely out of it today",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Morgan Anderson#1473",
                 time: "6:05 PM",
                 date: "04/18/2021",
                 text: "When do you want to meet tonight?",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Morgan Anderson#1473",
                 time: "8:27 PM",
                 date: "04/07/2021",
                 text: "ok",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Bazookaboots#9013",
                 time: "8:26 PM",
                 date: "04/07/2021",
@@ -372,10 +367,10 @@ var testData = [
     },
     {
         username: "Friendly Sven#4527",
-        lastTimeStamp:"",
+        lastTimeStamp: "",
         messages: [
             {
-                timeStamp:"",
+                timeStamp: "",
 
                 user: "Bazookaboots#9013",
                 time: "2:54 PM",
@@ -383,28 +378,28 @@ var testData = [
                 text: "yeah I would not do that the print just gets too massive. put prints in the OS code to see what it hits and what it doesn't",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Friendly Sven#4527",
                 time: "2:52 PM",
                 date: "05/08/2021",
                 text: "still stuck. what's odd is that the loop has a print to run  but it doesn't print it i.e.",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Bazookaboots#9013",
                 time: "2:49 PM",
                 date: "05/08/2021",
                 text: "yeah try without",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Friendly Sven#4527",
                 time: "2:49 PM",
                 date: "05/08/2021",
                 text: "lmao I assumed i should and my loop has been stuck",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Bazookaboots#9013",
                 time: "2:49 PM",
                 date: "05/08/2021",
@@ -414,38 +409,38 @@ var testData = [
     },
     {
         username: "baygoo#0151",
-        lastTimeStamp:"",
+        lastTimeStamp: "",
         messages: [
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Bazookaboots#9013",
                 time: "3:43 PM",
                 date: "02/08/2021",
                 text: "im pretty sure its nicklmore but I can't remember awesome thanks!",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "baygoo#0151",
                 time: "3:43 PM",
                 date: "02/08/2021",
                 text: "Nicklmore#1390",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "Bazookaboots#9013",
                 time: "3:42 PM",
                 date: "02/08/2021",
                 text: "Hey do you know what nick springer's discord @ is?",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "baygoo#0151",
                 time: "1:42 PM",
                 date: "12/27/2020",
                 text: "Hey, I'm having some trouble getting the new GUI demo to listen to me when I click the mic button. Do I need to do anything differently to get it to work? I ran the speech engine on its own and it's working fine.",
             },
             {
-                timeStamp:"",
+                timeStamp: "",
                 user: "baygoo#0151",
                 time: "1:22 PM",
                 date: "12/27/2020",
@@ -457,11 +452,11 @@ var testData = [
 
 ipcMain.on('init-messages', (event, arg) => {
     let pageData = {
-        username:"Bazookaboots#9013",
-        logged: true,
-        conversations: testData
+        username: cache.retrieve("username"),
+        loggedin: true,
+        convos: cache.retrieve("conversations")
     }
-    event.reply('messages-init-response',pageData)
+    event.reply('messages-init-response', pageData)
 })
 
 

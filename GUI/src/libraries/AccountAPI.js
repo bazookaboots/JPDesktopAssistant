@@ -52,7 +52,7 @@ async function Login(email, password, callback){
         'Content-Length': body.length,
     }
 
-    Communicate(body, "/login", "GET", headers, callback)
+    Communicate(body, "/account/login", "POST", headers, callback)
 }
 
 async function UpdateAccount(email, key, value, authToken, callback){
@@ -129,6 +129,7 @@ async function Communicate(request, path, method, headers, callback) {
     //console.debug(`Function called: Communicate(${JSON.stringify(request)}, ${path},
     //${method}, ${JSON.stringify(headers)}, ${onData}, ${onError})\n`);
 
+    console.log("in communicate")
     let options = {
         host: hostURL,
         path: path,
@@ -139,9 +140,7 @@ async function Communicate(request, path, method, headers, callback) {
     };
 
     
-    const req = http.request(options)
-    callback(req)
-    console.log(request)
+    var req = http.request(options, callback)
     req.write(request)
     req.end()
 }

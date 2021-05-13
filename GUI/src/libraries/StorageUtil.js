@@ -1,4 +1,5 @@
 const fileStore = require('fs');
+const contact = require('../../../BACKEND/ContactAPI');
 
 
 function _readData() {
@@ -50,6 +51,51 @@ class ValueStore {
     retrieve(key) {
         if (!this.values.has(key)) return null
         return this.values.get(key)
+    }
+
+    
+    updateUserData(data, isMsgFormat){
+        if(isMsgFormat)
+        {
+            this.store("username",data.username)
+            this.store("userId",data.userId)
+            this.store("email",data.email)
+
+            let conversations = []
+
+            data.contacts.forEach(contact => {
+                let convo = {
+                    username: contact.displayname,
+                    messages: []
+                }
+
+                data.messages.forEach(message => {
+                    if( message.toemail === contact.contactemail 
+                        || message.fromemail === contact.contactemail)
+                    {
+                        let newMessage ={
+                            timeStamp: message.messageid,
+                            user: message.fromemail,
+                            time: null,
+                            date: null,
+                            text: message.message,
+            
+                        }
+                        convo.messages.push(newMessage)
+                        let index = data.messages.indexOf(message)
+                        if(index > -1)
+                            data.messages.splice(index, 1)
+
+                    }
+                    
+                });
+                conversations.push(convo)                
+            });
+            console.log(conversations)
+
+            this.store("conversations",conversations, true)
+
+        }
     }
 
     delete(key) {

@@ -10,7 +10,8 @@ ipcRenderer.on("messages-init-response", (event, response) => {
     console.log("messages-init-response event called")
     if(response.loggedin){
         //Do loggedin stuff for messaging
-        conversations.loadConversations(response.convs)
+        console.log(response.convos)
+        conversations.loadConversations(response.convos)
         loadChatArea(conversations.recent)
     }
     else{
