@@ -68,8 +68,6 @@ app.on('window-all-closed', () => {
     }
 })
 
-// OVERLAY STUFF FOR BAILEY. YES, I KNOW IT"S BROKEN.
-
 // Toggle off
 app.whenReady().then(() => {
     // Register a 'CommandOrControl+Y' shortcut listener.

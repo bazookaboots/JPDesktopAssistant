@@ -229,7 +229,13 @@ class OverlayController {
         {
             this.minimize();
         }
-        else {
+        else if(this.win == undefined)
+        {
+            console.log("Hey we here at the start.")
+            this.start(data);
+        } else 
+        {
+            console.log("Hey we here everywhere else.")
             this.win.loadURL(data);
         }
     }
@@ -246,7 +252,7 @@ class OverlayController {
                 maxWidth: 600,
                 maxHeight: 400,
                 transparent: true,
-                opacity: 0,
+                opacity: 0.8,
                 frame: false,
                 alwaysOnTop: true,
                 movable: true,
@@ -262,7 +268,7 @@ class OverlayController {
             this.win.setVisibleOnAllWorkspaces(true);
             this.win.setFullScreenable(false);
             this.win.setIgnoreMouseEvents(true);
-            this.win.loadURL("https://www.google.com/");
+            this.win.loadURL(data);
 
             //this.win.webContents.openDevTools({ mode: 'detach' })
 
