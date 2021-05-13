@@ -5,6 +5,20 @@ const { ConversationsManager } = require("../../libraries/ConversationsUtil")
 //INITIALIZATION
 var conversations = new ConversationsManager()
 
+ipcRenderer.send("init-messages")
+ipcRenderer.on("messages-init-response", (event, response) => {
+    console.log("messages-init-response event called")
+    if(response.loggedin){
+        //Do loggedin stuff for messaging
+        conversations.loadConversations(response.convs)
+        loadChatArea(conversations.recent)
+    }
+    else{
+        //Throw Error
+        console.error("ERROR: messaging screen opened while not logged in")
+        ipcRenderer.send('close-messagesWin')
+    }
+})
 let contacts = conversations.getContacts()
 var contactsContainer = document.getElementById("contactsContainer")
 
@@ -14,7 +28,6 @@ var contactsContainer = document.getElementById("contactsContainer")
 contacts.forEach(contact => {
     createContact(contact)
 });
-loadChatArea("Friendly Sven#4527")
 
 
 //REGISTER EVENTS
@@ -22,6 +35,14 @@ loadChatArea("Friendly Sven#4527")
 document.getElementById("close-btn").addEventListener("click", (e) => {
     console.log("close-btn function called")
     ipcRenderer.send('close-messagesWin')
+})
+
+document.getElementById("send-btn").addEventListener("click", (e) => {
+    let input = document.getElementById("message-input")
+    if (conversations.sendMessage(input.value)) {
+        let chatArea = document.getElementById("chatInner")
+        renderNewMessage(input.value);
+    }
 })
 
 
@@ -48,19 +69,15 @@ function createContact(contact) {
     contactsContainer.appendChild(collection)
 }
 
-function createChat(message, chatArea) {
+function renderNewMessage(chatArea,message) {
     let collection = document.createElement("div")
     collection.classList.add("message-collection")
-
     let margin = document.createElement("div")
     margin.classList.add("message-margin")
-
     let block = document.createElement("div")
     block.classList.add("message-block")
-
     let image = document.createElement("div")
     image.classList.add("message-image")
-
     let username = document.createElement("div")
     username.classList.add("message-username")
 
@@ -88,31 +105,21 @@ function createChat(message, chatArea) {
     chatArea.appendChild(collection)
 }
 
-function loadChatArea(contact)
-{
-
-    let chatContainer = document.createElement("section")
-    chatContainer.id = "chatInner"
-    chatContainer.classList.add("chat-inner")
-    chatContainer.scrollTop = chatContainer.scrollHeight
-
-    let header = document.createElement("div")
-    header.innerText = "Beginning of chat messages"
-    header.classList.add("chat-beginning")
-    chatContainer.appendChild(header)
-
-    let messages = conversations.getMessages(contact)
-    messages.forEach(message => {
-        createChat(message,chatContainer)
-    });
-    deleteChats()
-    document.getElementById("contact-title").innerText = contact
-    document.getElementById("vertContainer").appendChild(chatContainer)
-    
-}
-
-function deleteChats()
-{
+function loadChatArea(contact) {
     document.getElementById("chatInner").remove()
+
+    var chatContainer = document.createElement("section")
+    chatContainer.id = "chatInner"
+    chatContainer.scrollTop = chatContainer.scrollHeight
+    conversations.getMessages(contact).forEach(message => {
+        renderNewMessage(chatContainer,message)
+    });
+
+    document.getElementById("contact-title").innerText = contact
+    document.getElementById("chatContainer").appendChild(chatContainer)
+
 }
+
+
+
 

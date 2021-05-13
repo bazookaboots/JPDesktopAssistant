@@ -11,10 +11,21 @@ async function _writeData(input) {
 
 class ValueStore {
     constructor() {
+        console.log("Value store constructor")
         this.values = new Map()
         if(fileStore.existsSync("./localCache.json")) {
+            console.log("Value store ./localCache.json exists")
             this.values = new Map(Object.entries(_readData()))
         }
+        else {
+            console.log("Value store ./localCache.json does not exist")
+            this.values = null
+        }
+    }
+
+    isValid() {
+        if(this.values !== null) return true
+        return false
     }
 
     async store(key, value, saved = false) {
@@ -22,6 +33,18 @@ class ValueStore {
         if (saved) {
             await _writeData(Object.fromEntries(this.values))
         }
+    }
+
+    retrieveStoredData(){
+        console.log("retrieveStoredData() called")
+        let userData = {
+            username: this.retrieve('username'),
+            email: this.retrieve('email'),
+            password: this.retrieve('password'),
+            settings: this.retrieve('settings'),
+            conversations: this.retrieve('conversations')
+        }
+        return userData
     }
 
     retrieve(key) {

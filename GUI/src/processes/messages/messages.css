@@ -63,11 +63,6 @@ lighten(#2E3136, 5%): lighten(#2E3136, 5%); */
 	flex: 1;
 }
 
-#anchor
-{
-	min-height: 1px;
-}
-
 .chat-beginning
 {
 	font-size: xx-large;

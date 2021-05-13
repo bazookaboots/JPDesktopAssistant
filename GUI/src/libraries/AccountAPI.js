@@ -37,8 +37,8 @@ async function Register(username, email, password, callback){
     Communicate(body, "/register", "POST", headers, onData, onError)
 }
 
-async function Login(email, password, authToken, callback){
-    console.debug(`Function called: Login(${email}, ${password}, ${authToken}, ${callback})\n`)
+async function Login(email, password, callback){
+    //console.debug(`Function called: Login(${email}, ${password}, ${authToken}, ${callback})\n`)
 
     const request = {
         email: email,
@@ -50,26 +50,9 @@ async function Login(email, password, authToken, callback){
     const headers = {
         'Content-Type': 'application/json',
         'Content-Length': body.length,
-        'Authorization': 'Bearer ' + authToken['jwt_token']
     }
 
-    function onData(datas){
-        let data =''
-        datas.on('data', d => {
-            if(d != undefined)
-                data += d
-        })
-
-        datas.on("end", () => {
-            callback(data)
-        })
-    }
-    
-    function onError(error){
-        console.error(`Error: Failed to log in (${error})\n`)
-    }
-
-    Communicate(body, "/login", "GET", headers, onData, onError)
+    Communicate(body, "/login", "GET", headers, callback)
 }
 
 async function UpdateSettings(userid, key, value, authToken, callback){
@@ -142,26 +125,24 @@ async function Delete(userid, authToken, callback){
     Communicate(body, "/delete", "DELETE", headers, onData, onError )
 }
 
-async function Communicate(request, path, method, headers, onData, onError) {
-    console.debug(`Function called: Communicate(${JSON.stringify(request)}, ${path},
-    ${method}, ${JSON.stringify(headers)}, ${onData}, ${onError})\n`);
+async function Communicate(request, path, method, headers, callback) {
+    //console.debug(`Function called: Communicate(${JSON.stringify(request)}, ${path},
+    //${method}, ${JSON.stringify(headers)}, ${onData}, ${onError})\n`);
 
     let options = {
         host: hostURL,
         path: path,
         port: 3010,
         method: method,
-        headers: headers
+        headers: headers,
+        timeout: 180000
     };
 
-    const req = http.request(options, onData)
-
-    req.on('error', onError)
-  
+    
+    const req = http.request(options)
+    callback(req)
     console.log(request)
-
     req.write(request)
-
     req.end()
 }
 

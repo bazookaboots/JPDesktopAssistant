@@ -26,11 +26,16 @@
                     <img src="../../assets/icons/close_24px_outlined.svg" />
                 </div>
             </menu>
-
-            <section id="chatInner" class="chat-inner">
+            <section id="chatContainer" class="chat-inner">
                 <div class="chat-beginning"> Beginning of chat messages</div>
-
+                <div id="chatInner"></div>
             </section>
+            <div style="padding: 16px;">
+                <input  id="message-input" class="textInput" type="text" placeholder="Message" name="message"/>
+                <button id="send-btn" class="formBtn" type="submit">
+                    Send
+                </button>
+            </div>
         </div>
     </main>
 
