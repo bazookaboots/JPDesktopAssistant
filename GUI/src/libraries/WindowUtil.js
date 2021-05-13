@@ -261,12 +261,13 @@ class OverlayController {
             this.win.setAlwaysOnTop(true, "floating");
             this.win.setVisibleOnAllWorkspaces(true);
             this.win.setFullScreenable(false);
+            this.win.setIgnoreMouseEvents(true);
+            this.win.loadURL("https://www.google.com/");
 
             // It's breaking right here.
             // Launching with standard URL.
             // Replace with youtube with path from speech engine.
-            this.win.loadURL("https://www.google.com/");
-            this.win.setIgnoreMouseEvents(true);
+            
 
             //this.win.webContents.openDevTools({ mode: 'detach' })
 
