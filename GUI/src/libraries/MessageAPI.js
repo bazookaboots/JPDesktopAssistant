@@ -3,13 +3,13 @@ const hostURL = "127.0.0.1"
 const io = require("socket.io-client")
 let ioClient = null
 
-async function StartMessager(userid) {
-    console.debug(`Function called: StartMessanger(${userid})\n`)
+async function StartMessager(useremail) {
+    console.debug(`Function called: StartMessanger(${useremail})\n`)
 
     ioClient = io.connect("http://localhost:8000",
         {
             query: {
-                userid: userid
+                useremail: useremail
             }
         })
     
@@ -20,27 +20,28 @@ async function StartMessager(userid) {
 }
 
 async function StopMessanger() {
+    ioClient.disconnect()
     ioClient = null
 }
 
-async function SendMessage(message, toid, fromid) {
-    console.debug(`Function called: SendMessage(${message}, ${toid}, ${fromid})\n`)
+async function SendMessage(message, toemail, fromemail) {
+    console.debug(`Function called: SendMessage(${message}, ${toemail}, ${fromemail})\n`)
 
     const request = {
         messageid: Date.now(),
         message: message,
-        toid: toid,
-        fromid: fromid
+        toemail: toemail,
+        fromemail: fromemail
     }
 
     ioClient.emit("client-send-message", request)
 }
 
-async function ReadMessages(userid, authToken, callback) {
-    console.debug(`Function called: ReadMessages(${userid}, ${authToken}, ${callback})\n`)
+async function ReadMessages(useremail, authToken, callback) {
+    console.debug(`Function called: ReadMessages(${useremail}, ${authToken}, ${callback})\n`)
 
     const request = {
-        userid: userid
+        useremail: useremail
     }
 
     const body = JSON.stringify(request)
@@ -67,14 +68,14 @@ async function ReadMessages(userid, authToken, callback) {
         console.error(`Error: Failed to read messages (${error})\n`)
     }
 
-    Communicate(body, "/read-messages", "GET", headers, onData, onError)
+    Communicate(body, "/message/read", "GET", headers, onData, onError)
 }
   
-async function DeleteMessage(userid, messageid, authToken, callback) {
-    console.debug(`Function called: Login(${userid}, ${messageid}, ${authToken}, ${callback})\n`)
+async function DeleteMessage(useremail, messageid, authToken, callback) {
+    console.debug(`Function called: Login(${useremail}, ${messageid}, ${authToken}, ${callback})\n`)
 
     const request = {
-        userid: userid,
+        useremail: useremail,
         messageid: messageid
     }
 
@@ -102,7 +103,7 @@ async function DeleteMessage(userid, messageid, authToken, callback) {
         console.error(`Error: Failed to delete message (${error})\n`)
     }
 
-    Communicate(body, "/delete-message", "DELETE", headers, onData, onError)
+    Communicate(body, "/message/delete", "DELETE", headers, onData, onError)
 }
   
 async function Communicate(request, path, method, headers, onData, onError) {

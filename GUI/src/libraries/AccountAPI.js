@@ -34,7 +34,7 @@ async function Register(username, email, password, callback){
         console.error(`Error: Failed to register (${error})\n`)
     }
 
-    Communicate(body, "/register", "POST", headers, onData, onError)
+    Communicate(body, "/account/register", "POST", headers, onData, onError)
 }
 
 async function Login(email, password, callback){
@@ -55,11 +55,11 @@ async function Login(email, password, callback){
     Communicate(body, "/login", "GET", headers, callback)
 }
 
-async function UpdateSettings(userid, key, value, authToken, callback){
-    console.debug(`Function called: UpdateSettings(${userid}, ${key}, ${value}, ${authToken}, ${callback})\n`)
+async function UpdateAccount(email, key, value, authToken, callback){
+    console.debug(`Function called: Update(${email}, ${key}, ${value}, ${authToken}, ${callback})\n`)
 
     const request = {
-        userid: userid,
+        email: email,
         key: key,
         value: value
     }
@@ -88,14 +88,14 @@ async function UpdateSettings(userid, key, value, authToken, callback){
         console.error(`Error: Failed to update settings (${error})\n`)
     }
 
-    Communicate(body, "/update-settings", "PATCH", headers, onData, onError )
+    Communicate(body, "/account/update", "PATCH", headers, onData, onError )
 }
 
-async function Delete(userid, authToken, callback){
-    console.debug(`Function called: DeleteUser(${userid}, ${authToken}, ${callback})\n`)
+async function DeleteAccount(email, authToken, callback){
+    console.debug(`Function called: DeleteUser(${email}, ${authToken}, ${callback})\n`)
 
     const request = {
-        userid: userid
+        email: email
     }
 
     const body = JSON.stringify(request)
@@ -122,7 +122,7 @@ async function Delete(userid, authToken, callback){
         console.error(`Error: Failed to delete account (${error})\n`)
     }
 
-    Communicate(body, "/delete", "DELETE", headers, onData, onError )
+    Communicate(body, "/account/delete", "DELETE", headers, onData, onError )
 }
 
 async function Communicate(request, path, method, headers, callback) {
@@ -149,6 +149,6 @@ async function Communicate(request, path, method, headers, callback) {
 module.exports = {
     Register,
     Login,
-    Delete,
-    UpdateSettings
+    UpdateAccount,
+    DeleteAccount
 }

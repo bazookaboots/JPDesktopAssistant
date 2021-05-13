@@ -3,9 +3,9 @@ const { ValueStore } = require("./src/libraries/StorageUtil")
 const { userState } = require("./src/libraries/StateUtil")
 const { mainWin, contactsWin, settingsWin, accountWin, overlayWin, messagesWin } = require("./src/libraries/WindowUtil")
 const { palEngine } = require("./src/libraries/SpeechEngineUtil")
-const { Login, Register, Delete, UpdateSettings } = require("./src/libraries/AccountAPI")
+const { Login, Register, UpdateAccount, DeleteAccount } = require("./src/libraries/AccountAPI")
 const { CreateContact, ReadContacts, UpdateContact, DeleteContact } = require('./src/libraries/ContactAPI')
-const { StartMessager, SendMessage, ReadMessages, DeleteMessage } = require('./src/libraries/MessageAPI')
+const { StartMessager, SendMessage, ReadMessages, DeleteMessage, StopMessanger } = require('./src/libraries/MessageAPI')
 
 const cache = new ValueStore()
 if(cache.isValid())
@@ -81,6 +81,7 @@ else
 //     })
 
 // UpdateSettings(2222, "theme", "dark"
+// CreateContact("test@test.com", "test2@test.com", "YEETER"
 //     , (authToken) => {
 
 //     }, (data) => {
@@ -114,6 +115,23 @@ else
 // DeleteContact(2222, 1111
 //     , (authToken) => {
 
+// ReadContacts("test@test.com"
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
+
+// UpdateContact("test@test.com", "test2@test.com", "YEETER2"
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
+
+// DeleteContact("test@test.com", "test2@test.com"
+//     , (authToken) => {
+
 //     }, (data) => {
 //         console.debug(`Got data: ${data}`)
 //     })
@@ -139,6 +157,26 @@ else
 //         console.debug(`Got data: ${data}`)
 //     })
     
+
+// StopMessanger()
+
+//StartMessager("test@test.com")
+
+//SendMessage("MESSAGE SENT!!!", "test@test.com", "test@test.com")
+
+// ReadMessages("test@test.com"
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
+
+// DeleteMessage("test@test.com", 1620886395414
+//     , (authToken) => {
+
+//     }, (data) => {
+//         console.debug(`Got data: ${data}`)
+//     })
 
 // if (user != null) {
 //     console.debug("User data found, attempting login.")
