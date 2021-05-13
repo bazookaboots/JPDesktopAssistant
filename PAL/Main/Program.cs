@@ -10,6 +10,10 @@ using OpenQA.Selenium.Remote;
 using System.Collections;
 using System.Speech.Synthesis;
 
+//THESE LAUNCH ARGS ARE MANDATORY FOR RUNNING PAL STANDALONE
+//USE THESE AS COMMAND ARGUMENTS (see dropdown to the right of the start button)
+//"true" "true" "true" "false" "Pal is alive." "Just call if you need me." "Yes Master?" "It is done." "I do not understand." "seeya meatsack." "hey pal" "halt" "3" "8"
+
 namespace PAL.Core
 {
     class Program
