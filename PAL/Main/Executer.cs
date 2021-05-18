@@ -18,6 +18,11 @@ namespace PAL.Core
         public async Task ExecuteCommand(Command cmd)
         {
             var url = "";
+
+            //bad cmd check
+            if (cmd.action == null) throw new Exception("Invalid Action");
+            if (cmd.arg == null) throw new Exception("Invalid Argument");
+
             switch (cmd.platform)
             {
                 case "youtube":
