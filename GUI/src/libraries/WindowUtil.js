@@ -221,22 +221,17 @@ class OverlayController {
 
     hmmm(data)
     {
-        if(data == "OverlayToggle")
-        {
-            this.toggle();
-        }
-        else if(data == "MinimizeOverlay")
-        {
-            this.minimize();
-        }
-        else if(this.win == undefined)
+        if(this.win == undefined)
         {
             console.log("Hey we here at the start.")
             this.start(data);
         } else 
         {
             console.log("Hey we here everywhere else.")
+            this.win.setOpacity(0);
+            this.win.loadURL("https://www.google.com/")
             this.win.loadURL(data);
+            this.win.setOpacity(0.8)
         }
     }
 
@@ -263,13 +258,13 @@ class OverlayController {
             }
 
             this.win = new BrowserWindow(options)
+            this.win.loadURL(data);
             this.win.setMenuBarVisibility(false)
             this.win.setAlwaysOnTop(true, "floating");
             this.win.setVisibleOnAllWorkspaces(true);
             this.win.setFullScreenable(false);
             this.win.setIgnoreMouseEvents(true);
-            this.win.loadURL(data);
-
+            
             //this.win.webContents.openDevTools({ mode: 'detach' })
 
             this.win.once('ready-to-show', () => {
