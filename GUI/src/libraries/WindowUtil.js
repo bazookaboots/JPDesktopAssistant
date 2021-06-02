@@ -219,7 +219,7 @@ class OverlayController {
         }
     }
 
-    hmmm(string data)
+    setOverlayScreen(data)
     {
         if(this.win == undefined)
         {
