@@ -47,8 +47,9 @@ namespace PAL.Core
             //Command Phrases
             string cmdPhrase = args[10];
             string killPhrase = args[11];
-            string OverlayOpenPhrase = "Toggle Overlay";
-            string OverlayMinimizePhrase = "Minimize overlay";
+            string OverlayOpenPhrase = "toggle overlay";
+            string OverlayMinimizePhrase = "minimize overlay";
+            string OverlayInteractivePhrase = "overylay interactive";
 
             //durations for listening
             int passiveInterval = Convert.ToInt32(args[12]); //interval for catching "hey pal" or "halt"
@@ -96,6 +97,11 @@ namespace PAL.Core
                     Console.WriteLine("2: " + "MinimizeOverlay");
                 }
 
+                if (parser.calculateSimilarity(full, OverlayInteractivePhrase) > 0.8)
+                {
+                    Console.WriteLine("2: " + "InteractiveToggle");
+                }
+
                 if (!active)
                 {
                     //Console.WriteLine(parser.calculateSimilarity(full, "hey pal"));
@@ -103,7 +109,7 @@ namespace PAL.Core
                     {
                         active = true;
                         requestDuration = activeInterval; //give user time to speak
-                        Console.WriteLine("1: " + "Pal has noticed you!");
+                        //Console.WriteLine("1: " + "Pal has noticed you!");
                     }
                     
                     //if (active && vocal) synthesizer.Speak(cmdPromptMsg);
@@ -124,7 +130,7 @@ namespace PAL.Core
                     {
                         foreach (var ex in e.InnerExceptions)
                         {
-                            Console.WriteLine("0: " + ex.Message);
+                            //Console.WriteLine("0: " + ex.Message);
                         }
                         if (vocal) synthesizer.Speak(cmdErrMsg);
                     }

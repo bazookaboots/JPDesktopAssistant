@@ -62,23 +62,16 @@ class PalEngineController {
                     data = data.slice(2)
                     switch (parseInt(opCode)) {
                         case 0:
-                            console.log("console message: " + data)
+                            //console.log("console message: " + data)
                             break;
                         case 1:
                             
-                            console.log("data was: " + data);
+                            //console.log("data was: " + data);
                             break;
                         case 2:
-                            if (overlayWin.win != undefined)
-                            {
-                                overlayWin.win.loadURL(data.toString());
-                                
-                            }
-                            else
-                            {
-                                console.log("overlay url was: " + data);
-                                overlayWin.start(data.toString());
-                            }
+                            console.log("We are here. You want to go here: " + data.toString())
+                            overlayWin.overlayDecision(data.toString())
+                            //overlayWin.win.setOpacity(0.8);
                             break;
                         default:
                             console.log("ERROR: Invalid OpCode data was: "+data);

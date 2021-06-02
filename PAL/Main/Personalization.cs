@@ -71,7 +71,7 @@ namespace PAL.Core
             }
             catch (Exception eSql)
             {
-                Console.WriteLine("Exception: " + eSql.Message);
+                //Console.WriteLine("Exception: " + eSql.Message);
                 return -1;
             }
 
@@ -138,7 +138,7 @@ namespace PAL.Core
             }
             catch (Exception eSql)
             {
-                Console.WriteLine("Exception: " + eSql.Message);
+                //Console.WriteLine("Exception: " + eSql.Message);
                 return -1;
             }
 
@@ -221,7 +221,7 @@ namespace PAL.Core
             }
             catch (Exception eSql)
             {
-                Console.WriteLine("Exception: " + eSql.Message);
+                //Console.WriteLine("Exception: " + eSql.Message);
             }
         }
 
@@ -270,7 +270,7 @@ namespace PAL.Core
             }
             catch (Exception eSql)
             {
-                Console.WriteLine("Exception: " + eSql.Message);
+                //Console.WriteLine("Exception: " + eSql.Message);
             }
         }
 

@@ -23,12 +23,12 @@ namespace PAL.Core
             System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "..\\..\\GoogleKey.json");
 
             // Send API output to STDout.
-            Console.WriteLine("1:" + "Attempting request.");
+            //Console.WriteLine("1:" + "Attempting request.");
             List<string> results = (List<string>)await StreamingMicRecognizeAsync(seconds, vocal, msg);
 
             // "Hey Pal"
             // Command is heard -> ListenToCommand(15) -> parse output for command -> ExecuteCommand(command)
-            Console.WriteLine("0:" + "Request complete.");
+            //Console.WriteLine("0:" + "Request complete.");
             return results;
         }
 
@@ -76,7 +76,7 @@ namespace PAL.Core
                         foreach (SpeechRecognitionAlternative alternative in result.Alternatives)
                         {
                             // Actual console write.
-                            Console.WriteLine("1:" + alternative.Transcript);
+                            //Console.WriteLine("1:" + alternative.Transcript);
                             
                             
                             transcripts.Add(alternative.Transcript);
@@ -112,7 +112,7 @@ namespace PAL.Core
 
             waveIn.StartRecording();
             if(vocal) synthesizer.Speak(msg);
-            Console.WriteLine("0:" + "Speak now.");
+            //Console.WriteLine("0:" + "Speak now.");
             await Task.Delay(TimeSpan.FromSeconds(seconds));
 
             // Stop recording and shut down.

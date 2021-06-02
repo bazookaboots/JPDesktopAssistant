@@ -1,4 +1,5 @@
 const { BrowserWindow } = require('electron')
+const { isThisTypeNode } = require('typescript')
 
 const defualtOptions =
 {
@@ -212,43 +213,65 @@ class OverlayController {
         this.setIgnoreMouseEvents()
     }
 
+    overlayDecision(data)
+    {
+        
+        if (data.toString() == 'OverlayToggle')
+        {
+            
+        }
+        else if (data.toString() == 'MinimizeOverlay')
+        {
+
+        }
+        else if (data.toString() == 'InteractiveToggle')
+        {
+            
+        }
+        else
+        {
+            this.win.loadURL(data);
+            this.win.setOpacity(0.8);
+        }
+        
+    }
+
     // Add path parameter
     start(data) {
-        console.log("Hey we here " + data)
-        if (this.win == undefined) {
-            let path = data
-            let options = {
-                title: "PAL Overlay",
-                x: 0,
-                y: 0,
-                maxWidth: 600,
-                maxHeight: 400,
-                transparent: true,
-                opacity: 0.8,
-                frame: false,
-                alwaysOnTop: true,
-                movable: true,
-                resizable: true,
-                webPreferences: {
-                    nodeIntegration: true
-                }
+        let path = data
+        let options = {
+            title: "PAL Overlay",
+            x: 0,
+            y: 0,
+            maxWidth: 600,
+            maxHeight: 400,
+            transparent: true,
+            opacity: 0,
+            frame: false,
+            alwaysOnTop: true,
+            movable: true,
+            resizable: true,
+            active: false,
+            webPreferences: {
+                nodeIntegration: true
             }
-
-            this.win = new BrowserWindow(options)
-            this.win.loadURL(data);
-            this.win.setMenuBarVisibility(false)
-            this.win.setAlwaysOnTop(true, "floating");
-            this.win.setVisibleOnAllWorkspaces(true);
-            this.win.setFullScreenable(false);
-            this.win.setIgnoreMouseEvents(true);
-            
-            //this.win.webContents.openDevTools({ mode: 'detach' })
-
-            this.win.once('ready-to-show', () => {
-                this.win.show()
-            })
-            return this.win
         }
+
+        this.win = new BrowserWindow(options)
+        this.win.loadURL(data);
+        this.win.setMenuBarVisibility(false)
+        this.win.setAlwaysOnTop(true, "floating");
+        this.win.setVisibleOnAllWorkspaces(true);
+        this.win.setFullScreenable(false);
+        this.win.setIgnoreMouseEvents(true);
+        
+        //this.win.webContents.openDevTools({ mode: 'detach' })
+
+        this.win.once('ready-to-show', () => {
+            this.win.show()
+        })
+        return this.win
+        
     }
 
     close() {

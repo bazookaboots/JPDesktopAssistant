@@ -16,7 +16,7 @@ namespace PAL.Core
 
         public void Print()
         {
-            Console.WriteLine("0:" + "CMD:" + action + " " + arg + " on " + platform + " with " + browser);
+            //Console.WriteLine("0:" + "CMD:" + action + " " + arg + " on " + platform + " with " + browser);
         }
     }
 

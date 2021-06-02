@@ -82,9 +82,6 @@ namespace PAL.Core
                     if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                     break;
 
-                case "spotify":
-                    break;
-
                 case "crunchyroll":
                     url = @"https://www.crunchyroll.com/search?from=&q=" + cmd.arg.Replace(' ', '-').TrimEnd('-');
                     if (cmd.browser == "chrome") Process.Start("chrome.exe", url);
@@ -92,7 +89,7 @@ namespace PAL.Core
                     break;
 
                 case "wikipedia":
-                    url = @"https://en.wikipedia.org/wiki/" + cmd.arg.Replace(' ', '_');
+                    url = @"https://en.wikipedia.org/wiki/" + cmd.arg.Replace(' ', '_').TrimEnd('_');
                     if (cmd.browser == "chrome") Process.Start("chrome.exe", url);
                     if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                     break;
