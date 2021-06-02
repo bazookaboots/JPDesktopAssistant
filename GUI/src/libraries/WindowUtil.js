@@ -219,7 +219,7 @@ class OverlayController {
         }
     }
 
-    hmmm(data)
+    hmmm(string data)
     {
         if(this.win == undefined)
         {
