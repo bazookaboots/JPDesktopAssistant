@@ -82,7 +82,7 @@ app.whenReady().then(() => {
 })
 
 app.whenReady().then(() => {
-    globalShortcut.register('CommandOrControl+4', () => {
+    globalShortcut.register('CommandOrControl+5', () => {
         if (overlayWin.win != undefined) {
             overlayWin.close()
             mainWin.close()
@@ -92,9 +92,19 @@ app.whenReady().then(() => {
 })
 
 app.whenReady().then(() => {
+    globalShortcut.register('CommandOrControl+4', () => {
+        if (overlayWin.win != undefined) {
+            //overlayWin.setInteractable()
+            overlayWin.win.setIgnoreMouseEvents(true)
+        }
+    })
+})
+
+app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+3', () => {
         if (overlayWin.win != undefined) {
-            overlayWin.setInteractable()
+            //overlayWin.setInteractable()
+            overlayWin.win.setIgnoreMouseEvents(false)
         }
     })
 })

@@ -209,13 +209,7 @@ class OverlayController {
 
     setInteractable()
     {
-        if (!this.win.interactable)
-        {
-            this.win.setIgnoreMouseEvents(true);
-        }
-        else {
-            this.win.setIgnoreMouseEvents(false);
-        }
+        this.setIgnoreMouseEvents()
     }
 
     // Add path parameter
@@ -235,7 +229,6 @@ class OverlayController {
                 alwaysOnTop: true,
                 movable: true,
                 resizable: true,
-                interactable
                 webPreferences: {
                     nodeIntegration: true
                 }
