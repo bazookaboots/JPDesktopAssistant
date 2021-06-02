@@ -9,7 +9,7 @@ const defualtOptions =
     webPreferences: {
         nodeIntegration: true,
         enableRemoteModule: true,
-        //devTools: false
+        devTools: false
     }
 }
 
@@ -64,7 +64,7 @@ class ContactsWinController {
         win.setMenuBarVisibility(false)
 
         win.loadFile(path)
-        win.webContents.openDevTools({ mode: 'detach' })
+        //win.webContents.openDevTools({ mode: 'detach' })
         win.once('ready-to-show', () => {
             win.show()
         })
@@ -97,7 +97,7 @@ class SettingsWinController {
         this.win.setMenuBarVisibility(false)
 
         this.win.loadFile(path)
-        this.win.webContents.openDevTools({ mode: 'detach' })
+        //this.win.webContents.openDevTools({ mode: 'detach' })
         this.win.once('ready-to-show', () => {
             this.win.show()
         })
@@ -130,7 +130,7 @@ class AccountWinController {
         win.setMenuBarVisibility(false)
 
         win.loadFile(path)
-        win.webContents.openDevTools({ mode: 'detach' })
+        //win.webContents.openDevTools({ mode: 'detach' })
         win.once('ready-to-show', () => {
             win.show()
         })
@@ -163,7 +163,7 @@ class MessagesWinController {
         win.setMenuBarVisibility(false)
 
         win.loadFile(path)
-        win.webContents.openDevTools({ mode: 'detach' })
+        //win.webContents.openDevTools({ mode: 'detach' })
         win.once('ready-to-show', () => {
             win.show()
         })
@@ -200,22 +200,21 @@ class OverlayController {
     toggle() {
         if (this.win.getOpacity() != 0)
         {
-            this.win.setOpacity(0);
+          this.win.setOpacity(0);
         }
         else{
             this.win.setOpacity(0.8);
         }
     }
 
-    interactable()
+    setInteractable()
     {
-        if (this.win.interactable == true)
-        {
-            this.win.setIgnoreMouseEvents(false);
-        }
-        else
+        if (!this.win.interactable)
         {
             this.win.setIgnoreMouseEvents(true);
+        }
+        else {
+            this.win.setIgnoreMouseEvents(false);
         }
     }
 
@@ -236,6 +235,7 @@ class OverlayController {
                 alwaysOnTop: true,
                 movable: true,
                 resizable: true,
+                interactable
                 webPreferences: {
                     nodeIntegration: true
                 }
@@ -258,7 +258,7 @@ class OverlayController {
         }
     }
 
-    end() {
+    close() {
         if (this.win != undefined) {
             this.win.close();
         }

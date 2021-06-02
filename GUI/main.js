@@ -39,11 +39,13 @@ app.on('ready', OnReady)
 
 function OnReady() {
     mainWin.start()
+    overlayWin.start("https://www.google.com/")
 }
 
 ipcMain.on('close-mainWin', (event, arg) => {
     console.debug('Function Called: close-mainWin')
     mainWin.close()
+    //overlayWin.close()
 })
 
 ipcMain.on('close-contactsWin', (event, arg) => {
@@ -80,7 +82,25 @@ app.whenReady().then(() => {
 })
 
 app.whenReady().then(() => {
-    globalShortcut.register('CommandOrControl+O', () => {
+    globalShortcut.register('CommandOrControl+4', () => {
+        if (overlayWin.win != undefined) {
+            overlayWin.close()
+            mainWin.close()
+            //settingsWin.close()
+        }
+    })
+})
+
+app.whenReady().then(() => {
+    globalShortcut.register('CommandOrControl+3', () => {
+        if (overlayWin.win != undefined) {
+            overlayWin.setInteractable()
+        }
+    })
+})
+
+app.whenReady().then(() => {
+    globalShortcut.register('CommandOrControl+2', () => {
         if (overlayWin.win != undefined) {
             overlayWin.minimizeOverlay()
         }
@@ -88,7 +108,7 @@ app.whenReady().then(() => {
 })
 
 app.whenReady().then(() => {
-    globalShortcut.register('CommandOrControl+P', () => {
+    globalShortcut.register('CommandOrControl+1', () => {
         if (overlayWin.win != undefined) {
             overlayWin.toggle()
         }
