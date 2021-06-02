@@ -219,22 +219,6 @@ class OverlayController {
         }
     }
 
-    setOverlayScreen(data)
-    {
-        if(this.win == undefined)
-        {
-            console.log("Hey we here at the start.")
-            this.start(data);
-        } else 
-        {
-            console.log("Hey we here everywhere else.")
-            this.win.setOpacity(0);
-            this.win.loadURL("https://www.google.com/")
-            this.win.loadURL(data);
-            this.win.setOpacity(0.8)
-        }
-    }
-
     // Add path parameter
     start(data) {
         console.log("Hey we here " + data)

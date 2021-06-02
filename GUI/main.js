@@ -73,7 +73,9 @@ app.whenReady().then(() => {
     // Register a 'CommandOrControl+Y' shortcut listener.
     globalShortcut.register('CommandOrControl+Y', () => {
     // Do stuff when Y and either Command/Control is pressed.
-    overlayWin.start()
+    if (overlayWin.win != undefined) {
+        overlayWin.start()
+    }
 })
 })
 

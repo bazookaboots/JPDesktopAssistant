@@ -69,13 +69,16 @@ class PalEngineController {
                             console.log("data was: " + data);
                             break;
                         case 2:
-                            //NOTES FOR EREN
-                            //overlayController.open("https://youtube.com")
-
-                            // URL or Overlay Commands (toggle/minimize)
-                            console.log("overlay url was: " + data);
-                            overlayWin.hmmm(data.toString())
-                            
+                            if (overlayWin.win != undefined)
+                            {
+                                overlayWin.win.loadURL(data.toString());
+                                
+                            }
+                            else
+                            {
+                                console.log("overlay url was: " + data);
+                                overlayWin.start(data.toString());
+                            }
                             break;
                         default:
                             console.log("ERROR: Invalid OpCode data was: "+data);
