@@ -71,13 +71,13 @@ namespace PAL.Core
                     break;
 
                 case "google":
-                    url = @"http://www.google.com/search?q=" + cmd.arg.Replace(' ', '+');
+                    url = @"http://www.google.com/search?q=" + cmd.arg.Replace(' ', '+').TrimEnd('+');
                     if (cmd.browser == "chrome") Process.Start("chrome.exe", url);
                     if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                     break;
 
                 case "images":
-                    url = @"https://www.google.com/search?tbm=isch&q=" + cmd.arg.Replace(' ', '+');
+                    url = @"https://www.google.com/search?tbm=isch&q=" + cmd.arg.Replace(' ', '+').TrimEnd('+');
                     if (cmd.browser == "chrome") Process.Start("chrome.exe", url);
                     if (cmd.browser == "overlay") Console.WriteLine("2:" + url);
                     break;
