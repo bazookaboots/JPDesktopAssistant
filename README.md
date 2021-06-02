@@ -17,9 +17,7 @@ In order to access our Google cloud project, we must provide "GoogleKey.json"
 
 Once you have these, you can compile the project from the source code. We recommend using visual studio code for the electron/javascript side of the project. The C# component is a visual studio community project. 
 
-Once you have cloned/pulled the repo, open a bash terminal and navigate to JPDesktopAssisstant/electron-gui and run the following commands
-    npm install -d
-    npm start
+Once you have cloned/pulled the repo, open a bash terminal and navigate to JPDesktopAssisstant/electron-gui and run ```npm install -d``` and ```npm start```
 This will launch the electron component, which wraps around the actual voice recognition engine. 
 
 You can also build and run the C# component in visual studio community entirely seperate from the GUI.
