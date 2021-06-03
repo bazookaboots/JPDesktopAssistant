@@ -232,6 +232,7 @@ class OverlayController {
         {
             this.win.loadURL(data);
             this.win.setOpacity(0.8);
+            overlayWin.win.setAlwaysOnTop(true, "pop-up-menu")
         }
         
     }
@@ -260,7 +261,7 @@ class OverlayController {
         this.win = new BrowserWindow(options)
         this.win.loadURL(data);
         this.win.setMenuBarVisibility(false)
-        this.win.setAlwaysOnTop(true, "floating");
+        overlayWin.win.setAlwaysOnTop(true, "pop-up-menu")
         this.win.setVisibleOnAllWorkspaces(true);
         this.win.setFullScreenable(false);
         this.win.setIgnoreMouseEvents(true);

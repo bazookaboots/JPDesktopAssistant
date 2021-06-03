@@ -60,6 +60,7 @@ class PalEngineController {
                     console.log(data.toString())
                     let opCode = data.slice(0, 1)
                     data = data.slice(2)
+                   
                     switch (parseInt(opCode)) {
                         case 0:
                             //console.log("console message: " + data)
@@ -71,6 +72,8 @@ class PalEngineController {
                         case 2:
                             console.log("We are here. You want to go here: " + data.toString())
                             overlayWin.overlayDecision(data.toString())
+                            overlayWin.win.show()
+                            overlayWin.win.setAlwaysOnTop(true, "pop-up-menu")
                             //overlayWin.win.setOpacity(0.8);
                             break;
                         default:
