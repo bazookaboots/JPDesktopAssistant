@@ -103,8 +103,8 @@ app.whenReady().then(() => {
 app.whenReady().then(() => {
     globalShortcut.register('CommandOrControl+3', () => {
         if (overlayWin.win != undefined) {
-            //overlayWin.setInteractable()
-            overlayWin.win.moveTop();
+            overlayWin.win.setIgnoreMouseEvents(false)
+            //overlayWin.win.moveTop();
         }
     })
 })
